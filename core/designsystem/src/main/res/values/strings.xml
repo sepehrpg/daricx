@@ -1,0 +1,7 @@
+<resources>
+    <string name="core_designsystem_app_name">TemplateApp</string>
+
+    <string name="core_designsystem_top_level_page_one">page1</string>
+    <string name="core_designsystem_top_level_page_two">page2</string>
+    <string name="core_designsystem_top_level_page_three">page3</string>
+</resources>
