@@ -1,8 +1,6 @@
 package com.example.model
 
 
-
-
  data class CoinMarket(
     val ath: Double?,
     val athChangePercentage: Double?,
@@ -37,3 +35,12 @@ package com.example.model
         val times: Double?
     )
 }
+
+
+enum class MarketSortColumn { RANK, MARKET_CAP, PRICE, CHANGE_24H }
+enum class SortDirection { ASC, DESC }
+
+data class SortSpec(
+   val column: MarketSortColumn,
+   val direction: SortDirection
+)

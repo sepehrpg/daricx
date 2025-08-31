@@ -44,7 +44,7 @@ fun MarketStatsRow(modifier: Modifier = Modifier) {
             modifier = modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
-                .padding(horizontal = 0.dp, vertical = 3.dp),
+                .padding(horizontal = 2.dp, vertical = 4.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
