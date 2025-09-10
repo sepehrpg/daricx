@@ -1,6 +1,5 @@
 package com.example.designsystem.component
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -19,6 +18,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -31,7 +31,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
@@ -48,8 +47,11 @@ import com.example.designsystem.R
 import kotlin.math.roundToInt
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.graphics.Color
 
+import androidx.compose.ui.layout.onGloballyPositioned
+import com.example.designsystem.theme.AppThemedPreview
+import com.example.designsystem.theme.ThemePreviews
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,6 +61,7 @@ fun AppTopBar(
     divider:Boolean = false,
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior? = null,
+    onMenuClick: () -> Unit,
     actions: @Composable RowScope.() -> Unit =
         {
             IconButton(
@@ -68,7 +71,7 @@ fun AppTopBar(
                 Icon(
                     painter = painterResource(id = R.drawable.core_designsystem_archive),
                     contentDescription = "Diamond",
-                    tint = Color.Gray,
+                    tint = MaterialTheme.colorScheme.surfaceTint,
                     modifier = Modifier.size(22.dp)
                 )
             }
@@ -79,18 +82,18 @@ fun AppTopBar(
                 Icon(
                     painter = painterResource(id = R.drawable.core_designsystem_search),
                     contentDescription = "Search",
-                    tint = Color.Gray,
+                    tint = MaterialTheme.colorScheme.surfaceTint,
                     modifier = Modifier.size(22.dp)
                 )
             }
             IconButton(
-                onClick = { /* TODO */ },
+                onClick = onMenuClick,
                 modifier = Modifier.width(45.dp)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.core_designsystem_profile),
                     contentDescription = "Notifications",
-                    tint = Color.Gray,
+                    tint = MaterialTheme.colorScheme.surfaceTint,
                     modifier = Modifier.size(30.dp)
                 )
             }
@@ -101,11 +104,11 @@ fun AppTopBar(
 
     Column(modifier = modifier) {
         TopAppBar(
-            title = { Text(title, color = Color.DarkGray, fontWeight = FontWeight.Bold) },
+            title = { AppText(title, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground) },
             actions = actions,
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color.White,
-                scrolledContainerColor = Color.White
+                containerColor = MaterialTheme.colorScheme.surface,
+               // scrolledContainerColor = Color.White
             ),
             scrollBehavior = scrollBehavior
         )
@@ -116,10 +119,7 @@ fun AppTopBar(
         }
 
         if(divider){
-            HorizontalDivider(
-                color = Color.LightGray.copy(alpha = 0.5f),
-                thickness = 1.dp
-            )
+            AppHorizontalDivider()
         }
 
     }
@@ -133,16 +133,18 @@ fun AppTopBar(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview
+@ThemePreviews
 fun AppTopBarPreview() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .background(Color.White)
-            .border(1.dp, Color.LightGray)
-    ) {
-        AppTopBar(title = "App Title")
+    AppThemedPreview {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp)
+            //.background(Color.White)
+            //.border(1.dp, Color.LightGray)
+        ) {
+            AppTopBar(title = "App Title", onMenuClick = {})
+        }
     }
 }
 
@@ -157,37 +159,35 @@ fun AppTopBarPreview() {
 fun CollapsingTopAppBar(
     title: String,
     modifier: Modifier = Modifier,
-    baseBarHeight: Dp = 56.dp,               // ارتفاع حالت Collapsed
-    containerColor: Color = Color.White,
+    baseBarHeight: Dp = 56.dp,
+    containerColor: Color = MaterialTheme.colorScheme.surface,
     divider: Boolean = true,
     scrollBehavior: TopAppBarScrollBehavior? = null,
     navigationIcon: (@Composable () -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
-    moreComponent: (@Composable () -> Unit)? = null, // چیزی که می‌خواهی زیر نوار بیاید و با اسکرول جمع شود
+    moreComponent: (@Composable () -> Unit)? = null,
 ) {
     val density = LocalDensity.current
     val baseBarHeightPx = with(density) { baseBarHeight.roundToPx() }
-    var extraHeightPx by remember { mutableStateOf(0) } // ارتفاع moreComponent
+    var extraHeightPx by remember { mutableStateOf(0) }
 
-    // حدّ جمع‌شدن را بر اساس ارتفاع محتوای اضافه تعیین کن
+
     SideEffect {
         scrollBehavior?.state?.heightOffsetLimit = -extraHeightPx.toFloat()
     }
 
-    // مقدار لحظه‌ای جابجایی ارتفاع (توسط nestedScroll پر می‌شود)
     val heightOffset = scrollBehavior?.state?.heightOffset ?: 0f
     val collapseRangePx = extraHeightPx
     val currentHeightPx = (baseBarHeightPx + extraHeightPx + heightOffset).coerceAtLeast(baseBarHeightPx.toFloat())
     val currentHeightDp = with(density) { currentHeightPx.toDp() }
 
-    // نسبت جمع‌شدن برای افکت‌های بصری (0..1)
     val fraction = if (collapseRangePx == 0) 0f else (-heightOffset / collapseRangePx).coerceIn(0f, 1f)
 
     Box(
         modifier = modifier
             .fillMaxWidth()
             .height(currentHeightDp)
-            .clipToBounds() // بخش اضافه هنگام جمع‌شدن کلیپ شود
+            .clipToBounds()
             .background(containerColor)
     ) {
         Column(
@@ -195,7 +195,7 @@ fun CollapsingTopAppBar(
                 .fillMaxSize()
                 .padding(horizontal = 12.dp, vertical = 8.dp)
         ) {
-            // ردیف اصلی نوار (ارتفاع ثابت)
+
             Row(
                 modifier = Modifier
                     .height(baseBarHeight)
@@ -206,9 +206,9 @@ fun CollapsingTopAppBar(
                     Box(Modifier.padding(end = 8.dp)) { navigationIcon() }
                 }
 
-                Text(
+                AppText(
                     text = title,
-                    color = Color.DarkGray,
+                   // color = Color.DarkGray,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .weight(1f)
@@ -218,9 +218,7 @@ fun CollapsingTopAppBar(
                 Row(content = actions)
             }
 
-            // محتوای اضافه که با اسکرول جمع می‌شود
             if (moreComponent != null) {
-                // ثبت ارتفاع واقعیِ moreComponent برای تعیین collapse range
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -228,7 +226,6 @@ fun CollapsingTopAppBar(
                             val h = coords.size.height
                             if (h != extraHeightPx) extraHeightPx = h
                         }
-                        // افکت اختیاری: محو شدن تدریجی با جمع‌شدن
                         .graphicsLayer { alpha = 1f - fraction }
                 ) {
                     moreComponent()
@@ -236,12 +233,9 @@ fun CollapsingTopAppBar(
             }
         }
 
-        // دیوایدر پایین نوار
         if (divider) {
-            HorizontalDivider(
+            AppHorizontalDivider(
                 modifier = Modifier.align(Alignment.BottomCenter),
-                color = Color.LightGray.copy(alpha = 0.5f),
-                thickness = 1.dp
             )
         }
     }

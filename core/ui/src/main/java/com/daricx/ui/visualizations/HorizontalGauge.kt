@@ -59,12 +59,12 @@ fun HorizontalGauge(
             Text(
                 text = clamped.toString(),
                 style = MaterialTheme.typography.bodyMedium.copy(fontSize = fontSize.sp),
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
                 text = "/100",
                 style = MaterialTheme.typography.bodyMedium.copy(fontSize = fontSize.sp),
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
 

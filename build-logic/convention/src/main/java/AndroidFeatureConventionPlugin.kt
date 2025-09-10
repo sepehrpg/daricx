@@ -13,14 +13,14 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
 
                 //REAL
                 //Library Feature Module
-                //apply("project.android.library")
-                //apply("project.android.library.compose")
+                apply("project.android.library")
+                apply("project.android.library.compose")
                 apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
 
                 //JUST FOR TEST
                 //Application Feature Module
-                apply("project.android.application")
-                apply("project.android.application.compose")
+                //apply("project.android.application")
+                //apply("project.android.application.compose")
 
 
                 apply("project.compose.component")

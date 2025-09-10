@@ -20,6 +20,12 @@ androidDesugarJdkLibs = "2.1.5"
 # DependencyGuard plugin for tracking dependency changes
 dependencyGuard = "0.5.0"
 # Secrets Gradle Plugin for managing API keys safely
+pagingCommon = "3.3.6"
+pagingCompose = "3.4.0-alpha03"
+pagingGuava = "3.3.6"
+pagingRuntime = "3.3.6"
+pagingRxjava2 = "3.3.6"
+pagingRxjava3 = "3.3.6"
 secrets = "2.0.1"
 ## -----------------------------------------------------------------------------------------------
 
@@ -213,6 +219,12 @@ androidx-datastore-preferences = { group = "androidx.datastore", name = "datasto
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
 androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "pagingCommon" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingCompose" }
+androidx-paging-guava = { module = "androidx.paging:paging-guava", version.ref = "pagingGuava" }
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pagingRuntime" }
+androidx-paging-rxjava2 = { module = "androidx.paging:paging-rxjava2", version.ref = "pagingRxjava2" }
+androidx-paging-rxjava3 = { module = "androidx.paging:paging-rxjava3", version.ref = "pagingRxjava3" }
 androidx-preference = { group = "androidx.preference" , name = "preference-ktx" , version.ref = "androidxSharedPref"}
 
 androidx-metrics = { group = "androidx.metrics", name = "metrics-performance", version.ref = "androidxMetrics" }

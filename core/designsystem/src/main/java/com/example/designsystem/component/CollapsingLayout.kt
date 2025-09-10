@@ -121,7 +121,7 @@ fun CollapsingHeaderLayoutPreview() {
                     .background(Color.Cyan.copy(alpha = 0.3f)),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
+                AppText(
                     text = "Header Content",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
@@ -135,7 +135,7 @@ fun CollapsingHeaderLayoutPreview() {
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(50) { index ->
-                    Text(
+                    AppText(
                         text = "Scrollable item #${index + 1}",
                         modifier = Modifier
                             .fillMaxWidth()

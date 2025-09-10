@@ -210,7 +210,7 @@ fun MyList() {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {
-            Text(text = "Title 1", fontSize = 30.sp)
+            AppText(text = "Title 1", fontSize = 30.sp)
         }
 
         draggableItems(items = list1, dragDropState = dragDropState) { modifier, item , index ->

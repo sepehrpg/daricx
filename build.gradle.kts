@@ -7,7 +7,8 @@ plugins {
     alias(libs.plugins.hilt) apply false // hilt
     alias(libs.plugins.room) apply false //room
     alias(libs.plugins.kotlin.serialization) apply false
-    alias(libs.plugins.android.library) apply false // serialization
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.kotlin.jvm) apply false // serialization
 
     //alias(libs.plugins.dependencyGuard) apply false
 }

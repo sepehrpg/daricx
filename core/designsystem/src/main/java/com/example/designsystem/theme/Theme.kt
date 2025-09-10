@@ -1,19 +1,3 @@
-/*
- * Copyright 2022 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.example.designsystem.theme
 
 import android.os.Build
@@ -25,225 +9,140 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
+import com.example.designsystem.config.isPersian
 
-/**
- * Light default theme color scheme
- */
+
 @VisibleForTesting
-val LightDefaultColorScheme = lightColorScheme(
-    primary = Purple40,
-    onPrimary = Color.White,
-    primaryContainer = Purple90,
-    onPrimaryContainer = Purple10,
-    secondary = Orange40,
-    onSecondary = Color.White,
-    secondaryContainer = Orange90,
-    onSecondaryContainer = Orange10,
-    tertiary = Blue40,
-    onTertiary = Color.White,
-    tertiaryContainer = Blue90,
-    onTertiaryContainer = Blue10,
-    error = Red40,
-    onError = Color.White,
-    errorContainer = Red90,
-    onErrorContainer = Red10,
-    background = DarkPurpleGray99,
-    onBackground = DarkPurpleGray10,
-    surface = DarkPurpleGray99,
-    onSurface = DarkPurpleGray10,
-    surfaceVariant = PurpleGray90,
-    onSurfaceVariant = PurpleGray30,
-    inverseSurface = DarkPurpleGray20,
-    inverseOnSurface = DarkPurpleGray95,
-    outline = PurpleGray50,
+val LightColorScheme = lightColorScheme(
+    primary = PrimaryColor,
+    onPrimary = White,
+    primaryContainer = Blue50,
+    onPrimaryContainer = Blue30,
+    inversePrimary = Blue40,
+
+    secondary = SecondaryColor,
+    onSecondary = White,
+    secondaryContainer = Green50 ,
+    onSecondaryContainer = Green30,
+
+    tertiary = TertiaryColor,
+    onTertiary = White,
+    tertiaryContainer = Red50 ,
+    onTertiaryContainer = Red30 ,
+
+    error = Red30,
+    onError = White,
+    errorContainer = Red50 ,
+    onErrorContainer =Red30 ,
+
+    background = White,
+    onBackground = Black20,
+
+    surface = White30,
+    onSurface = Black50,
+    surfaceVariant = Gray50,
+    onSurfaceVariant = Gray20,
+
+    surfaceTint = Gray30 ,
+
+    outline = GrayAndroid,
+    outlineVariant = Gray100,
+
+    surfaceContainer = White,
+    surfaceContainerLow = White,
+    surfaceContainerLowest = White,
+    surfaceContainerHigh = White,
+    surfaceContainerHighest = White,
+
+    //surfaceBright = ,
+    //surfaceDim = ,
+    //inverseSurface = ,
+    //inverseOnSurface = ,
 )
 
-/**
- * Dark default theme color scheme
- */
+
 @VisibleForTesting
-val DarkDefaultColorScheme = darkColorScheme(
-    primary = Purple80,
-    onPrimary = Purple20,
-    primaryContainer = Purple30,
-    onPrimaryContainer = Purple90,
-    secondary = Orange80,
-    onSecondary = Orange20,
-    secondaryContainer = Orange30,
-    onSecondaryContainer = Orange90,
-    tertiary = Blue80,
-    onTertiary = Blue20,
-    tertiaryContainer = Blue30,
-    onTertiaryContainer = Blue90,
-    error = Red80,
-    onError = Red20,
-    errorContainer = Red30,
-    onErrorContainer = Red90,
-    background = DarkPurpleGray10,
-    onBackground = DarkPurpleGray90,
-    surface = DarkPurpleGray10,
-    onSurface = DarkPurpleGray90,
-    surfaceVariant = PurpleGray30,
-    onSurfaceVariant = PurpleGray80,
-    inverseSurface = DarkPurpleGray90,
-    inverseOnSurface = DarkPurpleGray10,
-    outline = PurpleGray60,
+val DarkColorScheme = darkColorScheme(
+    primary = PrimaryColor,
+    onPrimary = White,
+    primaryContainer = Blue20,
+    onPrimaryContainer = Blue40,
+    inversePrimary = Blue40,
+
+    secondary = SecondaryColor,
+    onSecondary = White,
+    secondaryContainer = Green20 ,
+    onSecondaryContainer = Green30,
+
+    tertiary = TertiaryColor,
+    onTertiary = White,
+    tertiaryContainer = Red20 ,
+    onTertiaryContainer = Red30 ,
+
+    error = Red20,
+    onError = White,
+    errorContainer = Red20 ,
+    onErrorContainer =Red30 ,
+
+    background = Black60,
+    onBackground = White,
+
+    surface = Black30,
+    onSurface = White40,
+    surfaceVariant = Gray10,
+    onSurfaceVariant = Gray20 ,
+
+    surfaceTint = Gray15 ,
+    //surfaceTint = Gray20 ,
+
+    outline = GrayAndroid,
+    outlineVariant = Gray10,
+
+    surfaceContainer = Black60,
+    surfaceContainerLow = Black60,
+    surfaceContainerLowest = Black60,
+    surfaceContainerHigh = Black60,
+    surfaceContainerHighest = Black60,
+
+    //surfaceBright = ,
+    //surfaceDim = ,
+    //inverseSurface = ,
+    //inverseOnSurface = ,
 )
 
-/**
- * Light Android theme color scheme
- */
-@VisibleForTesting
-val LightAndroidColorScheme = lightColorScheme(
-    primary = Green40,
-    onPrimary = Color.White,
-    primaryContainer = Green90,
-    onPrimaryContainer = Green10,
-    secondary = DarkGreen40,
-    onSecondary = Color.White,
-    secondaryContainer = DarkGreen90,
-    onSecondaryContainer = DarkGreen10,
-    tertiary = Teal40,
-    onTertiary = Color.White,
-    tertiaryContainer = Teal90,
-    onTertiaryContainer = Teal10,
-    error = Red40,
-    onError = Color.White,
-    errorContainer = Red90,
-    onErrorContainer = Red10,
-    background = DarkGreenGray99,
-    onBackground = DarkGreenGray10,
-    surface = DarkGreenGray99,
-    onSurface = DarkGreenGray10,
-    surfaceVariant = GreenGray90,
-    onSurfaceVariant = GreenGray30,
-    inverseSurface = DarkGreenGray20,
-    inverseOnSurface = DarkGreenGray95,
-    outline = GreenGray50,
-)
 
-/**
- * Dark Android theme color scheme
- */
-@VisibleForTesting
-val DarkAndroidColorScheme = darkColorScheme(
-    primary = Green80,
-    onPrimary = Green20,
-    primaryContainer = Green30,
-    onPrimaryContainer = Green90,
-    secondary = DarkGreen80,
-    onSecondary = DarkGreen20,
-    secondaryContainer = DarkGreen30,
-    onSecondaryContainer = DarkGreen90,
-    tertiary = Teal80,
-    onTertiary = Teal20,
-    tertiaryContainer = Teal30,
-    onTertiaryContainer = Teal90,
-    error = Red80,
-    onError = Red20,
-    errorContainer = Red30,
-    onErrorContainer = Red90,
-    background = DarkGreenGray10,
-    onBackground = DarkGreenGray90,
-    surface = DarkGreenGray10,
-    onSurface = DarkGreenGray90,
-    surfaceVariant = GreenGray30,
-    onSurfaceVariant = GreenGray80,
-    inverseSurface = DarkGreenGray90,
-    inverseOnSurface = DarkGreenGray10,
-    outline = GreenGray60,
-)
-
-/**
- * Light Android gradient colors
- */
-val LightAndroidGradientColors = GradientColors(container = DarkGreenGray95)
-
-/**
- * Dark Android gradient colors
- */
-val DarkAndroidGradientColors = GradientColors(container = Color.Black)
-
-/**
- * Light Android background theme
- */
-val LightAndroidBackgroundTheme = BackgroundTheme(color = DarkGreenGray95)
-
-/**
- * Dark Android background theme
- */
-val DarkAndroidBackgroundTheme = BackgroundTheme(color = Color.Black)
-
-/**
- * Now in Android theme.
- *
- * @param darkTheme Whether the theme should use a dark color scheme (follows system by default).
- * @param androidTheme Whether the theme should use the Android theme color scheme instead of the
- *        default theme.
- * @param disableDynamicTheming If `true`, disables the use of dynamic theming, even when it is
- *        supported. This parameter has no effect if [androidTheme] is `true`.
- */
 @Composable
 fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    androidTheme: Boolean = false,
-    disableDynamicTheming: Boolean = true,
-    content: @Composable () -> Unit,
+    // Dynamic color is available on Android 12+
+    dynamicColor: Boolean = true,
+    content: @Composable () -> Unit
 ) {
-    // Color scheme
     val colorScheme = when {
-        androidTheme -> if (darkTheme) DarkAndroidColorScheme else LightAndroidColorScheme
-        !disableDynamicTheming && supportsDynamicTheming() -> {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        else -> if (darkTheme) DarkDefaultColorScheme else LightDefaultColorScheme
+        darkTheme -> DarkColorScheme
+        else -> LightColorScheme
     }
-    // Gradient colors
-    val emptyGradientColors = GradientColors(container = colorScheme.surfaceColorAtElevation(2.dp))
-    val defaultGradientColors = GradientColors(
-        top = colorScheme.inverseOnSurface,
-        bottom = colorScheme.primaryContainer,
-        container = colorScheme.surface,
+
+    val typography = if (isPersian()) {
+        buildTypography (AppFontPersian)
+    } else {
+        buildTypography()
+    }
+
+    //val typography = appBuildTypography(AppFontEnglish)
+
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = typography,
+        content = content
     )
-    val gradientColors = when {
-        androidTheme -> if (darkTheme) DarkAndroidGradientColors else LightAndroidGradientColors
-        !disableDynamicTheming && supportsDynamicTheming() -> emptyGradientColors
-        else -> defaultGradientColors
-    }
-    // Background theme
-    val defaultBackgroundTheme = BackgroundTheme(
-        color = colorScheme.surface,
-        tonalElevation = 2.dp,
-    )
-    val backgroundTheme = when {
-        androidTheme -> if (darkTheme) DarkAndroidBackgroundTheme else LightAndroidBackgroundTheme
-        else -> defaultBackgroundTheme
-    }
-    val tintTheme = when {
-        androidTheme -> TintTheme()
-        !disableDynamicTheming && supportsDynamicTheming() -> TintTheme(colorScheme.primary)
-        else -> TintTheme()
-    }
-    // Composition locals
-    CompositionLocalProvider(
-        LocalGradientColors provides gradientColors,
-        LocalBackgroundTheme provides backgroundTheme,
-        LocalTintTheme provides tintTheme,
-    ) {
-        MaterialTheme(
-            colorScheme = colorScheme,
-            typography = AppTypography,
-            content = content,
-        )
-    }
 }
 
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.S)

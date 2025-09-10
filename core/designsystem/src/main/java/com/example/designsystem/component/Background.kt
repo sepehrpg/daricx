@@ -236,6 +236,7 @@ fun AppCircleGradientBackground(
 
 
 
+/*
 
 @ThemePreviews
 @Composable
@@ -285,3 +286,4 @@ private fun GradientBackgroundAndroid() {
         AppGradientBackground(Modifier.size(100.dp), content = {})
     }
 }
+*/

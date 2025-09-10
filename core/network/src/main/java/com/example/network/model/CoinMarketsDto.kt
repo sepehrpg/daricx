@@ -26,7 +26,7 @@ data class CoinMarketDto(
    @SerialName("current_price")
    val currentPrice: Double?,
    @SerialName("fully_diluted_valuation")
-   val fullyDilutedValuation: Long?,
+   val fullyDilutedValuation: Double?,
    @SerialName("high_24h")
    val high24h: Double?,
    @SerialName("id")
@@ -38,7 +38,7 @@ data class CoinMarketDto(
    @SerialName("low_24h")
    val low24h: Double?,
    @SerialName("market_cap")
-   val marketCap: Long?,
+   val marketCap: Double?,
    @SerialName("market_cap_change_24h")
    val marketCapChange24h: Double?,
    @SerialName("market_cap_change_percentage_24h")
@@ -60,7 +60,9 @@ data class CoinMarketDto(
    @SerialName("total_supply")
    val totalSupply: Double?,
    @SerialName("total_volume")
-   val totalVolume: Double?
+   val totalVolume: Double?,
+   @SerialName("sparkline_in_7d")
+   val sparklineIn7d: SparklineIn7d?
 ) {
    @Serializable
    data class Roi(
@@ -70,6 +72,12 @@ data class CoinMarketDto(
       val percentage: Double?,
       @SerialName("times")
       val times: Double?
+   )
+
+   @Serializable
+   data class SparklineIn7d(
+      @SerialName("price")
+      val price: List<Double>
    )
 }
 
@@ -82,6 +90,13 @@ fun CoinMarketDto.Roi.toDomain(): CoinMarket.Roi {
       currency = this.currency ?: "",
       percentage = this.percentage ?: 0.0,
       times = this.times ?: 0.0
+   )
+}
+
+
+fun CoinMarketDto.SparklineIn7d.toDomain(): CoinMarket.SparklineIn7d {
+   return CoinMarket.SparklineIn7d(
+      price = this.price
    )
 }
 
@@ -120,7 +135,9 @@ fun CoinMarketDto.toDomain(): CoinMarket {
       roi = this.roi?.toDomain(),
       symbol = this.symbol,
       totalSupply = this.totalSupply,
-      totalVolume = this.totalVolume
+      totalVolume = this.totalVolume,
+      sparklineIn7d = this.sparklineIn7d?.toDomain()
+
    )
 }
 
@@ -131,3 +148,4 @@ fun CoinMarketDto.toDomain(): CoinMarket {
 fun List<CoinMarketDto>.toDomain(): List<CoinMarket> {
    return this.map { it.toDomain() }
 }
+

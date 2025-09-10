@@ -1,7 +1,12 @@
 plugins {
+
+    //Test
+    //alias(libs.plugins.project.android.application)
+    //alias(libs.plugins.project.android.application.compose)
+
     alias(libs.plugins.project.android.feature)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.compose.compiler)
+    //alias(libs.plugins.kotlin.android)
+    //alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -27,7 +32,8 @@ android {
 
 dependencies {
     implementation(project(":core:ui"))
-    implementation(project(":core:data"))
+    //implementation(project(":feature:settings"))
+    //implementation(project(":core:data"))
 
 
     implementation(libs.androidx.core.ktx)

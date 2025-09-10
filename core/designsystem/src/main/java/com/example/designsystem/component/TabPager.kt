@@ -106,7 +106,7 @@ fun AppTabPager(
     onPageChanged: (Int) -> Unit = {}
 ) {
     if (tabs.isEmpty()) {
-        HorizontalDivider(color = dividerColor, thickness = dividerThickness)
+        AppHorizontalDivider(color = dividerColor, thickness = dividerThickness)
         return
     }
     val textWidths = remember { mutableStateMapOf<Int, Int>() }
@@ -151,7 +151,7 @@ fun AppTabPager(
 
     // divider
     val divider: @Composable () -> Unit = {
-        HorizontalDivider(
+        AppHorizontalDivider(
             modifier = currentTab.dividerModifier ?: Modifier,
             color = currentTab.dividerColor ?: dividerColor,
             thickness = currentTab.dividerThickness ?: dividerThickness

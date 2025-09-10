@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.designsystem.extension.clickableWithNoRipple
-import com.example.designsystem.theme.PrimaryColor
 
 @Composable
 fun AppBottomSheetDragHandle(
@@ -48,7 +48,7 @@ fun AppBottomSheetDragHandle(
                     fontSize = 14.sp
                 )
             }
-            AppText(done, color = PrimaryColor, fontSize = 14.sp, fontWeight = FontWeight.Bold, modifier = Modifier.clickableWithNoRipple {
+            AppText(done, color = Color.Gray, fontSize = 14.sp, fontWeight = FontWeight.Bold, modifier = Modifier.clickableWithNoRipple {
                 onDoneClick()
             })
         }
@@ -58,7 +58,7 @@ fun AppBottomSheetDragHandle(
         }
         else{
             Spacer(Modifier.height(10.dp))
-            HorizontalDivider(color = Color(0xFFEEEEEE))
+            AppHorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             Spacer(Modifier.height(10.dp))
         }
 

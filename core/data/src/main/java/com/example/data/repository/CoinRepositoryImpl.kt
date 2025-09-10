@@ -1,5 +1,9 @@
 package com.example.data.repository
 
+
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import com.example.data.repository.paging.CoinMarketsPagingSource
 import com.example.model.CoinMarket
 import com.example.network.datasource.RemoteCoinsDataSource
 import com.example.network.model.toDomain
@@ -10,29 +14,37 @@ import timber.log.Timber
 import javax.inject.Inject
 
 
-
 class CoinRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteCoinsDataSource
 ) : CoinRepository {
 
-    /**
-     * Fetches coinsMarkets from the network and emits them as a single-value Flow.
-     * Includes error handling to prevent crashes.
-     */
-    override fun getCoinMarkets(vsCurrency:String): Flow<List<CoinMarket>> = flow {
-        // 1. Fetch the raw DTO list from the network layer.
-        val coinMarketsDto = remoteDataSource.getCoinMarkets(vsCurrency)
-
-        // 2. Use the extension function to map the DTO list to a clean domain model list.
-        val coinMarkets = coinMarketsDto.toDomain()
-
-        // 3. Emit the final, clean list into the stream.
-        emit(coinMarkets)
-    }.catch { e ->
-        // This block catches any exceptions from the network call or mapping.
-        Timber.e("CoinRepositoryImpl", "Error fetching coin markets", e)
-        // Emit an empty list as a fallback to prevent the app from crashing.
-        emit(emptyList())
+    override fun getCoinMarketsPaged(
+        vsCurrency: String,
+        pageSize: Int,
+        order: String?,
+        sparkline: Boolean?,
+        priceChangePercentage: String?,
+        pageTransform: ((List<CoinMarket>) -> List<CoinMarket>)?
+    ): Flow<androidx.paging.PagingData<CoinMarket>> {
+        val config = PagingConfig(
+            pageSize = pageSize,
+            initialLoadSize = pageSize ,
+            prefetchDistance = 1,
+            enablePlaceholders = false
+        )
+        return Pager(
+            config = config,
+            pagingSourceFactory = {
+                CoinMarketsPagingSource(
+                    remote = remoteDataSource,
+                    vsCurrency = vsCurrency,
+                    perPage = pageSize,
+                    order = order,
+                    sparkline = sparkline,
+                    priceChangePercentage = priceChangePercentage,
+                    pageTransform = pageTransform
+                )
+            }
+        ).flow
     }
-
 }

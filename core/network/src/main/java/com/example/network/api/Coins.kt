@@ -6,9 +6,6 @@ import retrofit2.http.Query
 
 interface Coins {
 
-
-
-
     /**
      * Fetches a list of coins with their market data.
      *

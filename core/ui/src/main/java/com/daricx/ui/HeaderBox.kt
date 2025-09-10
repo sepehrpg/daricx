@@ -28,48 +28,51 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.daricx.ui.visualizations.Gauge
 import com.daricx.ui.visualizations.HorizontalGauge
+import com.example.designsystem.component.AppText
 
 
 @Composable
 fun MarketStatsRow(modifier: Modifier = Modifier) {
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.background
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 3.dp
+            defaultElevation = 2.dp
         ),
     ) {
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .height(IntrinsicSize.Min)
-                .padding(horizontal = 2.dp, vertical = 4.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            StatItem(
-                modifier = Modifier.weight(1f),
-                title = "Market Cap",
-                value = "$4.02T",
-                change = "▲ 1.46%",
-                changeColor = Color(0xFF4CAF50)
-            )
-            VerticalDivider()
+        Box(Modifier.padding(vertical = 0.dp)){
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Min)
+                    .padding(horizontal = 2.dp, vertical = 6.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                StatItem(
+                    modifier = Modifier.weight(1f),
+                    title = "Market Cap",
+                    value = "$4.02T",
+                    change = "▲ 1.46%",
+                    changeColor = MaterialTheme.colorScheme.secondary
+                )
+                VerticalDivider()
 
-            StatItem(
-                modifier = Modifier.weight(1f),
-                title = "CMC100",
-                value = "$249.72",
-                change = "▲ 1.74%",
-                changeColor = Color(0xFF4CAF50)
-            )
-            VerticalDivider()
+                StatItem(
+                    modifier = Modifier.weight(1f),
+                    title = "CMC100",
+                    value = "$249.72",
+                    change = "▲ 1.74%",
+                    changeColor = MaterialTheme.colorScheme.secondary
+                )
+                VerticalDivider()
 
-            AltcoinIndexGauge(modifier = Modifier.weight(1f))
-            VerticalDivider()
+                AltcoinIndexGauge(modifier = Modifier.weight(1f))
+                VerticalDivider()
 
-            FearAndGreedGauge(modifier = Modifier.weight(1f))
+                FearAndGreedGauge(modifier = Modifier.weight(1f))
+            }
         }
     }
 
@@ -85,20 +88,19 @@ fun StatItem(
     changeColor: Color
 ) {
     Column(modifier = modifier.fillMaxHeight().padding(horizontal = 5.dp)) {
-        Text(
+        AppText(
             text = title,
             style = MaterialTheme.typography.labelMedium.copy(fontSize = 11.sp),
-            color = Color.Gray,
-
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.height(4.dp))
-        Text(
+        AppText(
             text = value,
             style = MaterialTheme.typography.titleLarge.copy(fontSize = 13.sp),
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSurface
         )
-        Text(
+        AppText(
             text = change,
             style = MaterialTheme.typography.bodyMedium.copy(fontSize = 11.sp),
             color = changeColor,
@@ -106,19 +108,17 @@ fun StatItem(
     }
 }
 
-/**
- * Placeholder برای کامپوننت چارت Altcoin Index شما.
- */
+
 @Composable
 fun AltcoinIndexGauge(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxHeight().padding(horizontal = 5.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
+        AppText(
             text = "Altcoin Index",
             style = MaterialTheme.typography.labelMedium.copy(fontSize = 11.sp),
-            color = Color.Gray
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.height(4.dp))
         Box(Modifier.fillMaxHeight()){
@@ -137,10 +137,10 @@ fun FearAndGreedGauge(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxHeight().padding(horizontal = 5.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
+        AppText(
             text = "Fear & Greed",
             style = MaterialTheme.typography.labelMedium.copy(fontSize = 11.sp),
-            color = Color.Gray
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.height(8.dp))
         Box(
@@ -159,9 +159,7 @@ fun FearAndGreedGauge(modifier: Modifier = Modifier) {
     }
 }
 
-/**
- * یک جداکننده عمودی ساده.
- */
+
 @Composable
 private fun VerticalDivider() {
     Divider(
@@ -169,7 +167,7 @@ private fun VerticalDivider() {
             .fillMaxHeight()
             .width(1.dp)
             .padding(vertical = 4.dp),
-        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
+        color = MaterialTheme.colorScheme.outlineVariant
     )
 }
 
@@ -177,7 +175,6 @@ private fun VerticalDivider() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun MarketStatsRowPreview() {
-    // استفاده از Surface برای داشتن یک پس‌زمینه واقعی‌تر در پیش‌نمایش
     Box(Modifier.padding(horizontal = 25.dp, vertical = 20.dp)) {
         MarketStatsRow()
     }

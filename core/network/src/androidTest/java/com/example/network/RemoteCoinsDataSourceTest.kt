@@ -60,7 +60,7 @@ class RemoteCoinsDataSourceTest {
      * Tests if the `coinsListByIDMap` function successfully fetches a non-empty list of currencies.
      * This test performs a real network call.
      */
-    @Test
+/*    @Test
     fun getCoinMarketsList_showDataInLog_returnsNonEmptyList() = runTest {
         try {
             // Arrange & Act: Call the function from the data source.
@@ -86,5 +86,5 @@ class RemoteCoinsDataSourceTest {
             Timber.e(e, "An unexpected error occurred during the test.")
             fail("Test failed with an unexpected exception: ${e.message}")
         }
-    }
+    }*/
 }
