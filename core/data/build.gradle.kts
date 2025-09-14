@@ -38,3 +38,19 @@ dependencies {
     // ............................................................................................
 
 }
+dependencies {
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.2")
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.turbine)
+    testImplementation(libs.truth)
+    testImplementation(libs.kotlinx.serialization.json)
+    testImplementation(libs.retrofit.core)
+    testImplementation(libs.retrofit.kotlin.serialization)
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
+    testImplementation("com.squareup.okio:okio-fakefilesystem:3.9.0")
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
