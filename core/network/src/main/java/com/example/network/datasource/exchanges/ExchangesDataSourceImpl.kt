@@ -1,11 +1,10 @@
 package com.example.network.datasource.exchanges
 
 import com.example.network.api.ApiService
-import com.example.network.datasource.coins.CoinsDataSource
 import com.example.network.model.ExchangesDto
 import javax.inject.Inject
 
-class ExchangesDataSourceImp @Inject constructor(
+class ExchangesDataSourceImpl @Inject constructor(
     private val exchangesApi: ApiService
 ) : ExchangesDataSource {
 

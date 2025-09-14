@@ -68,7 +68,7 @@ class CoinsDataSourceTest {
 
             // Log the fetched data for manual verification.
             val formattedJson = json.encodeToString(result)
-            Timber.tag("COINMARKETS").d("--- Fetched Data ---\n%s", formattedJson)
+            Timber.d("--- Fetched Data ---\n%s", formattedJson)
 
             // Assert: Verify that the result is not empty, confirming a successful fetch.
            assertTrue("The returned list should not be empty", result.isNotEmpty())
@@ -76,14 +76,14 @@ class CoinsDataSourceTest {
         } catch (e: HttpException) {
             // This block specifically catches HTTP errors from the server.
             val errorBody = e.response()?.errorBody()?.string()
-            Timber.tag("COINMARKETS").e(
+            Timber.e(
                 "HTTP Error: ${e.code()} - Response: $errorBody",
                 e
             )
             fail("API call failed with HTTP error ${e.code()}. Check Logcat for details.")
         } catch (e: Exception) {
             // This catches other exceptions like network connectivity issues.
-            Timber.tag("COINMARKETS").e(e, "An unexpected error occurred during the test.")
+            Timber.e(e, "An unexpected error occurred during the test.")
             fail("Test failed with an unexpected exception: ${e.message}")
         }
     }

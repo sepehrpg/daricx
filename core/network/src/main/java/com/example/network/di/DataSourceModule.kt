@@ -4,7 +4,7 @@ package com.example.network.di
 import com.example.network.datasource.coins.CoinsDataSource
 import com.example.network.datasource.coins.CoinsDataSourceImpl
 import com.example.network.datasource.exchanges.ExchangesDataSource
-import com.example.network.datasource.exchanges.ExchangesDataSourceImp
+import com.example.network.datasource.exchanges.ExchangesDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -22,6 +22,6 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindExchangesDataSource(
-        exchangeDataSource: ExchangesDataSourceImp
+        exchangeDataSource: ExchangesDataSourceImpl
     ): ExchangesDataSource
 }
