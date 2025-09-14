@@ -4,7 +4,7 @@ import androidx.paging.PagingData
 import com.example.model.CoinMarket
 import kotlinx.coroutines.flow.Flow
 
-interface CoinRepository {
+interface CoinsRepository {
     fun getCoinMarketsPaged(
         vsCurrency: String,
         pageSize: Int,

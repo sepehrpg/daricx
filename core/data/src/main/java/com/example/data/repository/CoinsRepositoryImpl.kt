@@ -3,16 +3,21 @@ package com.example.data.repository
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import com.example.data.di.qualifier.AppDispatcher
+import com.example.data.di.qualifier.Dispatcher
 import com.example.data.repository.paging.CoinMarketsPagingSource
 import com.example.model.CoinMarket
 import com.example.network.datasource.coins.CoinsDataSource
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 
-class CoinRepositoryImpl @Inject constructor(
-    private val remoteDataSource: CoinsDataSource
-) : CoinRepository {
+class CoinsRepositoryImpl @Inject constructor(
+    private val remoteDataSource: CoinsDataSource,
+    @Dispatcher(AppDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
+) : CoinsRepository {
 
     override fun getCoinMarketsPaged(
         vsCurrency: String,
@@ -41,6 +46,6 @@ class CoinRepositoryImpl @Inject constructor(
                     pageTransform = pageTransform
                 )
             }
-        ).flow
+        ).flow.flowOn(ioDispatcher)
     }
 }
