@@ -1,8 +1,10 @@
 package com.example.network.di
 
 
-import com.example.network.datasource.RemoteCoinsDataSource
-import com.example.network.datasource.RemoteCoinsDataSourceImpl
+import com.example.network.datasource.coins.CoinsDataSource
+import com.example.network.datasource.coins.CoinsDataSourceImpl
+import com.example.network.datasource.exchanges.ExchangesDataSource
+import com.example.network.datasource.exchanges.ExchangesDataSourceImp
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,7 +15,13 @@ import dagger.hilt.components.SingletonComponent
 abstract class DataSourceModule {
 
     @Binds
-    abstract fun bindRemoteCoinDataSource(
-        remoteCoinsDataSource: RemoteCoinsDataSourceImpl
-    ): RemoteCoinsDataSource
+    abstract fun bindCoinsDataSource(
+        coinsDataSource: CoinsDataSourceImpl
+    ): CoinsDataSource
+
+
+    @Binds
+    abstract fun bindExchangesDataSource(
+        exchangeDataSource: ExchangesDataSourceImp
+    ): ExchangesDataSource
 }

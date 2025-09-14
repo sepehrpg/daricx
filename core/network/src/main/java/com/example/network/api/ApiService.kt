@@ -2,4 +2,4 @@ package com.example.network.api
 
 
 
-interface ApiService : Coins {}
+interface ApiService : Coins,Exchanges {}

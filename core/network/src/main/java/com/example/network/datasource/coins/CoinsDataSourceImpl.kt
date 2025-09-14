@@ -1,13 +1,13 @@
-package com.example.network.datasource
+package com.example.network.datasource.coins
 
 import com.example.network.api.ApiService
 import com.example.network.model.CoinMarketsDto
 import javax.inject.Inject
 
 
-class RemoteCoinsDataSourceImpl @Inject constructor(
+class CoinsDataSourceImpl @Inject constructor(
     private val coinsApi: ApiService
-) : RemoteCoinsDataSource {
+) : CoinsDataSource {
 
     override suspend fun getCoinMarkets(
         vsCurrency: String,

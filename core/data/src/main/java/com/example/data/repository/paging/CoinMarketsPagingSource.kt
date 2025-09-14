@@ -3,13 +3,13 @@ package com.example.data.repository.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.model.CoinMarket
-import com.example.network.datasource.RemoteCoinsDataSource
+import com.example.network.datasource.coins.CoinsDataSource
 import com.example.network.model.toDomain
 
 class CoinMarketsPagingSource(
-    private val remote: RemoteCoinsDataSource,
+    private val remote: CoinsDataSource,
     private val vsCurrency: String,
-    private val perPage: Int = 50 ,
+    private val perPage: Int = 50,
     private val order: String? =null,
     private val sparkline: Boolean? = true,
     private val priceChangePercentage: String? = null,

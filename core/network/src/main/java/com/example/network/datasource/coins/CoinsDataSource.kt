@@ -1,8 +1,8 @@
-package com.example.network.datasource
+package com.example.network.datasource.coins
 
 import com.example.network.model.CoinMarketsDto
 
-interface RemoteCoinsDataSource {
+interface CoinsDataSource {
 
     suspend fun getCoinMarkets(
         vsCurrency: String,
@@ -14,6 +14,5 @@ interface RemoteCoinsDataSource {
         locale: String? = null,
         precision: String? = null
     ): CoinMarketsDto
-
 
 }

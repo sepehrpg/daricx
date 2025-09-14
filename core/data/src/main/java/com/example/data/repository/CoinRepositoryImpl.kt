@@ -5,17 +5,13 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.example.data.repository.paging.CoinMarketsPagingSource
 import com.example.model.CoinMarket
-import com.example.network.datasource.RemoteCoinsDataSource
-import com.example.network.model.toDomain
+import com.example.network.datasource.coins.CoinsDataSource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import timber.log.Timber
 import javax.inject.Inject
 
 
 class CoinRepositoryImpl @Inject constructor(
-    private val remoteDataSource: RemoteCoinsDataSource
+    private val remoteDataSource: CoinsDataSource
 ) : CoinRepository {
 
     override fun getCoinMarketsPaged(
