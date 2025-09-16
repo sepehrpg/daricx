@@ -1,6 +1,6 @@
 package com.example.network.api
 
-import com.example.network.model.CoinMarketsDto
+import com.example.network.model.CoinsListDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -22,7 +22,7 @@ interface Coins {
      * @param priceChangePercentage Include price change percentage timeframes.
      * @param locale The language for the response data.
      * @param precision The number of decimal places for currency price values.
-     * @return A [CoinMarketsDto] which is a list of coin market data.
+     * @return A [CoinsListDto] which is a list of coin market data.
      */
     @GET("coins/markets")
     suspend fun getCoinMarkets(
@@ -39,7 +39,7 @@ interface Coins {
         @Query("price_change_percentage") priceChangePercentage: String? = null,
         @Query("locale") locale: String? = null,
         @Query("precision") precision: String? = null
-    ): CoinMarketsDto
+    ): CoinsListDto
 
 }
 

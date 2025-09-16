@@ -2,4 +2,7 @@ package com.example.network.api
 
 
 
-interface ApiService : Coins,Exchanges {}
+/**
+ * Aggregates all endpoints implemented by this module.
+ */
+interface ApiService : Coins,Nfts , Exchanges, Categories, Trending, Global,  Search

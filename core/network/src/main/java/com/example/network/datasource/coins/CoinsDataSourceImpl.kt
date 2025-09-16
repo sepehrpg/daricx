@@ -1,7 +1,10 @@
 package com.example.network.datasource.coins
 
+import com.example.model.sort.CoinsSort
 import com.example.network.api.ApiService
-import com.example.network.model.CoinMarketsDto
+import com.example.network.model.CoinsListDto
+import com.example.network.model.mappers.toApiOrderParam
+import com.example.network.options.toApiOrderParam
 import javax.inject.Inject
 
 
@@ -13,17 +16,17 @@ class CoinsDataSourceImpl @Inject constructor(
         vsCurrency: String,
         page: Int,
         perPage: Int,
-        order: String?,
+        order: CoinsSort?,
         sparkline: Boolean?,
         priceChangePercentage: String?,
         locale: String?,
         precision: String?
-    ): CoinMarketsDto {
+    ): CoinsListDto {
         return coinsApi.getCoinMarkets(
             vsCurrency = vsCurrency,
             page = page,
             perPage = perPage,
-            order = order,
+            order = order?.toApiOrderParam(),
             sparkline = sparkline,
             priceChangePercentage = priceChangePercentage,
             locale = locale,

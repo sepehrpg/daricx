@@ -1,7 +1,7 @@
 package com.example.model
 
 
- data class CoinMarket(
+ data class Coins(
     val ath: Double?,
     val athChangePercentage: Double?,
     val athDate: String?,
@@ -42,17 +42,5 @@ package com.example.model
 }
 
 
-enum class MarketSortColumn {
-   RANK,
-   MARKET_CAP,
-   VOLUME,
-   ID,
-   PRICE, // Not Supported Server Side
-   CHANGE_24H // Not Supported Server Side
-}
-enum class SortDirection { ASC, DESC }
 
-data class SortSpec(
-   val column: MarketSortColumn,
-   val direction: SortDirection
-)
+

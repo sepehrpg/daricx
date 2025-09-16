@@ -1,7 +1,7 @@
 package com.example.model
 
 
-data class Exchange(
+data class Exchanges(
     val id: String?,
     val name: String?,
     val country: String?,
