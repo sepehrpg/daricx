@@ -11,9 +11,13 @@ dependencies {
     implementation(project(":core:database"))
     implementation(project(":core:datastore"))
     implementation(project(":core:network"))
+    api(project(":core:common"))
+
     api(project(":core:model"))
 
-    
+    implementation(libs.kotlinx.serialization.json)
+
+    //Kotlin Datetime
     implementation(libs.kotlinx.datetime)
 
     //Core
@@ -35,6 +39,22 @@ dependencies {
     //implementation(libs.androidx.paging.guava)
     // optional - Jetpack Compose integration
     api(libs.androidx.paging.compose)
+    // Paging testing (use latest)
+    testImplementation("androidx.paging:paging-testing:3.3.6")
+    // ............................................................................................
+
+    //Test
+    // ............................................................................................
+    // MockK
+    testImplementation(libs.mockk)
+    // Coroutines Test ( runTest &TestDispatcher)
+    testImplementation(libs.kotlinx.coroutines.test)
+    // Turbine (Flow)
+    testImplementation(libs.turbine)
+    // JUnit
+    testImplementation(libs.junit)
+
+    testImplementation(libs.truth)
     // ............................................................................................
 
 }

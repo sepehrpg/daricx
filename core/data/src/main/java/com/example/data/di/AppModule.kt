@@ -12,7 +12,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class DataModule {
+abstract class AppModule {
 
     @Binds
     internal abstract fun bindsNetworkMonitor(
