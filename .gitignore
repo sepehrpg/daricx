@@ -13,3 +13,23 @@
 .externalNativeBuild
 .cxx
 local.properties
+keystore.properties
+*.keystore
+*.jks
+
+
+
+
+
+
+
+# IntelliJ / Android Studio
+.idea/
+.idea/*
+# Kotlin error logs
+.kotlin/errors/
+# EasyCode plugin
+.idea/easycode/
+.idea/easycode.ignore
+# Copilot migration garbage
+.idea/copilot.data.migration.*

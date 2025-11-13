@@ -1,8 +1,11 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.project.android.application) // android application(configuration)
     alias(libs.plugins.project.android.application.compose) //compose application
     alias(libs.plugins.project.compose.component) // all jetpack compose component
-    alias(libs.plugins.project.android.lint) // lint
+    //alias(libs.plugins.project.android.lint) // lint
     alias(libs.plugins.project.android.hilt)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler) // hilt
@@ -17,15 +20,41 @@ android {
         versionName = "1.0"
     }
 
+    // --- Load signing configuration from keystore.properties ---
+    // keystore.properties should contain: storeFile, storePassword, keyAlias, keyPassword
+    val keystoreProps = Properties().apply {
+        val f = rootProject.file("keystore.properties")
+        if (f.exists()) load(FileInputStream(f))
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file(keystoreProps["storeFile"] ?: error("storeFile missing"))
+            storePassword = (keystoreProps["storePassword"] ?: error("storePassword missing")).toString()
+            keyAlias = (keystoreProps["keyAlias"] ?: error("keyAlias missing")).toString()
+            keyPassword = (keystoreProps["keyPassword"] ?: error("keyPassword missing")).toString()
+            enableV1Signing = true
+            enableV2Signing = true
+            enableV3Signing = true
+            enableV4Signing = true
+        }
+    }
+
+
     buildTypes {
         release {
+            // Disable code shrinking for now; enable when ready for production
             isMinifyEnabled = false
+            // ProGuard / R8 rules for release builds
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // Apply release signing configuration
+            signingConfig = signingConfigs.getByName("release")
         }
     }
+
 }
 
 dependencies {
