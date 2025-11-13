@@ -17,25 +17,36 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.daricx.markets.ui.screen.categories.CategoriesRoute
 import com.example.designsystem.component.AppTabPager
 import com.example.designsystem.component.AppTabPagerItems
 import com.example.designsystem.component.AppTopBar
 import com.example.designsystem.component.CollapsingHeaderLayout
-import com.daricx.markets.ui.screen.CoinsRoute
+import com.daricx.markets.ui.screen.coins.CoinsRoute
+import com.daricx.markets.ui.screen.exchanges.ExchangesRoute
+import com.daricx.markets.ui.screen.trending.TrendingRoute
 
 
 @Composable
 fun MarketsRoute(
-    onOpenDrawerMenu: () -> Unit
+    onOpenDrawerMenu: () -> Unit,
+    onNavigateToCoinDetailsScreen: (coinId: String) -> Unit,
+    onNavigateToExchangeDetailsScreen: (exchangeId: String) -> Unit,
 ) {
-    MarketScreen(onOpenDrawerMenu=onOpenDrawerMenu)
+    MarketScreen(
+        onOpenDrawerMenu=onOpenDrawerMenu,
+        onNavigateToCoinDetailsScreen = onNavigateToCoinDetailsScreen,
+        onNavigateToExchangeDetailsScreen = onNavigateToExchangeDetailsScreen
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MarketScreen(
     modifier: Modifier = Modifier,
-    onOpenDrawerMenu: () -> Unit
+    onOpenDrawerMenu: () -> Unit,
+    onNavigateToCoinDetailsScreen: (coinId: String) -> Unit,
+    onNavigateToExchangeDetailsScreen: (exchangeId: String) -> Unit,
 ) {
     Box(Modifier.statusBarsPadding()){
         CollapsingHeaderLayout(
@@ -56,7 +67,10 @@ fun MarketScreen(
                 }
             },
             body = {
-                TabsSection()
+                TabsSection(
+                    onNavigateToCoinDetailsScreen = onNavigateToCoinDetailsScreen,
+                    onNavigateToExchangeDetailsScreen = onNavigateToExchangeDetailsScreen,
+                )
             }
         )
     }
@@ -64,7 +78,10 @@ fun MarketScreen(
 
 
 @Composable
-fun TabsSection() {
+fun TabsSection(
+    onNavigateToCoinDetailsScreen: (coinId: String) -> Unit,
+    onNavigateToExchangeDetailsScreen: (exchangeId: String) -> Unit,
+    ) {
     Box(
         Modifier
             .padding(top = 0.dp)
@@ -74,9 +91,16 @@ fun TabsSection() {
            AppTabPagerItems(
                title = "Coins",
                contentScreens = {
-                   CoinsRoute()
+                   CoinsRoute(onNavigateToCoinDetailsScreen = onNavigateToCoinDetailsScreen)
                },
            ),
+           AppTabPagerItems(
+               title = "Trending",
+               contentScreens = {
+                   TrendingRoute(onNavigateToCoinDetailsScreen = onNavigateToCoinDetailsScreen)
+               },
+           ),
+
            AppTabPagerItems(
                title = "Watchlists",
                contentScreens = {
@@ -84,34 +108,30 @@ fun TabsSection() {
                    }
                },
            ),
+
            AppTabPagerItems(
                title = "Exchanges",
                contentScreens = {
-                   Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                   }
+                   ExchangesRoute(
+                       onNavigateToExchangeDetailsScreen= onNavigateToExchangeDetailsScreen
+                   )
                },
            ),
-           AppTabPagerItems(
-               title = "Chains",
-               contentScreens = {
-                   Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                   }
-               },
-           ),
+
            AppTabPagerItems(
                title = "Categories",
                contentScreens = {
-                   Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                   }
+                   CategoriesRoute()
                },
            ),
-           AppTabPagerItems(
+           /*AppTabPagerItems(
                title = "NFT",
                contentScreens = {
-                   Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                   }
+                   NftsRoute()
+
                },
-           ),
+           ),*/
+
        )
 
        AppTabPager(
@@ -126,15 +146,11 @@ fun TabsSection() {
            indicatorShape = RoundedCornerShape(10.dp),
            thicknessIndicator = 2.dp,
            dividerThickness = 2.dp,
-           tabPadding = 12.dp
+           tabPadding = 12.dp,
+           modifier = Modifier.fillMaxSize()
        )
    }
 }
-
-
-
-
-
 
 
 
@@ -143,7 +159,11 @@ fun TabsSection() {
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 @Composable
 fun DefaultPreviewLight() {
-    MarketsRoute(onOpenDrawerMenu={})
+    MarketsRoute(
+        onOpenDrawerMenu={},
+        onNavigateToCoinDetailsScreen={},
+        onNavigateToExchangeDetailsScreen = {},
+    )
 }
 
 

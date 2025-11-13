@@ -43,6 +43,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
-
+    implementation(libs.coil.kt)
+    implementation(libs.coil.kt.svg)
 
 }
