@@ -156,6 +156,7 @@ internal fun AppInto(
                 Box(
                     Modifier.zIndex(1f)
                 ) {
+
                     AppNavHost(
                         appState = appState,
                         onOpenDrawerMenu = onOpenDrawerMenu,

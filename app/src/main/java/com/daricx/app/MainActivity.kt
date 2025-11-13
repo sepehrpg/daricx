@@ -16,6 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.data.utils.NetworkMonitor
 import com.example.designsystem.theme.AppTheme
 import com.google.samples.apps.nowinandroid.core.data.util.TimeZoneMonitor
@@ -56,7 +57,7 @@ class MainActivity : ComponentActivity() {
             val scope = rememberCoroutineScope()
             val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
             val settingsVm: SettingsViewModel = androidx.hilt.navigation.compose.hiltViewModel()
-            val settings by settingsVm.settings.collectAsState()
+            val settings by settingsVm.settings.collectAsStateWithLifecycle()
             val appState = rememberAppState(
                 networkMonitor = networkMonitor,
                 timeZoneMonitor = timeZoneMonitor,

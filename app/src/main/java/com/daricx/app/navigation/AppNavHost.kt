@@ -7,6 +7,8 @@ import androidx.navigation.compose.NavHost
 import com.daricx.app.ui.AppState
 import com.daricx.markets.navigation.MarketsIntroRoute
 import com.daricx.markets.navigation.marketsScreen
+import com.daricx.markets.navigation.navigateToCoinDetailsScreen
+import com.daricx.markets.navigation.navigateToExchangeDetailsScreen
 
 
 @Composable
@@ -23,7 +25,9 @@ fun AppNavHost(
         modifier = modifier,
     ) {
         marketsScreen(
-            onOpenDrawerMenu = onOpenDrawerMenu
+            onOpenDrawerMenu = onOpenDrawerMenu,
+            onNavigateToCoinDetailsScreen = navController::navigateToCoinDetailsScreen,
+            onNavigateToExchangeDetailsScreen = navController::navigateToExchangeDetailsScreen
         )
 
     }
