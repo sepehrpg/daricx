@@ -22,26 +22,26 @@ import com.example.designsystem.theme.ThemePreviews
 fun AppCard(
     modifier: Modifier = Modifier,
     shape: androidx.compose.ui.graphics.Shape = AppCardDefaults.Shape,
-    colors: CardColors = AppCardDefaults.colors(),
+    colors: CardColors = CardDefaults.cardColors(),
     elevation: CardElevation = AppCardDefaults.elevation(),
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Card(
         modifier = modifier,
         shape = shape,
         colors = colors,
         elevation = elevation,
-        content = content
+        content = content,
     )
 }
 
 @Composable
 fun AppCard(
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     shape: androidx.compose.ui.graphics.Shape = AppCardDefaults.Shape,
     colors: CardColors = AppCardDefaults.colors(),
     elevation: CardElevation = AppCardDefaults.elevation(),
+    onClick: () -> Unit,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Card(

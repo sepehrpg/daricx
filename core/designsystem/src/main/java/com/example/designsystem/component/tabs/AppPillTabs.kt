@@ -17,16 +17,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.graphics.Color
-import com.example.designsystem.component.AppText
-import com.example.designsystem.theme.AppTheme
+import com.example.designsystem.component.text.AppText
 import com.example.designsystem.theme.AppThemedPreview
 import com.example.designsystem.theme.ThemePreviews
 

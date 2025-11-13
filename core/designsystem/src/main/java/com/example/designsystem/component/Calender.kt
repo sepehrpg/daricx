@@ -1,7 +1,6 @@
 package com.example.designsystem.component
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,10 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.kizitonwose.calendar.compose.HorizontalCalendar
+import com.example.designsystem.component.text.AppText
 import com.kizitonwose.calendar.compose.HorizontalYearCalendar
 import com.kizitonwose.calendar.compose.VerticalCalendar
-import com.kizitonwose.calendar.compose.VerticalYearCalendar
 import com.kizitonwose.calendar.compose.WeekCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState

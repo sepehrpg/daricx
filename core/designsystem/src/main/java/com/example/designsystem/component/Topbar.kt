@@ -1,7 +1,6 @@
 package com.example.designsystem.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,17 +8,13 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -30,26 +25,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.designsystem.R
-import kotlin.math.roundToInt
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 
 import androidx.compose.ui.layout.onGloballyPositioned
+import com.example.designsystem.component.text.AppText
 import com.example.designsystem.theme.AppThemedPreview
 import com.example.designsystem.theme.ThemePreviews
 
@@ -104,7 +92,13 @@ fun AppTopBar(
 
     Column(modifier = modifier) {
         TopAppBar(
-            title = { AppText(title, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground) },
+            title = {
+                AppText(
+                    title,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            },
             actions = actions,
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.surface,
@@ -208,7 +202,7 @@ fun CollapsingTopAppBar(
 
                 AppText(
                     text = title,
-                   // color = Color.DarkGray,
+                    // color = Color.DarkGray,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .weight(1f)

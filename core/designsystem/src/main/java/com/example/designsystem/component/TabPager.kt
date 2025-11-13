@@ -1,16 +1,13 @@
 package com.example.designsystem.component
 
-import androidx.compose.foundation.background
+import CustomScrollableTabRow
+import CustomTabPosition
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -19,11 +16,8 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.DividerDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabPosition
 import androidx.compose.material3.TabRow
@@ -31,20 +25,16 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
@@ -52,7 +42,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import customTabIndicatorOffset
 import kotlinx.coroutines.launch
+
 
 
 /**
@@ -117,6 +109,37 @@ fun AppTabPager(
     val currentTab = tabs[currentPage]
 
     // Customizable indicator: rounded if shape != null, otherwise use Material default
+    val scrollableIndicator: @Composable (List<CustomTabPosition>) -> Unit = Indicator@ { positions ->
+        if (positions.isEmpty()) return@Indicator
+
+        val safeIndex = pagerState.currentPage.coerceIn(0, positions.lastIndex)
+        val tab = tabs[safeIndex]
+        val current = positions[safeIndex]
+
+        val height = tab.thicknessIndicator ?: thicknessIndicator
+        val color = tab.indicatorColor ?: indicatorColor
+        val shape = tab.indicatorShape ?: indicatorShape ?: RectangleShape
+        val width = tab.indicatorWidth ?: indicatorWidth
+        val textWidth = textWidths[safeIndex]?.toDp() ?: current.width
+
+        if (width != null || indicatorWidthMatchWithTextSize) {
+            TabRowDefaults.PrimaryIndicator(
+                modifier = Modifier
+                    .customTabIndicatorOffset(current),
+                    //.padding(horizontal = (current.width - width) / 2),
+                width = if (indicatorWidthMatchWithTextSize) textWidth else width?:2.dp,
+                height = height,
+                color = color,
+                shape = shape
+            )
+        } else {
+            TabRowDefaults.SecondaryIndicator(
+                modifier = Modifier.customTabIndicatorOffset(current),
+                height = height,
+                color = color,
+            )
+        }
+    }
     val indicator: @Composable (List<TabPosition>) -> Unit = Indicator@ { positions ->
         if (positions.isEmpty()) return@Indicator
 
@@ -163,7 +186,7 @@ fun AppTabPager(
         tabs.forEachIndexed { index, tab ->
             val selected = currentPage == index
             Tab(
-                modifier = tab.tabModifier ?: Modifier.padding(vertical = 0.dp, horizontal = 0.dp),
+                modifier = tab.tabModifier ?: Modifier.padding(vertical = 0.dp, horizontal = 10.dp),
                 selected = selected,
                 onClick = { scope.launch { pagerState.animateScrollToPage(index) } }
             ) {
@@ -194,13 +217,13 @@ fun AppTabPager(
 
    Column {
        if (scrollable) {
-           ScrollableTabRow(
+           CustomScrollableTabRow(
                selectedTabIndex = currentPage,
-               modifier = currentTab.tabRowModifier ?: Modifier,
+               modifier = currentTab.tabRowModifier?.fillMaxWidth() ?: Modifier.fillMaxWidth(),
                containerColor = currentTab.tabContainerColor ?: tabContainerColor,
                contentColor = currentTab.tabContentColor ?: tabContentColor,
                edgePadding = 0.dp,
-               indicator = indicator,
+               indicator = scrollableIndicator,
                divider = divider,
                tabs = tabRowContent,
            )

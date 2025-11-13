@@ -27,8 +27,6 @@ import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.rounded.KeyboardArrowRight
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -36,7 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.designsystem.component.AppHorizontalDivider
 import com.example.designsystem.component.icons.AppIcon
-import com.example.designsystem.component.AppText
+import com.example.designsystem.component.text.AppText
 import com.example.designsystem.extension.clickableWithNoRipple
 import com.example.designsystem.theme.GradientColor1
 

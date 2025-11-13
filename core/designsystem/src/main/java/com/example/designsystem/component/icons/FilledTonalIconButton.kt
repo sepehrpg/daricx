@@ -8,8 +8,10 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.example.designsystem.theme.AppThemedPreview
 import com.example.designsystem.theme.ThemePreviews
@@ -20,6 +22,7 @@ fun AppFilledTonalIconButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     colors: IconButtonColors = AppIconButtonDefaults.tonalColors(),
+    shape: Shape = IconButtonDefaults.filledShape,
     content: @Composable () -> Unit,
 ) {
     FilledTonalIconButton(
@@ -27,6 +30,7 @@ fun AppFilledTonalIconButton(
         modifier = modifier,
         enabled = enabled,
         colors = colors,
+        shape = shape,
         content = content
     )
 }

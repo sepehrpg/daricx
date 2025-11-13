@@ -9,8 +9,10 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.example.designsystem.theme.AppThemedPreview
 import com.example.designsystem.theme.ThemePreviews
@@ -21,12 +23,14 @@ fun AppFilledIconButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     colors: IconButtonColors = AppIconButtonDefaults.filledColors(),
+    shape: Shape = IconButtonDefaults.filledShape,
     content: @Composable () -> Unit,
 ) {
     FilledIconButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
+        shape = shape,
         colors = colors,
         content = content
     )

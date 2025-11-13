@@ -28,6 +28,46 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+
+
+
+
+
+
+/**
+ * Adds a click action that performs a system back navigation (popBackStack)
+ * without needing NavController or callbacks.
+ */
+@Composable
+fun Modifier.onBackPress(
+    enabled: Boolean = true,
+    clickableWithNoRipple: Boolean = false,
+    onBeforeBack: (() -> Unit)? = null,
+    onAfterBack: (() -> Unit)? = null
+): Modifier {
+    val dispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    if (clickableWithNoRipple){
+        return this.then(
+            Modifier.clickableWithNoRipple() {
+                onBeforeBack?.invoke()
+                dispatcher?.onBackPressed()
+                onAfterBack?.invoke()
+            }
+        )
+    }
+    else{
+        return this.then(
+            Modifier.clickable(enabled = enabled) {
+                onBeforeBack?.invoke()
+                dispatcher?.onBackPressed()
+                onAfterBack?.invoke()
+            }
+        )
+    }
+
+}
+
 
 
 

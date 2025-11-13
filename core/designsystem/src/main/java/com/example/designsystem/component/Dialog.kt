@@ -32,6 +32,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.designsystem.component.buttons.AppElevatedButtonWithIcon
 import com.example.designsystem.component.icons.AppIcon
+import com.example.designsystem.component.text.AppText
 
 
 @Composable
@@ -109,7 +110,12 @@ fun AppDeleteDialog(
                         shape = RoundedCornerShape(10.dp),
                         content = {
                             Row(Modifier.padding(vertical = 5.dp), verticalAlignment = Alignment.CenterVertically){
-                                AppText("Delete", fontSize = 14.sp, modifier = Modifier.padding(top = 3.dp), color = Color.Gray)
+                                AppText(
+                                    "Delete",
+                                    fontSize = 14.sp,
+                                    modifier = Modifier.padding(top = 3.dp),
+                                    color = Color.Gray
+                                )
                             }
                         }
                     )
@@ -132,7 +138,12 @@ fun AppDeleteDialog(
                         shape = RoundedCornerShape(10.dp),
                         content = {
                             Row(Modifier.padding(vertical = 5.dp), verticalAlignment = Alignment.CenterVertically){
-                                AppText("Cancel", fontSize = 14.sp, modifier = Modifier.padding(top = 3.dp), color = Color.Blue)
+                                AppText(
+                                    "Cancel",
+                                    fontSize = 14.sp,
+                                    modifier = Modifier.padding(top = 3.dp),
+                                    color = Color.Blue
+                                )
                             }
                         }
                     )
