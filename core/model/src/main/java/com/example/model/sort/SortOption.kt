@@ -2,12 +2,12 @@ package com.example.model.sort
 
 
 
-data class SortSpec(
-    val column: SortColumn,
-    val direction: SortDirection
+data class SortOption(
+    val sortKey: SortKey,
+    val sortOrder: SortOrder
 )
 
-enum class SortColumn {
+enum class SortKey {
     RANK,
     MARKET_CAP,
     VOLUME,
@@ -15,4 +15,4 @@ enum class SortColumn {
     PRICE, // Not Supported Server Side
     CHANGE_24H // Not Supported Server Side
 }
-enum class SortDirection { ASC, DESC }
+enum class SortOrder { ASC, DESC }

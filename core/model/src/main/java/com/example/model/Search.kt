@@ -4,7 +4,7 @@ package com.example.model
 /**
  * Domain model for CoinGecko /search results.
  */
-data class SearchResult(
+data class Search(
     val coins: List<Coin>?,
     val exchanges: List<Exchange>?,
     val icos: List<String>?,            // API returns an array of strings
