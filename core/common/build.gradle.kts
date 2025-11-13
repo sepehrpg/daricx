@@ -7,11 +7,14 @@ plugins {
 
 android {
     namespace = "com.example.common"
-
 }
 
 dependencies {
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+
+    implementation(libs.okhttp3.core)
+    implementation(libs.guava)
 }
