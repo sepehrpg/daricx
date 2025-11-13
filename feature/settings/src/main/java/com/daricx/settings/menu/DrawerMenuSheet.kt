@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.designsystem.component.AppHorizontalDivider
 import com.example.designsystem.component.icons.AppIcon
-import com.example.designsystem.component.AppText
+import com.example.designsystem.component.text.AppText
 import com.example.designsystem.component.buttons.AppButton
 import com.example.designsystem.component.buttons.AppOutlinedButton
 import com.example.designsystem.component.cards.AppElevatedCard
@@ -84,7 +84,7 @@ fun DrawerMenuSheet(
                 theme = state.theme,
                 onThemeChange = { onAction(MenuAction.ChangeTheme(it)) },
                 language = state.language,
-                onLanguageClick = { onAction(MenuAction.ChangeLanguage(/* مثلا زبان را در BottomSheet انتخاب کن */ AppLanguage.English)) },
+                onLanguageClick = { onAction(MenuAction.ChangeLanguage( AppLanguage.English)) },
                 currency = state.currency,
                 onToggleCurrency = { onAction(MenuAction.ToggleCurrency(it)) },
                 onManageCurrencies = { onAction(MenuAction.ManageCurrencies) },

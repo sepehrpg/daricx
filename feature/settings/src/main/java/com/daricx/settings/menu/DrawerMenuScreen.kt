@@ -18,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
-import com.example.designsystem.component.AppText
+import com.example.designsystem.component.text.AppText
 import com.example.designsystem.theme.AppThemedPreview
 import com.example.designsystem.theme.ThemePreviews
 
