@@ -27,4 +27,7 @@ dependencies {
     api(libs.vico.compose.m3)
     api(libs.vico.multiplatform)
     api(libs.vico.views)
+
+    implementation(libs.coil.kt)
+    implementation(libs.coil.kt.svg)
 }

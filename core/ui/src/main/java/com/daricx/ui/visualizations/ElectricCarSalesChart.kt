@@ -91,15 +91,9 @@ fun CoinSparklineChart(
     ElectricCarSalesChart(
         modifier = modifier,
         modelProducer = modelProducer,
-        lineColor = lineColor
+        lineColor = lineColor,
     )
 }
-
-
-
-
-
-
 
 
 
@@ -310,9 +304,9 @@ fun CoinSparklineChart(
 /* ---------- Scaling Modes ---------- */
 sealed class ChartScalingMode {
     data object PriceLinear : ChartScalingMode()
-    data object PriceLog : ChartScalingMode()           // log(p) برای بازه‌های بزرگ
+    data object PriceLog : ChartScalingMode()           // log(p)
     data object PercentDelta : ChartScalingMode()       // (p/base - 1) * 100
-    data object MinMax : ChartScalingMode()             // نگاشت به 0..100
+    data object MinMax : ChartScalingMode()             // 0..100
 }
 
 /* ---------- Data transforms ---------- */
@@ -351,14 +345,12 @@ private fun symmetricAroundZero(y: List<Float>, padRatio: Float = 0.08f): Cartes
     return CartesianLayerRangeProvider.fixed((-m - pad).toDouble(), (m + pad).toDouble())
 }
 
-/* ---------- Downsample برای کارایی ---------- */
 fun downsampleStride(values: List<Float>, target: Int = 40): List<Float> {
     if (values.size <= target || target <= 0) return values
     val step = values.size / target.toFloat()
     return List(target) { i -> values[(i * step).toInt().coerceIn(0, values.lastIndex)] }
 }
 
-/* ---------- انتخاب بهترین mode برای داده‌های 7 روزه ---------- */
 fun pickModeFor7d(values: List<Float>): ChartScalingMode {
     if (values.isEmpty()) return ChartScalingMode.PercentDelta
     val first = values.first()
@@ -366,9 +358,8 @@ fun pickModeFor7d(values: List<Float>): ChartScalingMode {
 
     val min = values.minOrNull() ?: first
     val maxV = values.maxOrNull() ?: first
-    val relRange = (maxV - min) / abs(first) // تغییر نسبی
+    val relRange = (maxV - min) / abs(first)
 
-    // اگر نوسان کمتر از 0.25% بود => MinMax، وگرنه PercentDelta
     return if (relRange < 0.0025f) ChartScalingMode.MinMax else ChartScalingMode.PercentDelta
 }
 
