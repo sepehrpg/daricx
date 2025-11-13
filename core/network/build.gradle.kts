@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.project.android.library) /** android library convention */
     alias(libs.plugins.project.android.hilt) /** hilt  convention */
-    id("kotlinx-serialization")
+    //id("kotlinx-serialization")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -14,8 +15,8 @@ android {
 }
 
 dependencies {
-    api(project(":core:common"))
     api(project(":core:model"))
+    implementation(project(":core:common"))
 
 
     /** Core */
@@ -26,12 +27,28 @@ dependencies {
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.svg)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.okhttp.logging)
+
+    // Retrofit
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
+    implementation(libs.okhttp.logging)
 
-    //test runner
-    implementation(libs.androidx.test.runner)
+
+
+    /** Unit Test */
+    testImplementation(libs.junit)
+    testImplementation(libs.truth)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.okhttp3.core)
+    testImplementation(libs.mockwebserver)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.timber)
+    testImplementation(libs.androidx.test.core)
+
+    /** Instrumentation Test */
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 
 
     // Chucker - only debug

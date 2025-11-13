@@ -2,8 +2,8 @@ package com.example.network.options
 
 import com.example.model.sort.CategoriesSort
 
-
-internal fun CategoriesSort.toApiOrderParam(): String = when (this) {
+// if use this override fun toString(): String = value in enum class don't need to this mapper
+fun CategoriesSort.toApiOrderParam(): String = when (this) {
     CategoriesSort.MarketCapDesc         -> "market_cap_desc"
     CategoriesSort.MarketCapAsc          -> "market_cap_asc"
     CategoriesSort.NameDesc              -> "name_desc"

@@ -3,6 +3,7 @@ package com.example.network
 
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.model.option.TreasuryAsset
 import com.example.network.datasource.companies.CompaniesTreasuryDataSource
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -44,7 +45,7 @@ class CompaniesTreasuryDataSourceTest {
     @Test
     fun getCompaniesTreasury_bitcoin_returnsData() = runTest {
         try {
-            val result = remoteDataSource.getCompaniesTreasury("bitcoin")
+            val result = remoteDataSource.getCompaniesTreasury(TreasuryAsset.Bitcoin)
             Timber.d("--- Public Treasury (BTC) ---\n%s", json.encodeToString(result))
             assertNotNull(result)
             // Basic sanity: should contain a non-empty companies list (usually true)

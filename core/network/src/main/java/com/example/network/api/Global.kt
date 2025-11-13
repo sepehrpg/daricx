@@ -14,12 +14,4 @@ interface Global {
 
     @GET("global")
     suspend fun getGlobal(): GlobalCryptoMarketDataDto
-
-    @GET("global/decentralized_finance_defi")
-    suspend fun getGlobalDeFi(): GlobalDeFiMarketDataDto
-
-    @GET("companies/public_treasury/{coin_id}")
-    suspend fun getCompaniesTreasury(
-        @Path("coin_id") coinId: String
-    ): CompaniesTreasuryDto
 }

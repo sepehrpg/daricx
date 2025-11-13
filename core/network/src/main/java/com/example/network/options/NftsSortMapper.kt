@@ -2,10 +2,12 @@ package com.example.network.options
 
 import com.example.model.sort.NftsSort
 
+
+// if use this override fun toString(): String = value in enum class don't need to this mapper
 /**
  * Maps domain sort to CoinGecko query param for /nfts/list
  */
-internal fun NftsSort.toApiOrderParam(): String = when (this) {
+fun NftsSort.toApiOrderParam(): String = when (this) {
     NftsSort.H24VolumeUsdAsc      -> "h24_volume_usd_asc"
     NftsSort.H24VolumeUsdDesc     -> "h24_volume_usd_desc"
     NftsSort.H24VolumeNativeAsc   -> "h24_volume_native_asc"

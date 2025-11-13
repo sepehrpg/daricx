@@ -10,11 +10,9 @@ import java.nio.charset.Charset
 class BodyLoggingInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-
         // 👉 Log the request method and full URL
         Timber.tag("BodyLoggingInterceptor").d("Request method and full URL: ${request.method} ${request.url}")
         Timber.tag("BodyLoggingInterceptor").d("------------------")
-
         request.body?.let { body ->
             val buffer = Buffer()
             body.writeTo(buffer)
@@ -23,17 +21,13 @@ class BodyLoggingInterceptor : Interceptor {
             Timber.tag("BodyLoggingInterceptor").d(" Log the request body (JSON or form-data):  ${buffer.readString(charset)}")
             Timber.tag("BodyLoggingInterceptor").d("------------------")
         }
-
         val response = chain.proceed(request)
-
         val responseBody = response.body
         val contentType = responseBody?.contentType()
-
         if (responseBody != null) {
             val source = responseBody.source()
             source.request(Long.MAX_VALUE)
             val buffer = source.buffer
-
             val charset = contentType?.charset(Charset.forName("UTF-8")) ?: Charsets.UTF_8
             val bodyString = buffer.clone().readString(charset)
 

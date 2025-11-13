@@ -34,7 +34,6 @@ import javax.inject.Inject
 
 internal class ConnectivityManagerNetworkMonitor @Inject constructor(@ApplicationContext private val context: Context,
 ) : NetworkMonitor {
-
     override val isOnline: Flow<Boolean> = callbackFlow {
         val connectivityManager = context.getSystemService<ConnectivityManager>()
         if (connectivityManager == null) {
@@ -42,7 +41,6 @@ internal class ConnectivityManagerNetworkMonitor @Inject constructor(@Applicatio
             channel.close()
             return@callbackFlow
         }
-
         /**
          * The callback's methods are invoked on changes to *any* network matching the [NetworkRequest],
          * not just the active network. So we can simply track the presence (or absence) of such [Network].
@@ -55,29 +53,23 @@ internal class ConnectivityManagerNetworkMonitor @Inject constructor(@Applicatio
                 networks += network
                 channel.trySend(true)
             }
-
             override fun onLost(network: Network) {
                 networks -= network
                 channel.trySend(networks.isNotEmpty())
             }
         }
-
         val request = Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .build()
         connectivityManager.registerNetworkCallback(request, callback)
-
         /**
          * Sends the latest connectivity status to the underlying channel.
          */
         channel.trySend(connectivityManager.isCurrentlyConnected())
-
         awaitClose {
             connectivityManager.unregisterNetworkCallback(callback)
         }
     }.conflate()
-
-
     @Suppress("DEPRECATION")
     private fun ConnectivityManager.isCurrentlyConnected() = when {
         VERSION.SDK_INT >= VERSION_CODES.M ->

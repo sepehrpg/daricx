@@ -2,6 +2,7 @@ package com.example.network
 
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.model.sort.CategoriesSort
 import com.example.network.datasource.categories.CategoriesDataSource
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -40,7 +41,7 @@ class CategoriesDataSourceTest {
     @Test
     fun getCategories_showDataInLog_returnsNonEmptyList() = runTest {
         try {
-            val result = remoteDataSource.getCategories(order = "market_cap_desc")
+            val result = remoteDataSource.getCategories(order = CategoriesSort.MarketCapDesc)
             val formattedJson = json.encodeToString(result)
             Timber.d("--- Categories ---\n%s", formattedJson)
 
