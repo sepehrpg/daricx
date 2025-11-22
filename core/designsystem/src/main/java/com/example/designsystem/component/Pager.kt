@@ -113,7 +113,7 @@ fun AppPagerIndicatorPrimary(
 @Preview(showBackground = true)
 @Composable
 fun PreviewAppHorizontalPagerPrimary() {
-    val pagerState = rememberPagerState(pageCount = { 5 }) // تعداد صفحات
+    val pagerState = rememberPagerState(pageCount = { 5 })
     AppHorizontalPagerPrimary(
         state = pagerState,
         modifier = Modifier.fillMaxSize(),

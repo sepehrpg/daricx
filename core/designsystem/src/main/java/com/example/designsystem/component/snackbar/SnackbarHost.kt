@@ -59,7 +59,6 @@ fun AppSnackbarHost(
     }
 }
 
-/** parse/pack type در message (prefix) */
 internal object AppSnackbarMessageParser {
     private val regex =
         Regex("""^\s*\[(default|info|success|warning|error)]\s*\|\s*(.*)$""", RegexOption.IGNORE_CASE)

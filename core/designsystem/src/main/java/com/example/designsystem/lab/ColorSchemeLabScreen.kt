@@ -36,7 +36,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.designsystem.theme.AppTheme // <- از تم خودت استفاده می‌کنیم
+import com.example.designsystem.theme.AppTheme
 import com.example.designsystem.theme.LightColorScheme
 import com.example.designsystem.theme.ThemePreviews
 import kotlin.math.roundToInt

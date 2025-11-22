@@ -19,7 +19,7 @@ fun Color.toHexString(): String {
     val red = (this.red * 255).toInt()
     val green = (this.green * 255).toInt()
     val blue = (this.blue * 255).toInt()
-    val alpha = (this.alpha * 255).toInt() // مقدار alpha
+    val alpha = (this.alpha * 255).toInt()
 
     return "#${Integer.toHexString(alpha).padStart(2, '0')}" +
             Integer.toHexString(red).padStart(2, '0') +
