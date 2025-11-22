@@ -13,6 +13,7 @@ import kotlin.coroutines.cancellation.CancellationException
 class CoinsPagingSource(
     private val remote: CoinsDataSource,
     private val vsCurrency: String,
+    private val ids: String? = null,
     private val perPage: Int = 50,
     private val order: CoinsSort? = null,
     private val sparkline: Boolean? = true,
@@ -36,6 +37,7 @@ class CoinsPagingSource(
                 vsCurrency = vsCurrency,
                 page = page,
                 perPage = perPage,
+                ids = ids,
                 order = order,
                 sparkline = sparkline,
                 priceChangePercentage = priceChangePercentage,

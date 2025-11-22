@@ -55,7 +55,7 @@ class ExchangesRepositoryImpl @Inject constructor(
 
     override fun getExchangeById(
         id: String,
-        dexPairFormat: DexPairFormat
+        dexPairFormat: DexPairFormat?
     ): Flow<AppResult<ExchangeDetail>> = resultFlow(
         api = {
             remoteDataSource.getExchangeById(

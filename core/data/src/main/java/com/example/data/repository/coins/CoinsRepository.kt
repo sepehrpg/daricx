@@ -8,6 +8,7 @@ import com.example.model.coins.CoinHistoricalData
 import com.example.model.coins.CoinOHLCChartCandle
 import com.example.model.coins.CoinTickers
 import com.example.model.coins.Coins
+import com.example.model.coins.FavoriteCoin
 import com.example.model.sort.CoinTickersOrder
 import com.example.model.sort.CoinsSort
 import com.example.model.sort.DexPairFormat
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.Flow
 interface CoinsRepository {
     fun getCoinMarketsPaged(
         vsCurrency: String,
+        ids: String? = null,
         pageSize: Int,
         order: CoinsSort? = null,
         sparkline: Boolean? = true,
@@ -74,5 +76,12 @@ interface CoinsRepository {
         days: String,
         precision: String? = null
     ): Flow<AppResult<CoinOHLCChartCandle>>
+
+
+
+
+    suspend fun toggleFavorite(coin: FavoriteCoin)
+
+    fun getFavoriteIds(): Flow<Set<String>>
 
 }

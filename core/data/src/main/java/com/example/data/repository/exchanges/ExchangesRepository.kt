@@ -18,7 +18,7 @@ interface ExchangesRepository {
 
     fun getExchangeById(
         id: String,
-        dexPairFormat: DexPairFormat,
+        dexPairFormat: DexPairFormat? = null,
     ): Flow<AppResult<ExchangeDetail>>
 
 

@@ -9,12 +9,15 @@ import com.example.data.di.qualifier.AppDispatcher
 import com.example.data.di.qualifier.Dispatcher
 import com.example.data.paging.CoinTickersPagingSource
 import com.example.data.paging.CoinsPagingSource
+import com.example.database.dao.FavoriteCoinDao
+import com.example.database.model.toFavoriteEntity
 import com.example.model.coins.CoinDetails
 import com.example.model.coins.CoinHistoricalChart
 import com.example.model.coins.CoinHistoricalData
 import com.example.model.coins.CoinOHLCChartCandle
 import com.example.model.coins.CoinTickers
 import com.example.model.coins.Coins
+import com.example.model.coins.FavoriteCoin
 import com.example.model.sort.CoinTickersOrder
 import com.example.model.sort.CoinsSort
 import com.example.model.sort.DexPairFormat
@@ -24,19 +27,25 @@ import com.example.network.model.mappers.coins.toDomain
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
 
 
 class CoinsRepositoryImpl @Inject constructor(
     private val remoteDataSource: CoinsDataSource,
+    private val favoriteCoinDao: FavoriteCoinDao,
     @Dispatcher(AppDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : CoinsRepository {
 
     override fun getCoinMarketsPaged(
         vsCurrency: String,
+        ids: String?,
         pageSize: Int,
         order: CoinsSort?,
         sparkline: Boolean?,
@@ -54,6 +63,7 @@ class CoinsRepositoryImpl @Inject constructor(
             pagingSourceFactory = {
                 CoinsPagingSource(
                     remote = remoteDataSource,
+                    ids = ids,
                     vsCurrency = vsCurrency,
                     perPage = pageSize,
                     order = order,
@@ -91,6 +101,7 @@ class CoinsRepositoryImpl @Inject constructor(
     }
         .catch { e ->
             if (e is CancellationException) throw e
+            Timber.e(e.toString())
             emit(AppResult.Error(e.toAppError()))
         }
         .flowOn(ioDispatcher)
@@ -206,5 +217,26 @@ class CoinsRepositoryImpl @Inject constructor(
         if (e is CancellationException) throw e
         emit(AppResult.Error(e.toAppError()))
     }.flowOn(ioDispatcher)
+
+
+
+    override fun getFavoriteIds(): Flow<Set<String>> =
+        favoriteCoinDao
+            .getFavoriteIds()
+            .map { it.toSet() }
+            .flowOn(ioDispatcher)
+
+    override suspend fun toggleFavorite(coin: FavoriteCoin) {
+        // I think don't need to use IO thread but I try to keep the repository side-effect free (for ex:  if use operation in feature)
+        withContext(ioDispatcher) {
+            val isFavorite = favoriteCoinDao.isFavorite(coin.id)
+            if (isFavorite) {
+                favoriteCoinDao.deleteFavoriteById(coin.id)
+            } else {
+                favoriteCoinDao.upsertFavorite(coin.toFavoriteEntity())
+            }
+        }
+    }
+
 
 }
