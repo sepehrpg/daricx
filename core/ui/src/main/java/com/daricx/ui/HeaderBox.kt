@@ -49,17 +49,17 @@ fun MarketStatsRow(modifier: Modifier = Modifier) {
                 StatItem(
                     modifier = Modifier.weight(1f),
                     title = "Market Cap",
-                    value = "$4.02T",
-                    change = "▲ 1.46%",
-                    changeColor = MaterialTheme.colorScheme.secondary
+                    value = "$2.86T",
+                    change = "▼ 0.12%",
+                    changeColor = MaterialTheme.colorScheme.tertiary
                 )
                 VerticalDivider()
 
                 StatItem(
                     modifier = Modifier.weight(1f),
-                    title = "CMC100",
-                    value = "$249.72",
-                    change = "▲ 1.74%",
+                    title = "CMC20",
+                    value = "$177.23",
+                    change = "▲ 0.01%",
                     changeColor = MaterialTheme.colorScheme.secondary
                 )
                 VerticalDivider()
@@ -120,7 +120,7 @@ fun AltcoinIndexGauge(modifier: Modifier = Modifier) {
         Box(Modifier.fillMaxHeight()){
             HorizontalGauge(
                 modifier = Modifier.fillMaxWidth(),
-                value = 70,
+                value = 27,
             )
         }
     }
@@ -148,7 +148,7 @@ fun FearAndGreedGauge(modifier: Modifier = Modifier) {
             Box(Modifier.fillMaxHeight().fillMaxWidth(), contentAlignment = Alignment.Center){
                 Gauge(
                     modifier = Modifier.fillMaxSize(),
-                    value = 77,
+                    value = 10,
                 )
             }
         }

@@ -16,7 +16,7 @@ import javax.inject.Singleton
  * 1- Composable app (root)
  * @Composable
  * fun DaricxApp(
- *     snackbarController: SnackbarController, // ا
+ *     snackbarController: SnackbarController, //
  *     content: @Composable () -> Unit
  * ) {
  *     val hostState = remember { SnackbarHostState() }

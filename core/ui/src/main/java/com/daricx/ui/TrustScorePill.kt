@@ -55,8 +55,7 @@ fun TrustScorePill(
     val fg = trustColorFor(clamped)
     val isLight = MaterialTheme.colorScheme.background.luminance() > 0.5
 
-    // در Light → پس‌زمینه روشن‌تر (alpha بالاتر)
-    // در Dark → پس‌زمینه تیره‌تر (alpha پایین‌تر)
+
     val bg = if (isLight) fg.copy(alpha = 0.20f) else fg.copy(alpha = 0.35f)
 
     val animatedBg by animateColorAsState(targetValue = bg, label = "trust-bg")
