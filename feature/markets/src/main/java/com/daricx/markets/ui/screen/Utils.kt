@@ -19,12 +19,16 @@ import com.example.designsystem.component.text.AppText
 import timber.log.Timber
 
 @Composable
-fun LoadingBox(color : Color = MaterialTheme.colorScheme.primary, trackColor: Color = MaterialTheme.colorScheme.primaryContainer) = Box(
+fun LoadingBox(
+    modifier: Modifier = Modifier,
+    color : Color = MaterialTheme.colorScheme.primary,
+    trackColor: Color = MaterialTheme.colorScheme.primaryContainer
+) = Box(
     Modifier.fillMaxSize()) {
     LinearProgressIndicator(
-        Modifier.fillMaxWidth(),
+        modifier.fillMaxWidth(),
         color = color,
-        trackColor = trackColor
+        trackColor = trackColor,
     )
 }
 
@@ -33,7 +37,8 @@ fun EmptyBox() = Box(Modifier.fillMaxSize()) {
     AppText(
         "No items",
         modifier = Modifier.align(Alignment.Center),
-        style = MaterialTheme.typography.bodyMedium
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
     )
 }
 
@@ -44,8 +49,8 @@ fun ErrorBox(message: String, onRetry: () -> Unit) = Box(Modifier.fillMaxSize())
         modifier = Modifier.align(Alignment.Center),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AppText(text = message)
-        Button(onClick = onRetry, modifier = Modifier.padding(top = 8.dp)) { Text("Retry") }
+        AppText(text = message, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Button(onClick = onRetry, modifier = Modifier.padding(top = 8.dp)) { Text("Retry..") }
     }
 }
 
@@ -64,7 +69,10 @@ fun ErrorFooter(error: Throwable, onRetry: () -> Unit) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = error.message ?: "Append error")
-        Button(onClick = onRetry, modifier = Modifier.padding(top = 8.dp)) { Text("Retry") }
+        AppText(
+            text = error.message ?: "Append error",
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        Button(onClick = onRetry, modifier = Modifier.padding(top = 8.dp)) { Text("Retry.") }
     }
 }

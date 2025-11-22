@@ -1,4 +1,6 @@
-package com.daricx.markets.ui.screen.coins
+package com.daricx.markets.ui.screen.watchlist
+
+import com.daricx.markets.ui.screen.coins.rememberCoinsPreviewItems
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -63,15 +65,15 @@ private const val CL_4 = 3f
 // -------------------------------- Header --------------------------------
 
 @Composable
-fun CoinsRoute(
-    viewModel: CoinsViewModel = hiltViewModel(),
+fun WatchlistRoute(
+    viewModel: WatchlistViewModel = hiltViewModel(),
     onNavigateToCoinDetailsScreen: (coinId: String) -> Unit,
 ) {
     val ui by viewModel.uiState.collectAsStateWithLifecycle()
-    val items = viewModel.pagedCoins.collectAsLazyPagingItems()
+    val items = viewModel.pagedCoinsFav.collectAsLazyPagingItems()
     val favoriteIds by viewModel.favoriteIds.collectAsStateWithLifecycle()
 
-    CoinsScreen(
+    WatchlistScreen(
         sort = ui.sort,
         items = items,
         favoriteIds = favoriteIds,
@@ -79,11 +81,12 @@ fun CoinsRoute(
         onNavigateToCoinDetailsScreen  = onNavigateToCoinDetailsScreen,
         onFavoriteClick  = viewModel::onFavoriteClick,
     )
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CoinsScreen(
+fun WatchlistScreen(
     sort: SortOption,
     items: LazyPagingItems<Coins>,
     favoriteIds: Set<String>,
@@ -104,7 +107,7 @@ fun CoinsScreen(
     ) {
         Column(Modifier.fillMaxSize()) {
             Spacer(Modifier.height(8.dp))
-            CoinsHeaderRow(sort = sort, onHeaderClick = onHeaderClick)
+            WatchlistHeaderRow(sort = sort, onHeaderClick = onHeaderClick)
 
             when (val s = items.loadState.refresh) {
                 is LoadState.Loading -> {
@@ -142,7 +145,7 @@ fun CoinsScreen(
 }
 
 @Composable
-fun CoinsHeaderRow(
+fun WatchlistHeaderRow(
     sort: SortOption,
     onHeaderClick: (SortKey) -> Unit,
     modifier: Modifier = Modifier
@@ -248,12 +251,15 @@ private fun MarketsList(
         ) { index ->
             items[index]?.let { coin ->
                 val isFavorite = favoriteIds.contains(coin.id)
-                MarketRow(
-                    coin = coin,
-                    isFavorite = isFavorite,
-                    onNavigateToCoinDetailsScreen = onNavigateToCoinDetailsScreen,
-                    onFavoriteClick =onFavoriteClick
-                )
+                if (isFavorite){
+                    MarketRow(
+                        coin = coin,
+                        isFavorite = isFavorite,
+                        onNavigateToCoinDetailsScreen = onNavigateToCoinDetailsScreen,
+                        onFavoriteClick =onFavoriteClick
+                    )
+                }
+
                 //AppHorizontalDivider(thickness = 0.5.dp)
             }
         }
@@ -366,7 +372,6 @@ private fun MarketRow(
                     modifier = Modifier.align(Alignment.Center),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-
                     CoinSparklineChart(
                         values = coin.sparklineIn7d?.price?.map { it.toFloat() } ?: emptyList(),
                         modifier = Modifier
@@ -395,12 +400,12 @@ private fun MarketRow(
 // Happy-path (NotLoading + content) — Light
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun CoinsScreen_Preview_NotLoading_Light() {
+fun WatchlistScreen_Preview_NotLoading_Light() {
     AppThemedPreview(darkTheme = false) {
 
         val items = rememberCoinsPreviewItems(CoinsFakeData.coinsFakeData)
         val sort = SortOption(sortKey = SortKey.MARKET_CAP, sortOrder = SortOrder.DESC)
-        CoinsScreen(
+        WatchlistScreen(
             sort = sort,
             items = items,
             onNavigateToCoinDetailsScreen = {},
@@ -424,36 +429,4 @@ fun MarketRow_Preview_Light() {
         )
     }
 }
-
-// Indicator Loading
-@ThemePreviews
-@Composable
-fun CoinsScreen_Preview_Loading() {
-    AppThemedPreview {
-        CoinsScaffoldPreview(isRefreshing = true) {
-            LoadingBox()
-        }
-    }
-}
-
-@ThemePreviews
-@Composable
-fun CoinsScreen_Preview_Error() {
-    AppThemedPreview {
-        CoinsScaffoldPreview(isRefreshing = false) {
-            ErrorBox(message = "Network error: 429 Too Many Requests") { }
-        }
-    }
-}
-
-@ThemePreviews
-@Composable
-fun CoinsScreen_Preview_Empty() {
-    AppThemedPreview {
-        CoinsScaffoldPreview(isRefreshing = false) {
-            EmptyBox()
-        }
-    }
-}
-
 

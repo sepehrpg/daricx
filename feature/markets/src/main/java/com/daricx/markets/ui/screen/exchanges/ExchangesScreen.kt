@@ -179,8 +179,8 @@ fun ExchangesRow(
         ) {
             AsyncImage(
                 model = exchange.image,
-                placeholder = painterResource(com.daricx.ui.R.drawable.core_ui_binance),
-                error = painterResource(com.daricx.ui.R.drawable.core_ui_binance),
+                placeholder = painterResource(com.daricx.ui.R.drawable.daricx_logo_place_holder),
+                error = painterResource(com.daricx.ui.R.drawable.daricx_logo_place_holder),
                 contentDescription = exchange.name ?: "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.size(28.dp)

@@ -25,6 +25,7 @@ import com.example.designsystem.component.CollapsingHeaderLayout
 import com.daricx.markets.ui.screen.coins.CoinsRoute
 import com.daricx.markets.ui.screen.exchanges.ExchangesRoute
 import com.daricx.markets.ui.screen.trending.TrendingRoute
+import com.daricx.markets.ui.screen.watchlist.WatchlistRoute
 
 
 @Composable
@@ -104,8 +105,7 @@ fun TabsSection(
            AppTabPagerItems(
                title = "Watchlists",
                contentScreens = {
-                   Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                   }
+                   WatchlistRoute(onNavigateToCoinDetailsScreen = onNavigateToCoinDetailsScreen)
                },
            ),
 

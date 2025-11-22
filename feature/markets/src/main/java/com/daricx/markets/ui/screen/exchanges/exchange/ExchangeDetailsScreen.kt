@@ -15,18 +15,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.daricx.markets.data.ExchangeDetailsFakes
-import com.daricx.markets.ui.screen.coins.coin.screen.AboutCoinRoute
-import com.daricx.markets.ui.screen.coins.coin.screen.OverviewCoinRoute
 import com.daricx.markets.ui.screen.exchanges.exchange.screen.OverviewExchangeRoute
 import com.daricx.ui.ComingSoonNoticeText
 import com.daricx.ui.TrustScorePill
@@ -39,21 +39,30 @@ import com.example.designsystem.icon.AppIcons
 import com.example.designsystem.theme.AppThemedPreview
 import com.example.designsystem.theme.ThemePreviews
 import com.example.model.exchanges.ExchangeDetail
+import com.example.model.option.CryptoTimeRange
 
 
 @Composable
-fun ExchangeDetailsRoute(){
-    val exchangeDetailFakeData = ExchangeDetailsFakes.binanceFromReal()
-    ExchangeDetailsScreen(exchangeDetail = exchangeDetailFakeData)
+fun ExchangeDetailsRoute(
+    viewModel: ExchangeDetailsViewModel = hiltViewModel(),
+){
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ExchangeDetailsScreen(
+        uiState = uiState,
+        onRefresh= viewModel::getExchangeDetails,
+        onTimeRangeSelected = viewModel::onTimeRangeSelected
+    )
 }
 
 
 @Composable
 fun ExchangeDetailsScreen(
+    uiState: ExchangeDetailsUiState,
     modifier: Modifier = Modifier,
-    exchangeDetail: ExchangeDetail
+    onRefresh: () -> Unit,
+    onTimeRangeSelected: (CryptoTimeRange) -> Unit,
 ){
-
     Surface(
         color = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.onSurface,
@@ -62,7 +71,7 @@ fun ExchangeDetailsScreen(
             modifier = modifier.padding(top = 10.dp),
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onBackground,
-            topBar = { Header(exchangeDetail = exchangeDetail) }
+            topBar = { Header(exchangeDetail = uiState.exchangeDetails) }
         ) {
             val paddingV = it
 
@@ -72,8 +81,11 @@ fun ExchangeDetailsScreen(
                     .background(MaterialTheme.colorScheme.background)
                     .fillMaxSize(),
             ) {
-                TabsSection()
-                //OverviewExchangeRoute()
+                TabsSection(
+                    uiState = uiState,
+                    onRefresh = onRefresh,
+                    onTimeRangeSelected = onTimeRangeSelected
+                )
             }
         }
     }
@@ -81,7 +93,7 @@ fun ExchangeDetailsScreen(
 
 
 @Composable
-private fun Header(modifier: Modifier = Modifier,exchangeDetail: ExchangeDetail) {
+private fun Header(modifier: Modifier = Modifier,exchangeDetail: ExchangeDetail?) {
     Row(
         modifier
             .fillMaxWidth()
@@ -105,21 +117,21 @@ private fun Header(modifier: Modifier = Modifier,exchangeDetail: ExchangeDetail)
             horizontalArrangement = Arrangement.Center
         ) {
             AsyncImage(
-                model = exchangeDetail.image,
-                placeholder = painterResource(com.daricx.ui.R.drawable.core_ui_binance),
-                error = painterResource(com.daricx.ui.R.drawable.core_ui_binance),
-                contentDescription = exchangeDetail.name ?: "",
+                model = exchangeDetail?.image,
+                placeholder = painterResource(com.daricx.ui.R.drawable.daricx_logo_place_holder),
+                error = painterResource(com.daricx.ui.R.drawable.daricx_logo_place_holder),
+                contentDescription = exchangeDetail?.name ?: "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.size(28.dp)
                     .clip(MaterialTheme.shapes.small)
             )
 
             Spacer(modifier.width(5.dp))
-            AppText(exchangeDetail.name?:"", modifier = Modifier.align(Alignment.CenterVertically))
+            AppText(exchangeDetail?.name?:"", modifier = Modifier.align(Alignment.CenterVertically))
 
             Spacer(modifier.width(15.dp))
 
-            val trust = exchangeDetail.trustScore ?: 0
+            val trust = exchangeDetail?.trustScore ?: 0
             TrustScorePill(score = trust)
         }
     }
@@ -127,7 +139,12 @@ private fun Header(modifier: Modifier = Modifier,exchangeDetail: ExchangeDetail)
 
 
 @Composable
-private fun TabsSection(modifier: Modifier= Modifier) {
+private fun TabsSection(
+    modifier: Modifier= Modifier,
+    uiState: ExchangeDetailsUiState,
+    onRefresh: () -> Unit,
+    onTimeRangeSelected: (CryptoTimeRange) -> Unit,
+) {
     Box(
         modifier
             .padding(top = 0.dp)
@@ -137,7 +154,11 @@ private fun TabsSection(modifier: Modifier= Modifier) {
             AppTabPagerItems(
                 title = "Overview",
                 contentScreens = {
-                    OverviewExchangeRoute()
+                    OverviewExchangeRoute(
+                        uiState = uiState,
+                        onRefresh =onRefresh,
+                        onTimeRangeSelected = onTimeRangeSelected
+                    )
                 },
             ),
             AppTabPagerItems(
@@ -175,8 +196,15 @@ private fun TabsSection(modifier: Modifier= Modifier) {
 @Composable
 fun ExchangeDetailsScreenPreview(){
     val exchangeDetailFakeData = ExchangeDetailsFakes.binanceFromReal()
-
     AppThemedPreview {
-        ExchangeDetailsScreen(exchangeDetail = exchangeDetailFakeData)
+        ExchangeDetailsScreen(
+            uiState = ExchangeDetailsUiState(
+                exchangeDetails = exchangeDetailFakeData,
+                isLoading = false,
+                error = null
+            ),
+            onRefresh = {},
+            onTimeRangeSelected = {}
+        )
     }
 }

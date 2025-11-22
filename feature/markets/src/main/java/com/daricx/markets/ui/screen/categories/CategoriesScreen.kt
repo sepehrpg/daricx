@@ -216,8 +216,8 @@ fun CategoryRow(
                     items(category.top3Coins!!){
                         AsyncImage(
                             model = it,
-                            placeholder = painterResource(com.daricx.ui.R.drawable.core_ui_bitcoin),
-                            error = painterResource(com.daricx.ui.R.drawable.core_ui_bitcoin),
+                            placeholder = painterResource(com.daricx.ui.R.drawable.daricx_logo_place_holder),
+                            error = painterResource(com.daricx.ui.R.drawable.daricx_logo_place_holder),
                             contentDescription =  "",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier

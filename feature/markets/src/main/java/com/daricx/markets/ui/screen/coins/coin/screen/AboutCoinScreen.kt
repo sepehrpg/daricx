@@ -12,10 +12,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
@@ -25,7 +29,11 @@ import com.daricx.markets.ui.mapper.CoinLinkItemsMapper.buildCoinCommunityLinks
 import com.daricx.markets.ui.mapper.CoinLinkItemsMapper.buildCoinExplorersLinkItems
 import com.daricx.markets.ui.mapper.CoinLinkItemsMapper.buildCoinOfficialLinkItems
 import com.daricx.markets.ui.model.LinkItem
+import com.daricx.markets.ui.screen.ErrorBox
+import com.daricx.markets.ui.screen.LoadingBox
+import com.daricx.markets.ui.screen.coins.coin.CoinDetailsUiState
 import com.example.designsystem.component.AppHorizontalDivider
+import com.example.designsystem.component.AppPullToRefresh
 import com.example.designsystem.component.chips.AppElevatedAssistChip
 import com.example.designsystem.component.text.AppText
 import com.example.designsystem.component.text.AppTextReadMoreHtmlFormat
@@ -36,63 +44,113 @@ import kotlin.String
 
 
 @Composable
-fun AboutCoinRoute(){
-    val coinDetailsFakeData = CoinDetailsFakes.bitcoin()
-
-    AboutCoinScreen(coinDetails = coinDetailsFakeData)
+fun AboutCoinRoute(
+    uiState: CoinDetailsUiState,
+    onRefresh: () -> Unit,
+){
+    AboutCoinScreen(uiState = uiState, onRefresh =onRefresh)
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AboutCoinScreen(
     modifier: Modifier = Modifier,
-    coinDetails: CoinDetails?,
+    uiState: CoinDetailsUiState,
+    onRefresh: () -> Unit,
 ){
+    val refreshState = rememberPullToRefreshState()
+    // Show pull-to-refresh spinner only when we are refreshing over existing content.
+    val isRefreshing = uiState.isLoading && uiState.coinDetails != null
+
+
     Surface(
         color = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.onSurface,
         modifier = modifier.fillMaxSize()
     ) {
-        LazyColumn(modifier.fillMaxSize().padding(vertical = 12.dp)){
-            item {
-                AboutCoin(coinDetails = coinDetails)
-                Spacer(modifier.height(7.dp))
+
+
+        AppPullToRefresh(
+            isRefreshing = isRefreshing,
+            onRefresh = onRefresh,
+            state = refreshState,
+            modifier = modifier.fillMaxSize(),
+        ) {
+            when {
+                uiState.isLoading && uiState.coinDetails == null -> {
+                    LoadingBox(modifier = modifier.height(2.dp))
+                }
+
+                uiState.error != null && uiState.coinDetails == null -> {
+                    ErrorBox(
+                        message = uiState.error,
+                        onRetry = onRefresh,
+                    )
+                }
+
+                uiState.coinDetails == null -> {
+                    ErrorBox(
+                        message = "Empty List",
+                        onRetry = onRefresh,
+                    )
+                }
+                else -> {
+                    AboutCoinScreenContent(
+                        coinDetails = uiState.coinDetails,
+                        modifier = modifier
+                    )
+                }
             }
-
-            item{
-                LinksChip(
-                    links =  buildCoinOfficialLinkItems(coinDetails),
-                    title = "Official Links"
-                )
-                Spacer(modifier.height(7.dp))
-                AppHorizontalDivider()
-            }
-
-            item{
-                LinksChip(
-                    links = buildCoinExplorersLinkItems(coinDetails),
-                    title = "Explorers"
-                )
-                Spacer(modifier.height(7.dp))
-                AppHorizontalDivider()
-            }
-
-            item{
-                LinksChip(
-                    links = buildCoinCommunityLinks(coinDetails),
-                    title = "Community"
-                )
-                Spacer(modifier.height(7.dp))
-                AppHorizontalDivider()
-            }
-
-
-
-
         }
+
     }
 }
 
+
+@Composable
+private fun AboutCoinScreenContent(
+    coinDetails: CoinDetails,
+    modifier: Modifier = Modifier
+){
+    LazyColumn(modifier.fillMaxSize().padding(vertical = 12.dp)){
+        item {
+            AboutCoin(coinDetails = coinDetails)
+            Spacer(modifier.height(7.dp))
+        }
+
+        item{
+            LinksChip(
+                links =  buildCoinOfficialLinkItems(coinDetails),
+                title = "Official Links"
+            )
+            Spacer(modifier.height(7.dp))
+            AppHorizontalDivider()
+        }
+
+        item{
+            LinksChip(
+                links = buildCoinExplorersLinkItems(coinDetails),
+                title = "Explorers"
+            )
+            Spacer(modifier.height(7.dp))
+            AppHorizontalDivider()
+        }
+
+        item{
+            LinksChip(
+                links = buildCoinCommunityLinks(coinDetails),
+                title = "Community"
+            )
+            Spacer(modifier.height(7.dp))
+            AppHorizontalDivider()
+        }
+
+
+
+
+    }
+}
 
 
 @Composable
@@ -104,31 +162,32 @@ private fun AboutCoin(
     val symbol = coinDetails?.symbol?.uppercase()
     val description = coinDetails?.description?.translations?.get("en")
 
-    Column(modifier.padding(horizontal = 10.dp)){
-        AppText(
-            "About $coinName",
-            style = MaterialTheme.typography.titleMedium
-        )
-        Spacer(modifier = modifier.height(5.dp))
-        AppText(
-            "What is $coinName ($symbol)?",
-            style = MaterialTheme.typography.titleLarge.copy(
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontWeight = FontWeight.Bold
+    if (!description.isNullOrEmpty()){
+        Column(modifier.padding(horizontal = 10.dp)){
+            AppText(
+                "About $coinName",
+                style = MaterialTheme.typography.titleMedium
             )
-        )
-        Spacer(modifier = modifier.height(10.dp))
+            Spacer(modifier = modifier.height(5.dp))
+            AppText(
+                "What is $coinName ($symbol)?",
+                style = MaterialTheme.typography.titleLarge.copy(
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+            Spacer(modifier = modifier.height(10.dp))
 
-        AppTextReadMoreHtmlFormat(
-            modifier = modifier,
-            text = description?:"",
-            collapsedMaxLines = 5,
-            readMoreText = "Show more",
-            readLessText = "Show less",
-            readMoreColor = MaterialTheme.colorScheme.inversePrimary
-        )
+            AppTextReadMoreHtmlFormat(
+                modifier = modifier,
+                text = description?:"",
+                collapsedMaxLines = 5,
+                readMoreText = "Show more",
+                readLessText = "Show less",
+                readMoreColor = MaterialTheme.colorScheme.inversePrimary
+            )
+        }
     }
-
 }
 
 /*@OptIn(ExperimentalLayoutApi::class)
@@ -244,6 +303,13 @@ private fun AboutCoinScreenPreview(){
     val coinDetailsFakeData = CoinDetailsFakes.bitcoin()
 
     AppThemedPreview {
-        AboutCoinScreen(coinDetails = coinDetailsFakeData)
+        AboutCoinScreen(
+            uiState = CoinDetailsUiState(
+                coinDetails = coinDetailsFakeData,
+                isLoading = false,
+                error = null
+            ),
+            onRefresh = {}
+        )
     }
 }

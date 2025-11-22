@@ -1,6 +1,5 @@
 package com.daricx.markets.ui.screen.trending
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -132,8 +131,8 @@ private fun TrendingCoins(
                         ){
                             AsyncImage(
                                 model = item.item?.large,
-                                placeholder = painterResource(com.daricx.ui.R.drawable.core_ui_bitcoin),
-                                error = painterResource(com.daricx.ui.R.drawable.core_ui_bitcoin),
+                                placeholder = painterResource(com.daricx.ui.R.drawable.daricx_logo_place_holder),
+                                error = painterResource(com.daricx.ui.R.drawable.daricx_logo_place_holder),
                                 contentDescription = item.item?.name?: "",
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
@@ -200,8 +199,8 @@ private fun TrendingNFT(
                         ){
                             AsyncImage(
                                 model = item.thumb,
-                                placeholder = painterResource(com.daricx.ui.R.drawable.core_ui_natcats),
-                                error = painterResource(com.daricx.ui.R.drawable.core_ui_natcats),
+                                placeholder = painterResource(com.daricx.ui.R.drawable.daricx_logo_place_holder),
+                                error = painterResource(com.daricx.ui.R.drawable.daricx_logo_place_holder),
                                 contentDescription = item.name?: "",
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
