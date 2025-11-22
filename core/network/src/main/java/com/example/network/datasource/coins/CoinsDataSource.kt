@@ -16,6 +16,7 @@ interface CoinsDataSource {
         vsCurrency: String,
         page: Int,
         perPage: Int,
+        ids: String? = null,
         order: CoinsSort? = null,
         sparkline: Boolean? = true,
         priceChangePercentage: String? = null,

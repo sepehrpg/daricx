@@ -1,16 +1,15 @@
 package com.example.network.model.coins
 
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 
 @Serializable
- data class CoinDetailsDto(
+data class CoinDetailsDto(
     @SerialName("additional_notices")
     val additionalNotices: List<JsonElement?>? = null,
     @SerialName("asset_platform_id")
-    val assetPlatformId: JsonElement?  = null,
+    val assetPlatformId: JsonElement? = null,
     @SerialName("block_time_in_minutes")
     val blockTimeInMinutes: Int? = null,
     @SerialName("categories")
@@ -19,10 +18,15 @@ import kotlinx.serialization.json.JsonElement
     val communityData: CommunityData? = null,
     @SerialName("country_origin")
     val countryOrigin: String? = null,
+
+    // description: {"en": "...", "de": "...", ...}
     @SerialName("description")
-    val description: Description? = null,
+    val description: Map<String, String?>? = null,
+
+    // detail_platforms: {"ethereum": { contract_address, decimal_place }, ...}
     @SerialName("detail_platforms")
-    val detailPlatforms: DetailPlatforms? = null,
+    val detailPlatforms: Map<String, DetailPlatformDto?>? = null,
+
     @SerialName("developer_data")
     val developerData: DeveloperData? = null,
     @SerialName("genesis_date")
@@ -37,16 +41,22 @@ import kotlinx.serialization.json.JsonElement
     val lastUpdated: String? = null,
     @SerialName("links")
     val links: Links? = null,
+
+    // localization: {"en": "Bitcoin", "de": "Bitcoin", ...}
     @SerialName("localization")
-    val localization: Localization? = null,
+    val localization: Map<String, String?>? = null,
+
     @SerialName("market_cap_rank")
     val marketCapRank: Int? = null,
     @SerialName("market_data")
     val marketData: MarketData? = null,
     @SerialName("name")
     val name: String? = null,
+
+    // platforms: {"ethereum": "0x...", "binance-smart-chain": "0x...", ...}
     @SerialName("platforms")
-    val platforms: Platforms? = null,
+    val platforms: Map<String, String?>? = null,
+
     @SerialName("preview_listing")
     val previewListing: Boolean? = null,
     @SerialName("public_notice")
@@ -66,8 +76,9 @@ import kotlinx.serialization.json.JsonElement
     @SerialName("web_slug")
     val webSlug: String? = null
 ) {
+
     @Serializable
-     data class CommunityData(
+    data class CommunityData(
         @SerialName("facebook_likes")
         val facebookLikes: JsonElement? = null,
         @SerialName("reddit_accounts_active_48h")
@@ -83,27 +94,15 @@ import kotlinx.serialization.json.JsonElement
     )
 
     @Serializable
-     data class Description(
-        val translations: Map<String, String?> = emptyMap()
+    data class DetailPlatformDto(
+        @SerialName("contract_address")
+        val contractAddress: String? = null,
+        @SerialName("decimal_place")
+        val decimalPlace: JsonElement? = null
     )
 
-
     @Serializable
-     data class DetailPlatforms(
-        @SerialName("")
-        val x: X?
-    ) {
-        @Serializable
-         data class X(
-            @SerialName("contract_address")
-            val contractAddress: String? = null,
-            @SerialName("decimal_place")
-            val decimalPlace: JsonElement? = null
-        )
-    }
-
-    @Serializable
-     data class DeveloperData(
+    data class DeveloperData(
         @SerialName("closed_issues")
         val closedIssues: Int? = null,
         @SerialName("code_additions_deletions_4_weeks")
@@ -126,7 +125,7 @@ import kotlinx.serialization.json.JsonElement
         val totalIssues: Int? = null
     ) {
         @Serializable
-         data class CodeAdditionsDeletions4Weeks(
+        data class CodeAdditionsDeletions4Weeks(
             @SerialName("additions")
             val additions: Int? = null,
             @SerialName("deletions")
@@ -135,7 +134,7 @@ import kotlinx.serialization.json.JsonElement
     }
 
     @Serializable
-     data class Image(
+    data class Image(
         @SerialName("large")
         val large: String? = null,
         @SerialName("small")
@@ -145,7 +144,7 @@ import kotlinx.serialization.json.JsonElement
     )
 
     @Serializable
-     data class Links(
+    data class Links(
         @SerialName("announcement_url")
         val announcementUrl: List<JsonElement?>? = null,
         @SerialName("bitcointalk_thread_identifier")
@@ -171,10 +170,10 @@ import kotlinx.serialization.json.JsonElement
         @SerialName("twitter_screen_name")
         val twitterScreenName: String? = null,
         @SerialName("whitepaper")
-        val whitepaper: String?
+        val whitepaper: String? = null
     ) {
         @Serializable
-         data class ReposUrl(
+        data class ReposUrl(
             @SerialName("bitbucket")
             val bitbucket: List<JsonElement?>? = null,
             @SerialName("github")
@@ -183,48 +182,43 @@ import kotlinx.serialization.json.JsonElement
     }
 
     @Serializable
-     data class Localization(
-        val translations: Map<String, String?> = emptyMap()
-    )
-
-    @Serializable
-     data class MarketData(
+    data class MarketData(
         @SerialName("ath")
-        val ath: Ath? = null,
+        val ath: Map<String, Double?>? = null,
         @SerialName("ath_change_percentage")
-        val athChangePercentage: AthChangePercentage? = null,
+        val athChangePercentage: Map<String, Double?>? = null,
         @SerialName("ath_date")
-        val athDate: AthDate? = null,
+        val athDate: Map<String, String?>? = null,
         @SerialName("atl")
-        val atl: Atl? = null,
+        val atl: Map<String, Double?>? = null,
         @SerialName("atl_change_percentage")
-        val atlChangePercentage: AtlChangePercentage? = null,
+        val atlChangePercentage: Map<String, Double?>? = null,
         @SerialName("atl_date")
-        val atlDate: AtlDate? = null,
+        val atlDate: Map<String, String?>? = null,
         @SerialName("circulating_supply")
         val circulatingSupply: Double? = null,
         @SerialName("current_price")
-        val currentPrice: CurrentPrice? = null,
+        val currentPrice: Map<String, Double?>? = null,
         @SerialName("fdv_to_tvl_ratio")
         val fdvToTvlRatio: JsonElement? = null,
         @SerialName("fully_diluted_valuation")
-        val fullyDilutedValuation: FullyDilutedValuation? = null,
+        val fullyDilutedValuation: Map<String, Double?>? = null,
         @SerialName("high_24h")
-        val high24h: High24h? = null,
+        val high24h: Map<String, Double?>? = null,
         @SerialName("last_updated")
         val lastUpdated: String? = null,
         @SerialName("low_24h")
-        val low24h: Low24h? = null,
+        val low24h: Map<String, Double?>? = null,
         @SerialName("market_cap")
-        val marketCap: MarketCap? = null,
+        val marketCap: Map<String, Double?>? = null,
         @SerialName("market_cap_change_24h")
         val marketCapChange24h: Double? = null,
         @SerialName("market_cap_change_24h_in_currency")
-        val marketCapChange24hInCurrency: MarketCapChange24hInCurrency? = null,
+        val marketCapChange24hInCurrency: Map<String, Double?>? = null,
         @SerialName("market_cap_change_percentage_24h")
         val marketCapChangePercentage24h: Double? = null,
         @SerialName("market_cap_change_percentage_24h_in_currency")
-        val marketCapChangePercentage24hInCurrency: MarketCapChangePercentage24hInCurrency? = null,
+        val marketCapChangePercentage24hInCurrency: Map<String, Double?>? = null,
         @SerialName("market_cap_fdv_ratio")
         val marketCapFdvRatio: Double? = null,
         @SerialName("market_cap_rank")
@@ -238,37 +232,37 @@ import kotlinx.serialization.json.JsonElement
         @SerialName("price_change_24h")
         val priceChange24h: Double? = null,
         @SerialName("price_change_24h_in_currency")
-        val priceChange24hInCurrency: PriceChange24hInCurrency? = null,
+        val priceChange24hInCurrency: Map<String, Double?>? = null,
         @SerialName("price_change_percentage_14d")
         val priceChangePercentage14d: Double? = null,
         @SerialName("price_change_percentage_14d_in_currency")
-        val priceChangePercentage14dInCurrency: PriceChangePercentage14dInCurrency? = null,
+        val priceChangePercentage14dInCurrency: Map<String, Double?>? = null,
         @SerialName("price_change_percentage_1h_in_currency")
-        val priceChangePercentage1hInCurrency: PriceChangePercentage1hInCurrency? = null,
+        val priceChangePercentage1hInCurrency: Map<String, Double?>? = null,
         @SerialName("price_change_percentage_1y")
         val priceChangePercentage1y: Double? = null,
         @SerialName("price_change_percentage_1y_in_currency")
-        val priceChangePercentage1yInCurrency: PriceChangePercentage1yInCurrency? = null,
+        val priceChangePercentage1yInCurrency: Map<String, Double?>? = null,
         @SerialName("price_change_percentage_200d")
         val priceChangePercentage200d: Double? = null,
         @SerialName("price_change_percentage_200d_in_currency")
-        val priceChangePercentage200dInCurrency: PriceChangePercentage200dInCurrency? = null,
+        val priceChangePercentage200dInCurrency: Map<String, Double?>? = null,
         @SerialName("price_change_percentage_24h")
         val priceChangePercentage24h: Double? = null,
         @SerialName("price_change_percentage_24h_in_currency")
-        val priceChangePercentage24hInCurrency: PriceChangePercentage24hInCurrency? = null,
+        val priceChangePercentage24hInCurrency: Map<String, Double?>? = null,
         @SerialName("price_change_percentage_30d")
         val priceChangePercentage30d: Double? = null,
         @SerialName("price_change_percentage_30d_in_currency")
-        val priceChangePercentage30dInCurrency: PriceChangePercentage30dInCurrency? = null,
+        val priceChangePercentage30dInCurrency: Map<String, Double?>? = null,
         @SerialName("price_change_percentage_60d")
         val priceChangePercentage60d: Double? = null,
         @SerialName("price_change_percentage_60d_in_currency")
-        val priceChangePercentage60dInCurrency: PriceChangePercentage60dInCurrency? = null,
+        val priceChangePercentage60dInCurrency: Map<String, Double?>? = null,
         @SerialName("price_change_percentage_7d")
         val priceChangePercentage7d: Double? = null,
         @SerialName("price_change_percentage_7d_in_currency")
-        val priceChangePercentage7dInCurrency: PriceChangePercentage7dInCurrency? = null,
+        val priceChangePercentage7dInCurrency: Map<String, Double?>? = null,
         @SerialName("roi")
         val roi: JsonElement? = null,
         @SerialName("total_supply")
@@ -276,136 +270,11 @@ import kotlinx.serialization.json.JsonElement
         @SerialName("total_value_locked")
         val totalValueLocked: JsonElement? = null,
         @SerialName("total_volume")
-        val totalVolume: TotalVolume? = null
-    ) {
-
-        @Serializable
-         data class Ath(
-            val currencies: Map<String, Double?> = emptyMap()
-        )
-
-        @Serializable
-         data class AthChangePercentage(
-            val percentages: Map<String, Double?> = emptyMap()
-        )
-
-        @Serializable
-         data class AthDate(
-            val dates: Map<String, String?> = emptyMap()
-        )
-
-        @Serializable
-         data class Atl(
-            val values: Map<String, Double?> = emptyMap()
-        )
-
-
-        @Serializable
-         data class AtlChangePercentage(
-            val changes: Map<String, Double?> = emptyMap()
-        )
-
-        @Serializable
-         data class AtlDate(
-            val dates: Map<String, String?> = emptyMap()
-        )
-
-        @Serializable
-         data class CurrentPrice(
-            val prices: Map<String, Double?> = emptyMap()
-        )
-
-        @Serializable
-         data class FullyDilutedValuation(
-            val valuations: Map<String, Double?> = emptyMap()
-        )
-
-        @Serializable
-         data class High24h(
-            val highs: Map<String, Double?> = emptyMap()
-        )
-
-        @Serializable
-         data class Low24h(
-            val lows: Map<String, Int?> = emptyMap()
-        )
-
-        @Serializable
-         data class MarketCap(
-            val caps: Map<String, Double?> = emptyMap()
-        )
-
-        @Serializable
-         data class MarketCapChange24hInCurrency(
-            val changes: Map<String, Double?> = emptyMap()
-        )
-
-        @Serializable
-         data class MarketCapChangePercentage24hInCurrency(
-            val changesPercent: Map<String, Double?> = emptyMap()
-        )
-
-        @Serializable
-         data class PriceChange24hInCurrency(
-            val priceChanges: Map<String, Double?> = emptyMap()
-        )
-
-        @Serializable
-         data class PriceChangePercentage14dInCurrency(
-            val priceChangesPercent: Map<String, Double?> = emptyMap()
-        )
-
-
-
-        @Serializable
-         data class PriceChangePercentage1hInCurrency(
-            val changes: Map<String, Double?> = emptyMap()
-        )
-
-        @Serializable
-         data class PriceChangePercentage1yInCurrency(
-            val changes: Map<String, Double?> = emptyMap()
-        )
-
-        @Serializable
-         data class PriceChangePercentage200dInCurrency(
-            val changes: Map<String, Double?> = emptyMap()
-        )
-
-        @Serializable
-         data class PriceChangePercentage24hInCurrency(
-            val changes: Map<String, Double?> = emptyMap()
-        )
-
-        @Serializable
-         data class PriceChangePercentage30dInCurrency(
-            val changes: Map<String, Double?> = emptyMap()
-        )
-
-        @Serializable
-         data class PriceChangePercentage60dInCurrency(
-            val changes: Map<String, Double?> = emptyMap()
-        )
-
-        @Serializable
-         data class PriceChangePercentage7dInCurrency(
-            val changes: Map<String, Double?> = emptyMap()
-        )
-
-        @Serializable
-         data class TotalVolume(
-            val volumes: Map<String, Double?> = emptyMap()
-        )
-    }
-
-    @Serializable
-     data class Platforms(
-        @SerialName("")
-        val x: String? = null
+        val totalVolume: Map<String, Double?>? = null
     )
 
     @Serializable
-     data class Ticker(
+    data class Ticker(
         @SerialName("base")
         val base: String? = null,
         @SerialName("bid_ask_spread_percentage")
@@ -446,7 +315,7 @@ import kotlinx.serialization.json.JsonElement
         val volume: Double? = null
     ) {
         @Serializable
-         data class ConvertedLast(
+        data class ConvertedLast(
             @SerialName("btc")
             val btc: Double? = null,
             @SerialName("eth")
@@ -456,17 +325,17 @@ import kotlinx.serialization.json.JsonElement
         )
 
         @Serializable
-         data class ConvertedVolume(
+        data class ConvertedVolume(
             @SerialName("btc")
             val btc: Double? = null,
             @SerialName("eth")
-            val eth: Int? = null,
+            val eth: Double? = null,
             @SerialName("usd")
             val usd: Double? = null
         )
 
         @Serializable
-         data class Market(
+        data class Market(
             @SerialName("has_trading_incentive")
             val hasTradingIncentive: Boolean? = null,
             @SerialName("identifier")

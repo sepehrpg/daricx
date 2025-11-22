@@ -13,9 +13,11 @@ class AuthInterceptor(/* private val tokenProvider: TokenProvider */) : Intercep
         // val token = tokenProvider.getToken() // Get the token from a trusted source
         val requestBuilder = chain.request().newBuilder()
 
-        // if (token != null) {
-        //     requestBuilder.addHeader("Authorization", "Bearer $token")
-        // }
+        requestBuilder.addHeader("x-cg-demo-api-key", "CG-BRmwWG1EPbaHsW9UZbscBd7P")
+
+         /*if (token != null) {
+             requestBuilder.addHeader("Authorization", "Bearer $token")
+         }*/
 
         return chain.proceed(requestBuilder.build())
     }

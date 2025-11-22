@@ -24,6 +24,7 @@ class CoinsDataSourceImpl @Inject constructor(
         vsCurrency: String,
         page: Int,
         perPage: Int,
+        ids: String?,
         order: CoinsSort?,
         sparkline: Boolean?,
         priceChangePercentage: String?,
@@ -33,6 +34,7 @@ class CoinsDataSourceImpl @Inject constructor(
         return coinsApi.getCoinMarkets(
             vsCurrency = vsCurrency,
             page = page,
+            ids = ids,
             perPage = perPage,
             order = order?.toApiOrderParamOrNull (),
             sparkline = sparkline,

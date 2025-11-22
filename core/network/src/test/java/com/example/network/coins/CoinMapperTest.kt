@@ -115,7 +115,7 @@ class CoinMapperTest {
                     ),
                     convertedVolume = CoinDetailsDto.Ticker.ConvertedVolume(
                         btc = 25000.0,
-                        eth = 1500,
+                        eth = 1500.0,
                         usd = 100000000.0
                     ),
                     trustScore = "green",

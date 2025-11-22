@@ -16,7 +16,7 @@ interface ExchangesDataSource {
 
     suspend fun getExchangeById(
         id: String,
-        dexPairFormat: DexPairFormat?,
+        dexPairFormat: DexPairFormat? = null,
     ): ExchangeDetailDto
 
     suspend fun getExchangeTickersById(
