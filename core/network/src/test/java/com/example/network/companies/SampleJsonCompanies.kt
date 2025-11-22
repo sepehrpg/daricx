@@ -25,7 +25,6 @@ internal object SampleJsonCompanies {
         }
     """.trimIndent()
 
-    // Ethereum sample (اختیاری برای تست دوم)
     val ethTreasuryResponse = """
         {
           "total_holdings": 915000.5,

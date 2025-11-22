@@ -45,7 +45,6 @@ private fun CoinTickersDto.Ticker.Market.toDomain(): CoinTickers.Ticker.Market =
         name = name
     )
 
-/** ConvertedLast mapper (usd: Int? مطابق DTO/Domain) */
 private fun CoinTickersDto.Ticker.ConvertedLast.toDomain(): CoinTickers.Ticker.ConvertedLast =
     CoinTickers.Ticker.ConvertedLast(
         btc = btc,

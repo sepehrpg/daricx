@@ -79,7 +79,6 @@ class CoinHistoricalDataDtoMapperTest {
         assertEquals(12, domain.developerData?.subscribers)
         assertEquals(50, domain.developerData?.totalIssues)
 
-        // سایر فیلدها
         assertEquals("bitcoin", domain.id)
         assertEquals("small.png", domain.image?.small)
         assertEquals("thumb.png", domain.image?.thumb)

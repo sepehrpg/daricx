@@ -84,7 +84,6 @@ fun CoinDetailsDto.toDomain(): CoinDetails = CoinDetails(
 
     localization = localization?.let { CoinDetails.Localization(it.filterValues { v -> v != null } as Map<String, String>) },
 
-    // platforms: حالا خودش یک Map<String, String?> است
     platforms = platforms ?: emptyMap(),
 
     // detailPlatforms: Map<String, DetailPlatformDto?>
