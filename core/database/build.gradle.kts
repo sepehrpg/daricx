@@ -11,10 +11,17 @@ android {
 }
 
 dependencies {
+
+    api(project(":core:model"))
+
+
     //Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     //Kotlin Date Time
     implementation(libs.kotlinx.datetime)
+
+
+
 }
