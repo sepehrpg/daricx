@@ -28,7 +28,8 @@ package com.example.model.coins
     val symbol: String?,
     val totalSupply: Double?,
     val totalVolume: Double?,
-    val sparklineIn7d: SparklineIn7d?
+    val sparklineIn7d: SparklineIn7d?,
+    val isFavorite: Boolean = false
 ) {
      data class Roi(
         val currency: String?,

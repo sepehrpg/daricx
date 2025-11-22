@@ -1,6 +1,5 @@
 package com.example.model.coins
 
-
 /**
  * Full domain model for Coin — mirrors DTO
  */
