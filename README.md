@@ -7,21 +7,11 @@ It is designed both as a real-world crypto market app and as a playground for mo
 
 ---
 
-## 🎥 Project Video
-https://github.com/user-attachments/assets/c23df56a-9ca1-4ad7-bf50-3fec51559b56
-
-----
-## 📸 Project Screenshots
-
-<p align="center">
-  <img src="doc/photo_2025-11-17_21-37-35.jpg?raw=true" alt="Screen 1" width="300"/>
-  <img src="doc/photo_2025-11-22_16-53-27.jpg?raw=true" alt="Screen 1" width="300"/>
-</p>
-----
-
 
 ## 📚 Table of Contents
 
+- [Video](#Video)
+- [Screenshots](#Screenshots)
 - [Overview](#overview)
 - [Features](#features)
 - [Architecture](#architecture)
@@ -33,6 +23,20 @@ https://github.com/user-attachments/assets/c23df56a-9ca1-4ad7-bf50-3fec51559b56
 - [Contact](#contact)
 
 ---
+
+
+## 🎥 Video
+https://github.com/user-attachments/assets/c23df56a-9ca1-4ad7-bf50-3fec51559b56
+
+----
+## 📸 Screenshots
+
+<p align="center">
+  <img src="doc/photo_2025-11-17_21-37-35.jpg?raw=true" alt="Screen 1" width="300"/>
+  <img src="doc/photo_2025-11-22_16-53-27.jpg?raw=true" alt="Screen 1" width="300"/>
+</p>
+----
+
 
 ## 🔍 Overview
 
