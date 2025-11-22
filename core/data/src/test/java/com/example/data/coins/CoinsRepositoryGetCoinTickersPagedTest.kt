@@ -87,7 +87,6 @@ class CoinsRepositoryGetCoinTickersPagedTest {
 
     @Test
     fun `getCoinTickersPaged emits mapped items for first page`() = runTest(dispatcher) {
-        // Given: page1 دو تیکر، page2 خالی
         coEvery { remote.getCoinTickersById("bitcoin", any(), any(), any(), any(), 1, any()) } returns
                 CoinTickersDto(name = "Bitcoin", tickers = listOf(t("BTC", "USDT", 100.0, "binance"), t("BTC", "USD", 99.5, "coinbase")))
         coEvery { remote.getCoinTickersById("bitcoin", any(), any(), any(), any(), 2, any()) } returns

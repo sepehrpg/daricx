@@ -111,7 +111,7 @@ class ExchangesRepositoryImplTest {
         assertEquals("binance", snap[0]?.id)
         assertEquals("Kraken", snap[1]?.name)
 
-        // Verify pageSize → perPage forward شد
+        // Verify pageSize → perPage forward
         coVerify(atLeast = 1) { remote.getExchanges(page = 1, perPage = 2) }
 
         job.cancel()

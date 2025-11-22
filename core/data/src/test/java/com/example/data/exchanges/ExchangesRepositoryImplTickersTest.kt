@@ -126,7 +126,6 @@ class ExchangesRepositoryImplTickersTest {
         assertEquals("USDT", snap[0]?.target)
         assertEquals("ETH", snap[1]?.base)
 
-        // صفحه اول واقعاً فراخوانی شد
         coVerify(atLeast = 1) {
             remote.getExchangeTickersById(
                 id = "binance",
