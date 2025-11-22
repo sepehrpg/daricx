@@ -38,10 +38,14 @@ fun AppText(
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
     onTextLayout: ((TextLayoutResult) -> Unit)? = null,
-    style: TextStyle = LocalTextStyle.current
+    style: TextStyle = LocalTextStyle.current,
+    maxChars: Int? = null,
 ){
+
+    val textL = if (maxChars!=null && text.length > maxChars) text.take(maxChars) + "…" else text
+
     Text(
-        text = text,
+        text = textL,
         modifier = modifier,
         color = color,
         fontSize = fontSize,

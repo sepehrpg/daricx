@@ -29,6 +29,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.BarChart
 import androidx.compose.material.icons.outlined.ShowChart
 import androidx.compose.material.icons.outlined.Timeline
+import androidx.compose.runtime.remember
 import com.example.designsystem.component.text.AppText
 import com.example.designsystem.theme.AppThemedPreview
 import com.example.designsystem.theme.ThemePreviews
@@ -68,7 +69,9 @@ fun AppPillIconTabs(
     iconSize: Dp = 18.dp,
     colors: AppPillTabsColors = AppPillTabsDefaults.colors()
 ) {
-    require(items.size >= 2) { "AppPillIconTabs requires at least two items." }
+    require(items.isNotEmpty()) { "AppPillIconTabs requires at least one item." }
+
+    val safeSelectedIndex = selectedIndex.coerceIn(0, items.lastIndex)
 
     val outerShape = RoundedCornerShape(cornerRadius)
     val innerShape = RoundedCornerShape((cornerRadius - 2.dp).coerceAtLeast(0.dp))
@@ -80,11 +83,10 @@ fun AppPillIconTabs(
             .background(colors.containerColor)
             .padding(4.dp)
     ) {
-        // Each tab will take equal width inside the container
         val itemWidth = maxWidth / items.size
 
-        // Calculate the horizontal offset of the selection indicator
-        val targetX = itemWidth * selectedIndex
+        val targetX = if (items.size == 1) 0.dp else itemWidth * safeSelectedIndex
+
         val x by animateDpAsState(
             targetValue = targetX,
             animationSpec = spring(
@@ -94,7 +96,6 @@ fun AppPillIconTabs(
             label = "pillOffset"
         )
 
-        // Draw the selection background "pill"
         Surface(
             modifier = Modifier
                 .offset(x = x)
@@ -106,7 +107,6 @@ fun AppPillIconTabs(
             shadowElevation = 0.dp
         ) {}
 
-        // Draw icon tabs
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -114,9 +114,9 @@ fun AppPillIconTabs(
             verticalAlignment = Alignment.CenterVertically
         ) {
             items.forEachIndexed { index, item ->
-                val isSelected = index == selectedIndex
+                val isSelected = index == safeSelectedIndex
                 val isEnabled = enabled && item.enabled
-                val interaction = MutableInteractionSource()
+                val interaction = remember { MutableInteractionSource() }
 
                 Box(
                     modifier = Modifier
@@ -136,18 +136,16 @@ fun AppPillIconTabs(
                         ),
                     contentAlignment = Alignment.Center
                 ) {
-                    // Optional badge indicator for notifications or updates
                     BadgedBox(
                         badge = {
                             val count = item.badgeCount
                             if (count != null && count > 0) {
-                                Badge(){
+                                Badge {
                                     AppText("$count")
                                 }
                             }
                         }
                     ) {
-                        // Main icon content
                         Icon(
                             imageVector = item.icon,
                             contentDescription = item.contentDescription,
@@ -163,6 +161,7 @@ fun AppPillIconTabs(
         }
     }
 }
+
 
 /** -------- Preview Section -------- */
 @ThemePreviews

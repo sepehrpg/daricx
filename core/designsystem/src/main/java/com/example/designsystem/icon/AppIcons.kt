@@ -81,6 +81,9 @@ object AppIcons {
     val Star: ImageVector
         @Composable get() = ImageVector.vectorResource(R.drawable.core_designsystem_star)
 
+    val StarFill: ImageVector
+        @Composable get() = ImageVector.vectorResource(R.drawable.core_designsystem_fill_star)
+
     val ChartType1: ImageVector
         @Composable get() = ImageVector.vectorResource(R.drawable.core_designsystem_chart1)
 

@@ -3,7 +3,7 @@ package com.example.designsystem.theme
 import androidx.compose.ui.graphics.Color
 
 
-
+val StarColor = Color(0xFFF5BB7F)
 
 internal val White = Color(0xFFFFFFFF)
 internal val White30 = Color(0xFFFCFDFF) //  LightTheme :  main background
