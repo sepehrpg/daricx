@@ -3,11 +3,16 @@
 Daricx is a multi-module Android app that explores the crypto market domain (coins, NFTs, categories, exchanges and watchlist) using a modern Android tech stack and clean, modular architecture.  
 It is designed both as a real-world crypto market app and as a playground for modern Android patterns (Jetpack Compose, Hilt, Coroutines/Flow, DataStore, Room, multi-module architecture).
 
-> **Status:** Work in progress 
+🚧 > **Status:** Work in progress 
 
 ---
 
-## Table of Contents
+## 🎥 Project Screenshots And Video
+
+----
+
+
+## 📚 Table of Contents
 
 - [Overview](#overview)
 - [Features](#features)
@@ -21,7 +26,7 @@ It is designed both as a real-world crypto market app and as a playground for mo
 
 ---
 
-## Overview
+## 🔍 Overview
 
 Daricx aims to be a solid base for building crypto/fintech products on Android.  
 The project focuses on:
@@ -35,11 +40,11 @@ The project focuses on:
 
 ---
 
-## Features
+## ✨ Features
 
 > These are the features already present or actively being developed in this repository.
 
-### Markets
+### 📊 Markets
 
 - **Coins list** with pricing, market cap and 24h performance.
 - **Trending section** for quick overview of important coins, categories and NFTs 
@@ -47,13 +52,13 @@ The project focuses on:
 - **NFTs list** with floor prices and volume.
 - Screen is implemented with Jetpack Compose and structured into dedicated `data`, `ui`, `model` and `navigation` packages.
 
-### Watchlist
+### ⭐ Watchlist
 
 - Ability to mark specific coins as **favorites** (watchlist).
 - Watchlist state persisted locally (via Database modules), allowing the app to remember user selections.
 
 
-### Settings
+### ⚙️ Settings
 
 - **Settings screen & drawer menu**, implemented in `feature:settings`.
 - Designed to host options like:
@@ -62,14 +67,14 @@ The project focuses on:
   - Default currency/timezone. (Soon)
 
 
-### Design System
+### 🎨 Design System
 
 - Custom **design system** in `core:designsystem`:
   - Reusable top bars, tab pagers, chips, cards, list items, etc.
   - Centralized theming (colors, typography, shapes).
   - Reusable components across all features.
 
-### Error Handling & Logging
+### 🧰 Error Handling & Logging
 
 - `Application` class annotated with `@HiltAndroidApp`.
 - Global **uncaught exception handler** configured.
@@ -78,7 +83,7 @@ The project focuses on:
 
 ---
 
-## Architecture
+## 🏗 Architecture
 
 Daricx follows a **modular Clean Architecture** style with a clear separation between:
 
@@ -92,7 +97,7 @@ The internal layers generally follow:
 - **Domain / Model layer** – domain models, mappers, business rules.
 - **Data layer** – repositories, local (Room/DataStore) + remote (Retrofit) sources.
 
-### Module Structure
+### 🧩 Module Structure
 
 From `settings.gradle.kts` the modules are:
 
@@ -118,7 +123,7 @@ This structure allows:
 
 ---
 
-## Tech Stack
+## 🛠 Tech Stack
 
 **Language & UI**
 
@@ -157,7 +162,7 @@ This structure allows:
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Clone & Run
 
@@ -169,7 +174,7 @@ This structure allows:
 
 
 
-## Contributing
+## 📥 Contributing
 
 Contributions, ideas, and bug reports are welcome.
 
@@ -224,7 +229,7 @@ Contributions, ideas, and bug reports are welcome.
 ---
 
 
-## Contact
+## 📬 Contact
 
 If you have questions, suggestions, or would like to collaborate:
 
