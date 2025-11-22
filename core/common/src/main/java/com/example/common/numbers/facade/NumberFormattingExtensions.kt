@@ -31,7 +31,7 @@ import java.util.Locale
  * @param formatter The [NumberFormatting] façade that handles precision, rounding, and grouping.
  */
 fun Double.prettyPrice(
-    currency: CurrencyStyle,
+    currency: CurrencyStyle= CurrencyStyle.usd(),
     trimZeros: Boolean = false,
     locale: Locale = Locale.US,
     formatter: NumberFormatting = NumberFormattingDefaults.default
@@ -41,6 +41,21 @@ fun Double.prettyPrice(
     trimZeros = trimZeros,
     locale = locale
 )
+
+
+fun Double.prettyPriceCrypto(
+    currency: CurrencyStyle = CurrencyStyle.usd(),
+    trimZeros: Boolean = false,
+    locale: Locale = Locale.US,
+    formatter: NumberFormatting = NumberFormattingDefaults.defaultWithAutoPrecision
+): String = formatter.pricePretty(
+    price = this,
+    currency = currency,
+    trimZeros = trimZeros,
+    locale = locale
+)
+
+
 
 /** Shorthand for USD currency — e.g., `$12.34`. */
 fun Double.prettyUSD(

@@ -23,7 +23,6 @@ class AutoPricePrecisionPolicy(
     private val tinyDigitsRange: IntRange = 6..10,
     private val rounding: RoundingBehavior = RoundingBehavior.HalfEven
 ) : PricePrecisionPolicy {
-
     override fun fractionDigits(value: Double): Int {
         if (value == 0.0) return 0
         if (value < 0.0) {

@@ -30,7 +30,6 @@ class FixedPricePrecisionPolicy(
     init {
         require(digits >= 0) { "digits must be >= 0" }
     }
-
     /**
      * Always returns the configured number of fraction digits.
      * For negative values, applies [NegativePrecisionMode].
@@ -42,7 +41,6 @@ class FixedPricePrecisionPolicy(
             digits
         }
     }
-
     /**
      * Rounds the given [value] according to the configured
      * number of digits and [RoundingBehavior].

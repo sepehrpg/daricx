@@ -6,7 +6,7 @@ import java.util.Locale
 
 object NumberFormatterAdapter {
 
-    private val facade get() = NumberFormattingDefaults.default
+    private val facade get() = NumberFormattingDefaults.defaultWithAutoPrecision
 
     /** Pretty price with variable precision (backward compatible) */
     @JvmStatic

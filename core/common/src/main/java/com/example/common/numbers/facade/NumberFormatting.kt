@@ -41,7 +41,6 @@ class NumberFormatting private constructor(
         RoundingBehavior.RoundedUp   -> RoundingMode.UP
         RoundingBehavior.RoundedDown -> RoundingMode.DOWN
     }
-
     /**
      * Formats a number with fixed/trimmed fraction digits and grouping configured by [grouping].
      * If [trimZeros] is true, trailing zeros are trimmed up to [digits];
