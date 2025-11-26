@@ -17,7 +17,7 @@ android {
     defaultConfig {
         applicationId = "com.daricx.app"
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
     }
 
     // --- Load signing configuration from keystore.properties ---
