@@ -1,7 +1,6 @@
-package com.example.network.nfts
+package com.example.network.nfts.mappers
 
 import com.example.network.model.nfts.NftDetailsDto
-import com.example.network.model.mappers.coins.toDomain
 import com.example.network.model.mappers.nfts.toDomain
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
@@ -187,7 +186,7 @@ class NftDetailsMappersTest {
             ),
             floorPrice = NftDetailsDto.FloorPrice(
                 nativeCurrency = null,
-                usd = 42
+                usd = 42.0
             )
         )
 
@@ -199,7 +198,7 @@ class NftDetailsMappersTest {
         assertThat(domain.image?.small2x).isNull()
         assertThat(domain.links?.homepage).isEqualTo("https://home")
         assertThat(domain.links?.discord).isNull()
-        assertThat(domain.floorPrice?.usd).isEqualTo(42)
+        assertThat(domain.floorPrice?.usd).isEqualTo(42.0)
         assertThat(domain.floorPrice?.nativeCurrency).isNull()
     }
 
@@ -216,7 +215,7 @@ class NftDetailsMappersTest {
         explorers = listOf(
             NftDetailsDto.Explorer(link = "https://scan", name = "Etherscan")
         ),
-        floorPrice = NftDetailsDto.FloorPrice(nativeCurrency = 0.5, usd = 1),
+        floorPrice = NftDetailsDto.FloorPrice(nativeCurrency = 0.5, usd = 1.0),
         floorPrice14dPercentageChange = NftDetailsDto.FloorPrice14dPercentageChange(1.1, 2.2),
         floorPrice1yPercentageChange = NftDetailsDto.FloorPrice1yPercentageChange(1.9, 2.9),
         floorPrice24hPercentageChange = NftDetailsDto.FloorPrice24hPercentageChange(0.2, 0.3),
@@ -234,7 +233,7 @@ class NftDetailsMappersTest {
             homepage = "https://site.com",
             twitter = "@twitter"
         ),
-        marketCap = NftDetailsDto.MarketCap(nativeCurrency = 1000, usd = 2000),
+        marketCap = NftDetailsDto.MarketCap(nativeCurrency = 1000, usd = 2000.0),
         marketCap24hPercentageChange = NftDetailsDto.MarketCap24hPercentageChange(3.3, 4.4),
         marketCapRank = 7,
         name = "Cool NFT",

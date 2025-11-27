@@ -1,13 +1,11 @@
-package com.example.network.companies
-
+package com.example.network.companies.mappers
 
 import com.example.model.option.TreasuryAsset
 import com.example.network.options.toApiCoinId
-import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-
 
 /**
  * TreasuryAssetMappingTest
@@ -33,7 +31,8 @@ class TreasuryAssetMappingTest(
         )
     }
 
-    @Test fun `maps to coin id`() {
-        assertThat(input.toApiCoinId()).isEqualTo(expected)
+    @Test
+    fun `maps to coin id`() {
+        Truth.assertThat(input.toApiCoinId()).isEqualTo(expected)
     }
 }

@@ -22,7 +22,7 @@ import org.robolectric.RobolectricTestRunner
  *
  * Test Goals:
  * - JSON config flags.
- * - OkHttpClient interceptor ordering and timeouts.
+ * - OkHttpClient interceptor ordering and timeouts. (Just For Test)
  * - EventListener factory wiring.
  * - Retrofit baseUrl and callFactory.
  *
