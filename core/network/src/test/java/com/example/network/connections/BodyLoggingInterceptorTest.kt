@@ -1,7 +1,7 @@
 package com.example.network.connections
 
 
-import com.example.network.interceptor.BodyLoggingInterceptor
+import com.example.network.interceptor.okhttp.BodyLoggingInterceptor
 import com.google.common.truth.Truth.assertThat
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient

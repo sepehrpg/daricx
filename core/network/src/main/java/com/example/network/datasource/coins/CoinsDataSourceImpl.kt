@@ -3,7 +3,13 @@ package com.example.network.datasource.coins
 import com.example.model.sort.CoinTickersOrder
 import com.example.model.sort.CoinsSort
 import com.example.model.sort.DexPairFormat
-import com.example.network.api.ApiService
+import com.example.network.api.getCoinDetailKtor
+import com.example.network.api.getCoinHistoricalChartKtor
+import com.example.network.api.getCoinHistoricalChartWithTimeRangeKtor
+import com.example.network.api.getCoinHistoricalDataByIdKtor
+import com.example.network.api.getCoinMarketsKtor
+import com.example.network.api.getCoinOHLCChartCandleKtor
+import com.example.network.api.getCoinTickersByIdKtor
 import com.example.network.model.coins.CoinDetailsDto
 import com.example.network.model.coins.CoinHistoricalChartDto
 import com.example.network.model.coins.CoinHistoricalDataDto
@@ -13,11 +19,17 @@ import com.example.network.model.coins.CoinsListDto
 import com.example.network.options.toApiOrderParam
 import com.example.network.options.toApiOrderParamOrNull
 import com.example.network.options.toDomain
+import io.ktor.client.HttpClient
 import javax.inject.Inject
 
-
+/**
+ * Ktor-based implementation of [CoinsDataSource].
+ *
+ * This replaces Retrofit calls with HttpClient + Ktor extensions,
+ * while keeping the same public API for the data layer.
+ */
 class CoinsDataSourceImpl @Inject constructor(
-    private val coinsApi: ApiService
+    private val httpClient: HttpClient,
 ) : CoinsDataSource {
 
     override suspend fun getCoinMarkets(
@@ -31,17 +43,25 @@ class CoinsDataSourceImpl @Inject constructor(
         locale: String?,
         precision: String?
     ): CoinsListDto {
-        return coinsApi.getCoinMarkets(
+        return httpClient.getCoinMarketsKtor(
             vsCurrency = vsCurrency,
-            page = page,
             ids = ids,
+            // names, symbols, includeTokens, category are currently not used in your DS API:
+            names = null,
+            symbols = null,
+            includeTokens = null,
+            category = null,
+            order = order?.toApiOrderParamOrNull(),
             perPage = perPage,
-            order = order?.toApiOrderParamOrNull (),
+            page = page,
             sparkline = sparkline,
             priceChangePercentage = priceChangePercentage,
             locale = locale,
             precision = precision
         )
+
+        // DEPRECATED (Retrofit)
+        // return coinsApi.getCoinMarkets(...)
     }
 
     override suspend fun getCoinDetail(
@@ -54,7 +74,7 @@ class CoinsDataSourceImpl @Inject constructor(
         sparkline: Boolean?,
         dexPairFormat: DexPairFormat
     ): CoinDetailsDto {
-        return coinsApi.getCoinDetail(
+        return httpClient.getCoinDetailKtor(
             id = id,
             localization = localization,
             tickers = tickers,
@@ -62,10 +82,12 @@ class CoinsDataSourceImpl @Inject constructor(
             communityData = communityData,
             developerData = developerData,
             sparkline = sparkline,
-            dexPairFormat = dexPairFormat.toDomain()
+            dexPairFormat = dexPairFormat.toDomain(), // map DexPairFormat → API string
         )
-    }
 
+        // DEPRECATED (Retrofit)
+        // return coinsApi.getCoinDetail(...)
+    }
 
     override suspend fun getCoinTickersById(
         id: String,
@@ -76,15 +98,18 @@ class CoinsDataSourceImpl @Inject constructor(
         page: Int?,
         order: CoinTickersOrder?
     ): CoinTickersDto {
-        return coinsApi.getCoinTickersById(
-            ids = id,
+        return httpClient.getCoinTickersByIdKtor(
+            id = id,
             exchangeIds = exchangeIds,
             includeExchangeLogo = includeExchangeLogo,
             depth = depth,
             dexPairFormat = dexPairFormat?.toDomain(),
             page = page,
-            order = order?.toApiOrderParam()
+            order = order?.toApiOrderParam(),
         )
+
+        // DEPRECATED (Retrofit)
+        // return coinsApi.getCoinTickersById(...)
     }
 
     override suspend fun getCoinHistoricalDataById(
@@ -92,11 +117,14 @@ class CoinsDataSourceImpl @Inject constructor(
         date: String,
         localization: Boolean
     ): CoinHistoricalDataDto {
-        return coinsApi.coinHistoricalDataByID(
+        return httpClient.getCoinHistoricalDataByIdKtor(
             id = id,
             date = date,
-            localization = localization
+            localization = localization,
         )
+
+        // DEPRECATED (Retrofit)
+        // return coinsApi.coinHistoricalDataByID(...)
     }
 
     override suspend fun getCoinHistoricalChart(
@@ -106,13 +134,16 @@ class CoinsDataSourceImpl @Inject constructor(
         interval: String?,
         precision: String?
     ): CoinHistoricalChartDto {
-        return coinsApi.coinHistoricalChart(
+        return httpClient.getCoinHistoricalChartKtor(
             id = id,
             vsCurrency = vsCurrency,
             days = days,
             interval = interval,
-            precision = precision
+            precision = precision,
         )
+
+        // DEPRECATED (Retrofit)
+        // return coinsApi.coinHistoricalChart(...)
     }
 
     override suspend fun getCoinHistoricalChartWithTimeRange(
@@ -122,13 +153,16 @@ class CoinsDataSourceImpl @Inject constructor(
         to: Long,
         precision: String?
     ): CoinHistoricalChartDto {
-        return coinsApi.coinHistoricalChartWithTimeRange(
+        return httpClient.getCoinHistoricalChartWithTimeRangeKtor(
             id = id,
             vsCurrency = vsCurrency,
             from = from,
             to = to,
-            precision = precision
+            precision = precision,
         )
+
+        // DEPRECATED (Retrofit)
+        // return coinsApi.coinHistoricalChartWithTimeRange(...)
     }
 
     override suspend fun getCoinOHLCChartCandle(
@@ -137,11 +171,14 @@ class CoinsDataSourceImpl @Inject constructor(
         days: String,
         precision: String?
     ): CoinOHLCChartCandleDto {
-        return coinsApi.coinOHLCChartCandle(
+        return httpClient.getCoinOHLCChartCandleKtor(
             id = id,
             vsCurrency = vsCurrency,
             days = days,
-            precision = precision
+            precision = precision,
         )
+
+        // DEPRECATED (Retrofit)
+        // return coinsApi.coinOHLCChartCandle(...)
     }
 }

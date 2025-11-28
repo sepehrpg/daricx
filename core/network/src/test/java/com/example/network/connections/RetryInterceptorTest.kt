@@ -1,7 +1,7 @@
 package com.example.network.connections
 
 
-import com.example.network.interceptor.RetryInterceptor
+import com.example.network.interceptor.okhttp.RetryInterceptor
 import com.google.common.truth.Truth.assertThat
 import okhttp3.OkHttpClient
 import okhttp3.Request

@@ -54,4 +54,23 @@ dependencies {
     // Chucker - only debug
     debugImplementation("com.github.chuckerteam.chucker:library:4.0.0")
     releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")
+
+
+    /** Ktor  */
+    // Ktor core + OkHttp engine
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.okhttp)
+    // ContentNegotiation + JSON
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    // Logging + Retry
+    implementation(libs.ktor.client.logging)
+    //implementation(libs.ktor.client.http.retry)
+
+    // KtorMonitor (need minSdk>=26)
+    //debugImplementation(libs.ktor.monitor.logging)
+    //releaseImplementation(libs.ktor.monitor.logging.no.op)
+
+
 }

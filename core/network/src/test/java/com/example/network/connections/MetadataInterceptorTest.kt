@@ -2,7 +2,7 @@ package com.example.network.connections
 
 
 import com.example.network.connections.TestUtils.jsonBody
-import com.example.network.interceptor.MetadataInterceptor
+import com.example.network.interceptor.okhttp.MetadataInterceptor
 import com.google.common.truth.Truth.assertThat
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType

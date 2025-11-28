@@ -5,9 +5,9 @@ import androidx.test.core.app.ApplicationProvider
 import android.content.Context
 import com.example.network.NetworkConfig
 import com.example.network.di.RetrofitModule
-import com.example.network.interceptor.AuthInterceptor
-import com.example.network.interceptor.MetadataInterceptor
-import com.example.network.interceptor.RetryInterceptor
+import com.example.network.interceptor.okhttp.AuthInterceptor
+import com.example.network.interceptor.okhttp.MetadataInterceptor
+import com.example.network.interceptor.okhttp.RetryInterceptor
 import com.google.common.truth.Truth.assertThat
 import kotlinx.serialization.json.Json
 import okhttp3.EventListener

@@ -1,4 +1,4 @@
-package com.example.network.interceptor
+package com.example.network.interceptor.okhttp
 
 import okhttp3.Interceptor
 import okhttp3.Response

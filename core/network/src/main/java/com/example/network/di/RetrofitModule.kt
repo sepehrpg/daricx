@@ -7,13 +7,13 @@ import com.chuckerteam.chucker.api.RetentionManager
 import com.example.common.config.AppVersionName
 import com.example.network.BuildConfig
 import com.example.network.NetworkConfig
-import com.example.network.NetworkConfig.TIMEOUT_SECONDS
+import com.example.network.NetworkConfig.TIMEOUT_MILLIS
 import com.example.network.api.ApiService
-import com.example.network.interceptor.AuthInterceptor
-import com.example.network.interceptor.BodyLoggingInterceptor
-import com.example.network.interceptor.MetadataInterceptor
-import com.example.network.interceptor.OkHttpEventLogger
-import com.example.network.interceptor.RetryInterceptor
+import com.example.network.interceptor.okhttp.AuthInterceptor
+import com.example.network.interceptor.okhttp.BodyLoggingInterceptor
+import com.example.network.interceptor.okhttp.MetadataInterceptor
+import com.example.network.interceptor.okhttp.OkHttpEventLogger
+import com.example.network.interceptor.okhttp.RetryInterceptor
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -31,13 +31,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 internal object RetrofitModule {
-
-    @Provides @Singleton
-    fun providesNetworkJson(): Json = Json {
-        ignoreUnknownKeys = true
-        isLenient = true
-        explicitNulls = false
-    }
 
 
     @Provides
@@ -108,9 +101,9 @@ internal object RetrofitModule {
                 }
             }
             .eventListenerFactory(eventListenerFactory) // event listener factory class
-            .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .connectTimeout(TIMEOUT_MILLIS, TimeUnit.SECONDS)
+            .readTimeout(TIMEOUT_MILLIS, TimeUnit.SECONDS)
+            .writeTimeout(TIMEOUT_MILLIS, TimeUnit.SECONDS)
             .build()
     }
 

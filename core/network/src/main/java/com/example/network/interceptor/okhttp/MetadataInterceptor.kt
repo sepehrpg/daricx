@@ -1,6 +1,5 @@
-package com.example.network.interceptor
+package com.example.network.interceptor.okhttp
 
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
