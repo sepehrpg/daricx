@@ -120,7 +120,7 @@ import kotlinx.serialization.Serializable
         @SerialName("native_currency")
         val nativeCurrency: Double?,
         @SerialName("usd")
-        val usd: Int?
+        val usd: Double?
     )
 
     @Serializable
@@ -194,7 +194,7 @@ import kotlinx.serialization.Serializable
         @SerialName("native_currency")
         val nativeCurrency: Int?,
         @SerialName("usd")
-        val usd: Int?
+        val usd: Double?
     )
 
     @Serializable

@@ -5,17 +5,17 @@ import com.example.network.model.exchanges.ExchangeVolumeChartDto
 import com.example.network.model.mappers.exchanges.toDomain
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertNull
-
 
 /**
  * Tests for decoding `/exchanges/{id}/volume_chart` response and mapping to domain.
  *
  * Covers:
  * - Decoding with "string numeric" volumes.
- * - Mapping list -> domain.
+ * - Mapping DTO -> domain.
  * - Mixed numeric/string/null volume values.
  * - Empty payloads.
  */
@@ -32,25 +32,28 @@ class ExchangeVolumeChartMapperTest {
     """.trimIndent()
 
     @Test
-    fun `decodes string-numeric volumes into DTO list`() {
-        val dtoList: List<ExchangeVolumeChartDto> = json.decodeFromString(sampleStringNumbers)
+    fun `decodes string-numeric volumes into DTO`() {
+        // الان کل پاسخ به شکل یک ExchangeVolumeChartDto دیکد می‌شود
+        val dto: ExchangeVolumeChartDto = json.decodeFromString(sampleStringNumbers)
 
-        assertEquals(3, dtoList.size)
+        assertEquals(3, dto.points.size)
 
-        assertEquals(1711792200000L, dtoList[0].timestampMillis)
-        assertEquals(306800.0517941023777005, dtoList[0].volume!!, 1e-9)
+        assertEquals(1711792200000L, dto.points[0].timestampMillis)
+        assertEquals(306800.0517941023777005, dto.points[0].volume!!, 1e-9)
 
-        assertEquals(1711795800000L, dtoList[1].timestampMillis)
-        assertEquals(302561.8185582217570913, dtoList[1].volume!!, 1e-9)
+        assertEquals(1711795800000L, dto.points[1].timestampMillis)
+        assertEquals(302561.8185582217570913, dto.points[1].volume!!, 1e-9)
 
-        assertEquals(1711799400000L, dtoList[2].timestampMillis)
-        assertEquals(298240.5127048246776691, dtoList[2].volume!!, 1e-9)
+        assertEquals(1711799400000L, dto.points[2].timestampMillis)
+        assertEquals(298240.5127048246776691, dto.points[2].volume!!, 1e-9)
     }
 
     @Test
-    fun `maps DTO list to domain correctly`() {
-        val dtoList: List<ExchangeVolumeChartDto> = json.decodeFromString(sampleStringNumbers)
-        val domain: ExchangeVolumeChart = dtoList.toDomain()
+    fun `maps DTO to domain correctly`() {
+        val dto: ExchangeVolumeChartDto = json.decodeFromString(sampleStringNumbers)
+
+        // fun ExchangeVolumeChartDto.toDomain(): ExchangeVolumeChart
+        val domain: ExchangeVolumeChart = dto.toDomain()
 
         assertEquals(3, domain.points.size)
 
@@ -69,8 +72,8 @@ class ExchangeVolumeChartMapperTest {
             ]
         """.trimIndent()
 
-        val dtoList: List<ExchangeVolumeChartDto> = json.decodeFromString(mixed)
-        val domain = dtoList.toDomain()
+        val dto: ExchangeVolumeChartDto = json.decodeFromString(mixed)
+        val domain: ExchangeVolumeChart = dto.toDomain()
 
         assertEquals(3, domain.points.size)
 
@@ -82,10 +85,11 @@ class ExchangeVolumeChartMapperTest {
     @Test
     fun `handles empty payload`() {
         val empty = "[]"
-        val dtoList: List<ExchangeVolumeChartDto> = json.decodeFromString(empty)
-        val domain = dtoList.toDomain()
 
-        assertTrue(dtoList.isEmpty())
+        val dto: ExchangeVolumeChartDto = json.decodeFromString(empty)
+        val domain: ExchangeVolumeChart = dto.toDomain()
+
+        assertTrue(dto.points.isEmpty())
         assertTrue(domain.points.isEmpty())
     }
 }

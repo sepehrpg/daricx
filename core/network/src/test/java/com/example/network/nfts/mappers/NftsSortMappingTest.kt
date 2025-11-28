@@ -1,4 +1,4 @@
-package com.example.network.nfts
+package com.example.network.nfts.mappers
 
 
 import com.example.model.sort.NftsSort

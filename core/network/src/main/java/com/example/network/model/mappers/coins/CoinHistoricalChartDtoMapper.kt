@@ -3,9 +3,6 @@ package com.example.network.model.mappers.coins
 import com.example.model.coins.CoinHistoricalChart
 import com.example.network.model.coins.CoinHistoricalChartDto
 import com.example.network.model.coins.CoinHistoricalChartPointDto
-
-
-
 fun CoinHistoricalChartDto.toDomain(): CoinHistoricalChart =
     CoinHistoricalChart(
         prices       = (prices ?: emptyList()).map { it.toDomain() },

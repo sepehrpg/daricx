@@ -1,4 +1,4 @@
-package com.example.network.coins
+package com.example.network.coins.mapper
 
 import com.example.model.coins.CoinDetails
 import com.example.network.model.coins.CoinDetailsDto
@@ -8,10 +8,10 @@ import org.junit.Assert
 import org.junit.Test
 
 /**
- * Unit test for verifying CoinDto → Coin mapping.
+ * Unit test for verifying CoinDetailsDto → CoinDetails mapping.
  * Covers nested fields, map structures, and safe default handling.
  */
-class CoinMapperTest {
+class CoinDetailMapperTest {
 
     @Test
     fun `map full CoinDto to domain correctly`() {
@@ -28,14 +28,29 @@ class CoinMapperTest {
             previewListing = false,
             webSlug = "bitcoin",
             lastUpdated = "2025-10-10T00:00:00Z",
+
             additionalNotices = listOf(JsonPrimitive("Test notice")),
             categories = listOf("cryptocurrency", "store-of-value"),
             statusUpdates = listOf(JsonPrimitive("ok")),
+
+            // description: {"en": "...", "fa": "..."}
+            description = mapOf(
+                "en" to "Bitcoin description",
+                "fa" to "توضیح بیت‌کوین"
+            ),
+
+            // localization: {"en": "Bitcoin", "fa": "بیت کوین"}
+            localization = mapOf(
+                "en" to "Bitcoin",
+                "fa" to "بیت کوین"
+            ),
+
             image = CoinDetailsDto.Image(
                 thumb = "thumb_url",
                 small = "small_url",
                 large = "large_url"
             ),
+
             links = CoinDetailsDto.Links(
                 homepage = listOf("https://bitcoin.org"),
                 blockchainSite = listOf("https://blockchain.info"),
@@ -54,19 +69,20 @@ class CoinMapperTest {
                 snapshotUrl = JsonPrimitive("https://snapshot.com"),
                 whitepaper = "https://bitcoin.org/bitcoin.pdf"
             ),
-            description = CoinDetailsDto.Description(
-                translations = mapOf("en" to "Bitcoin is a decentralized currency.")
+
+            // platforms: {"ethereum": "0x..."}
+            platforms = mapOf(
+                "ethereum" to "0xabc"
             ),
-            localization = CoinDetailsDto.Localization(
-                translations = mapOf("en" to "Bitcoin", "fa" to "بیت کوین")
-            ),
-            platforms = CoinDetailsDto.Platforms(x = "Ethereum"),
-            detailPlatforms = CoinDetailsDto.DetailPlatforms(
-                x = CoinDetailsDto.DetailPlatforms.X(
+
+            // detail_platforms: {"ethereum": { contract_address, decimal_place }, ...}
+            detailPlatforms = mapOf(
+                "ethereum" to CoinDetailsDto.DetailPlatformDto(
                     contractAddress = "0xabc",
                     decimalPlace = JsonPrimitive(18)
                 )
             ),
+
             communityData = CoinDetailsDto.CommunityData(
                 facebookLikes = JsonPrimitive("10000"),
                 redditAccountsActive48h = 200,
@@ -75,6 +91,7 @@ class CoinMapperTest {
                 redditSubscribers = 500000,
                 telegramChannelUserCount = JsonPrimitive("25000")
             ),
+
             developerData = CoinDetailsDto.DeveloperData(
                 forks = 1200,
                 stars = 34000,
@@ -93,10 +110,12 @@ class CoinMapperTest {
                     deletions = 80
                 )
             ),
+
             marketCapRank = 1,
-            watchlistPortfolioUsers = 1000000,
+            watchlistPortfolioUsers = 1_000_000,
             sentimentVotesUpPercentage = 80.5,
             sentimentVotesDownPercentage = 19.5,
+
             tickers = listOf(
                 CoinDetailsDto.Ticker(
                     base = "BTC",
@@ -116,7 +135,7 @@ class CoinMapperTest {
                     convertedVolume = CoinDetailsDto.Ticker.ConvertedVolume(
                         btc = 25000.0,
                         eth = 1500.0,
-                        usd = 100000000.0
+                        usd = 100_000_000.0
                     ),
                     trustScore = "green",
                     bidAskSpreadPercentage = 0.02,
@@ -132,41 +151,32 @@ class CoinMapperTest {
                     targetCoinId = null
                 )
             ),
+
             marketData = CoinDetailsDto.MarketData(
-                currentPrice = CoinDetailsDto.MarketData.CurrentPrice(mapOf("usd" to 50000.0)),
-                ath = CoinDetailsDto.MarketData.Ath(mapOf("usd" to 69000.0)),
-                athChangePercentage = CoinDetailsDto.MarketData.AthChangePercentage(mapOf("usd" to -27.5)),
-                athDate = CoinDetailsDto.MarketData.AthDate(mapOf("usd" to "2021-11-10")),
-                atl = CoinDetailsDto.MarketData.Atl(mapOf("usd" to 65.0)),
-                atlChangePercentage = CoinDetailsDto.MarketData.AtlChangePercentage(mapOf("usd" to 76800.0)),
-                atlDate = CoinDetailsDto.MarketData.AtlDate(mapOf("usd" to "2013-07-06")),
-                marketCap = CoinDetailsDto.MarketData.MarketCap(mapOf("usd" to 1_000_000_000_000.0)),
-                totalVolume = CoinDetailsDto.MarketData.TotalVolume(mapOf("usd" to 50_000_000_000.0)),
-                high24h = CoinDetailsDto.MarketData.High24h(mapOf("usd" to 50500.0)),
-                low24h = CoinDetailsDto.MarketData.Low24h(mapOf("usd" to 49500)),
+                currentPrice = mapOf("usd" to 50000.0),
+                ath = mapOf("usd" to 69000.0),
+                athChangePercentage = mapOf("usd" to -27.5),
+                athDate = mapOf("usd" to "2021-11-10"),
+                atl = mapOf("usd" to 65.0),
+                atlChangePercentage = mapOf("usd" to 76800.0),
+                atlDate = mapOf("usd" to "2013-07-06"),
+                marketCap = mapOf("usd" to 1_000_000_000_000.0),
+                totalVolume = mapOf("usd" to 50_000_000_000.0),
+                high24h = mapOf("usd" to 50500.0),
+                low24h = mapOf("usd" to 49500.0),
                 priceChange24h = 1000.0,
-                priceChange24hInCurrency = CoinDetailsDto.MarketData.PriceChange24hInCurrency(
-                    mapOf(
-                        "usd" to 1000.0
-                    )
-                ),
+                priceChange24hInCurrency = mapOf("usd" to 1000.0),
                 priceChangePercentage24h = 2.0,
-                priceChangePercentage24hInCurrency = CoinDetailsDto.MarketData.PriceChangePercentage24hInCurrency(
-                    mapOf("usd" to 2.0)
-                ),
-                fullyDilutedValuation = CoinDetailsDto.MarketData.FullyDilutedValuation(mapOf("usd" to 1_200_000_000_000.0)),
-                totalSupply = 21000000.0,
-                circulatingSupply = 19000000.0,
-                maxSupply = 21000000.0,
+                priceChangePercentage24hInCurrency = mapOf("usd" to 2.0),
+                fullyDilutedValuation = mapOf("usd" to 1_200_000_000_000.0),
+                totalSupply = 21_000_000.0,
+                circulatingSupply = 19_000_000.0,
+                maxSupply = 21_000_000.0,
                 maxSupplyInfinite = false,
                 marketCapRank = 1,
                 marketCapChange24h = 2_000_000_000.0,
-                marketCapChange24hInCurrency = CoinDetailsDto.MarketData.MarketCapChange24hInCurrency(
-                    mapOf("usd" to 2_000_000_000.0)
-                ),
-                marketCapChangePercentage24hInCurrency = CoinDetailsDto.MarketData.MarketCapChangePercentage24hInCurrency(
-                    mapOf("usd" to 0.2)
-                ),
+                marketCapChange24hInCurrency = mapOf("usd" to 2_000_000_000.0),
+                marketCapChangePercentage24hInCurrency = mapOf("usd" to 0.2),
                 lastUpdated = "2025-10-10T00:00:00Z"
             )
         )
@@ -208,8 +218,8 @@ class CoinMapperTest {
         Assert.assertEquals(69000.0, md.ath?.get("usd"))
         Assert.assertEquals(50500.0, md.high24h?.get("usd"))
         Assert.assertEquals(49500.0, md.low24h?.get("usd"))
-        Assert.assertEquals(1_000_000_000_000L, md.marketCap?.get("usd"))
-        Assert.assertEquals(50_000_000_000L, md.totalVolume?.get("usd"))
+        Assert.assertEquals(1_000_000_000_000.0, md.marketCap?.get("usd"))
+        Assert.assertEquals(50_000_000_000.0, md.totalVolume?.get("usd"))
 
         // Ticker checks
         val ticker = coin.tickers?.first()!!

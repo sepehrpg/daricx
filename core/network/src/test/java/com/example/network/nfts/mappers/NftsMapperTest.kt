@@ -1,9 +1,8 @@
-package com.example.network.nfts
+package com.example.network.nfts.mappers
 
 
 import com.example.model.nfts.Nfts
 import com.example.network.model.nfts.NftsDto
-import com.example.network.model.mappers.coins.toDomain
 import com.example.network.model.mappers.nfts.toDomain
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test

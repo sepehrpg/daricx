@@ -37,4 +37,88 @@ internal object SampleJsonCoins {
           }
         ]
     """.trimIndent()
+
+    // Minimal but valid Coin Detail payload
+     val sampleCoinDetailResponse = """
+        {
+          "id": "bitcoin",
+          "symbol": "btc",
+          "name": "Bitcoin",
+          "market_cap_rank": 1,
+          "market_data": {
+            "current_price": { "usd": 50000.0 },
+            "market_cap": { "usd": 1000000000000.0 }
+          }
+        }
+    """.trimIndent()
+
+    // Minimal Coin Tickers payload
+     val sampleCoinTickersResponse = """
+        {
+          "name": "Bitcoin",
+          "tickers": [
+            {
+              "base": "BTC",
+              "target": "USDT",
+              "market": {
+                "name": "Binance",
+                "identifier": "binance",
+                "has_trading_incentive": false
+              },
+              "last": 50000.0,
+              "volume": 100000.0,
+              "trust_score": "green",
+              "bid_ask_spread_percentage": 0.01,
+              "is_anomaly": false,
+              "is_stale": false,
+              "timestamp": "2025-01-01T00:00:00Z",
+              "last_traded_at": "2025-01-01T00:01:00Z",
+              "last_fetch_at": "2025-01-01T00:02:00Z",
+              "trade_url": "https://binance.com/trade/BTC_USDT",
+              "token_info_url": null,
+              "coin_id": "bitcoin",
+              "target_coin_id": "tether",
+              "converted_last": { "btc": 1.0, "eth": 15.0, "usd": 50000.0 },
+              "converted_volume": { "btc": 1000.0, "eth": 15000.0, "usd": 50000000.0 }
+            }
+          ]
+        }
+    """.trimIndent()
+
+    // Minimal Coin History payload
+     val sampleCoinHistoryResponse = """
+        {
+          "id": "bitcoin",
+          "symbol": "btc",
+          "name": "Bitcoin",
+          "market_data": {
+            "current_price": { "usd": 48000.0 },
+            "total_volume": { "usd": 120000000.0 }
+          }
+        }
+    """.trimIndent()
+
+    // Market chart / range payload
+     val sampleMarketChartResponse = """
+        {
+          "prices": [
+            [1711929600000, 50000.0],
+            [1712016000000, 50500.0]
+          ],
+          "market_caps": [
+            [1711929600000, 1000000000000.0]
+          ],
+          "total_volumes": [
+            [1711929600000, 50000000000.0]
+          ]
+        }
+    """.trimIndent()
+
+    // OHLC payload (list of 5-tuples)
+     val sampleOhlcResponse = """
+        [
+          [1711929600000, 50000.0, 51000.0, 49500.0, 50500.0],
+          [1712016000000, 50500.0, 51500.0, 50000.0, 51000.0]
+        ]
+    """.trimIndent()
 }

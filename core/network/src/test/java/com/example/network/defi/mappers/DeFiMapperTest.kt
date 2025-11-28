@@ -1,11 +1,9 @@
-package com.example.network.defi
-
+package com.example.network.defi.mappers
 
 import com.example.model.GlobalDeFiMarketData
 import com.example.network.model.GlobalDeFiMarketDataDto
-import com.example.network.model.mappers.coins.toDomain
 import com.example.network.model.mappers.toDomain
-import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth
 import org.junit.Test
 
 /**
@@ -21,7 +19,8 @@ import org.junit.Test
  */
 class DeFiMapperTest {
 
-    @Test fun `maps dto-data to domain`() {
+    @Test
+    fun `maps dto-data to domain`() {
         val dto = GlobalDeFiMarketDataDto(
             data = GlobalDeFiMarketDataDto.Data(
                 defiMarketCap = "100.0",
@@ -37,18 +36,19 @@ class DeFiMapperTest {
         val domain: GlobalDeFiMarketData? = dto.toDomain()
         requireNotNull(domain)
 
-        assertThat(domain.defiMarketCap).isEqualTo("100.0")
-        assertThat(domain.ethMarketCap).isEqualTo("400.0")
-        assertThat(domain.defiToEthRatio).isEqualTo("0.25")
-        assertThat(domain.tradingVolume24h).isEqualTo("50.0")
-        assertThat(domain.defiDominance).isEqualTo("3.8")
-        assertThat(domain.topCoinName).isEqualTo("Lido Staked Ether")
-        assertThat(domain.topCoinDefiDominance).isWithin(0.000001).of(30.5)
+        Truth.assertThat(domain.defiMarketCap).isEqualTo("100.0")
+        Truth.assertThat(domain.ethMarketCap).isEqualTo("400.0")
+        Truth.assertThat(domain.defiToEthRatio).isEqualTo("0.25")
+        Truth.assertThat(domain.tradingVolume24h).isEqualTo("50.0")
+        Truth.assertThat(domain.defiDominance).isEqualTo("3.8")
+        Truth.assertThat(domain.topCoinName).isEqualTo("Lido Staked Ether")
+        Truth.assertThat(domain.topCoinDefiDominance).isWithin(0.000001).of(30.5)
     }
 
-    @Test fun `null data maps to null domain`() {
+    @Test
+    fun `null data maps to null domain`() {
         val dto = GlobalDeFiMarketDataDto(data = null)
         val domain = dto.toDomain()
-        assertThat(domain).isNull()
+        Truth.assertThat(domain).isNull()
     }
 }

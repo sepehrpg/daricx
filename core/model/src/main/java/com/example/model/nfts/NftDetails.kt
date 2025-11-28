@@ -62,7 +62,7 @@ package com.example.model.nfts
 
      data class FloorPrice(
         val nativeCurrency: Double?,
-        val usd: Int?
+        val usd: Double?
     )
 
      data class FloorPrice14dPercentageChange(
@@ -108,7 +108,7 @@ package com.example.model.nfts
 
      data class MarketCap(
         val nativeCurrency: Int?,
-        val usd: Int?
+        val usd: Double?
     )
 
      data class MarketCap24hPercentageChange(

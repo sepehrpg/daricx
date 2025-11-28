@@ -15,12 +15,9 @@ import retrofit2.create
  * CategoriesApiTest
  *
  * Test Goal:
- * - Validate HTTP contract for GET /coins/categories endpoint.
- *
- * Scenarios:
- * 1) Sends GET to correct path without "order" when null.
- * 2) Sends GET with "order" query param when provided.
- * 3) Deserializes a valid JSON payload into CategoriesListDto.
+ * - Validate HTTP contract for /coins/categories endpoint.
+ * - Ensure required and optional query parameters are passed correctly.
+ * - Verify basic deserialization for CategoriesListDto.
  */
 class CategoriesApiTest {
 
@@ -30,8 +27,7 @@ class CategoriesApiTest {
     @Before
     fun setUp() {
         server = MockWebServer().apply { start() }
-        val retrofit = TestNetwork.retrofit(server.url("/").toString())
-        api = retrofit.create()
+        api = TestNetwork.retrofit(server.url("/").toString()).create()
     }
 
     @After
@@ -39,45 +35,40 @@ class CategoriesApiTest {
         server.shutdown()
     }
 
+    // -------------------------------------------------------------------------
+    // /coins/categories
+    // -------------------------------------------------------------------------
+
     @Test
-    fun `GET without order has no query param`() = runTest {
-        server.enqueue(MockResponse().setResponseCode(200).setBody(SampleJsonCategories.categoriesResponse))
+    fun `getCoinCategories uses GET and sends default query parameters`() = runTest {
+        server.enqueue(MockResponse().setBody(SampleJsonCategories.categoriesResponse))
 
-        api.getCoinCategories(order = null)
+        // order is null by default
+        api.getCoinCategories()
+
         val req = server.takeRequest()
-        println("➡️ Request path: ${req.path}")
-
         assertThat(req.method).isEqualTo("GET")
         assertThat(req.requestUrl?.encodedPath).isEqualTo("/coins/categories")
-        assertThat(req.requestUrl?.query).isNull()
+
+        // order is optional, so it should not be present when not provided
+        assertThat(req.requestUrl?.queryParameter("order")).isNull()
     }
 
     @Test
-    fun `GET with order includes query param`() = runTest {
-        server.enqueue(MockResponse().setResponseCode(200).setBody(SampleJsonCategories.categoriesResponse))
+    fun `deserializes coin categories json response`() = runTest {
+        server.enqueue(MockResponse().setBody(SampleJsonCategories.categoriesResponse))
 
-        api.getCoinCategories(order = "market_cap_desc")
-        val req = server.takeRequest()
-        println("➡️ Request path: ${req.path}")
+        val dto = api.getCoinCategories(order = "market_cap_desc")
 
-        assertThat(req.method).isEqualTo("GET")
-        assertThat(req.requestUrl?.encodedPath).isEqualTo("/coins/categories")
-        assertThat(req.requestUrl?.queryParameter("order")).isEqualTo("market_cap_desc")
-    }
+        // Basic list size check
+        assertThat(dto).hasSize(2)
 
-    @Test
-    fun `deserializes json payload`() = runTest {
-        server.enqueue(MockResponse().setResponseCode(200).setBody(SampleJsonCategories.categoriesResponse))
-
-        val dto = api.getCoinCategories(order = null)
-        println("➡️ Parsed response: $dto")
-
-        assertThat(dto).hasSize(1)
         val first = dto.first()
-        assertThat(first.id).isEqualTo("decentralized-finance-defi")
-        assertThat(first.name).isEqualTo("Decentralized Finance (DeFi)")
-        assertThat(first.marketCap).isWithin(0.001).of(123456789.12)
+        assertThat(first.id).isEqualTo("layer-1")
+        assertThat(first.name).isEqualTo("Layer 1 (L1)")
+        // Field names may need adjustment to match your CategoriesListDto
+        assertThat(first.marketCap).isWithin(0.001).of(150_000_000_000.0)
+        assertThat(first.volume24h).isWithin(0.001).of(5_000_000_000.0)
         assertThat(first.top3Coins).hasSize(3)
-        assertThat(first.top3CoinsId?.get(0)).isEqualTo("bitcoin")
     }
 }

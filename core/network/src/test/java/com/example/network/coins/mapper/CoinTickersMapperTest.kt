@@ -25,7 +25,7 @@ class CoinTickersMapperTest {
                     convertedLast = CoinTickersDto.Ticker.ConvertedLast(
                         btc = 1.000205,
                         eth = 20.291404,
-                        usd = 69498
+                        usd = 69498.0
                     ),
                     convertedVolume = CoinTickersDto.Ticker.ConvertedVolume(
                         btc = 20249.0,
@@ -64,7 +64,7 @@ class CoinTickersMapperTest {
         TestCase.assertEquals(0.010014, t0.bidAskSpreadPercentage)
         TestCase.assertEquals("bitcoin", t0.coinId)
         TestCase.assertEquals(1_234_567_890.0, t0.coinMcapUsd)
-        TestCase.assertEquals(69498, t0.convertedLast?.usd)
+        TestCase.assertEquals(69498.0, t0.convertedLast?.usd)
         TestCase.assertEquals(1_406_996_874.0, t0.convertedVolume?.usd)
         TestCase.assertEquals(false, t0.isAnomaly)
         TestCase.assertEquals(false, t0.isStale)

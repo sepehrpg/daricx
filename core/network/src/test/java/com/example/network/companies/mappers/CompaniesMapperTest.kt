@@ -1,13 +1,10 @@
-package com.example.network.companies
-
+package com.example.network.companies.mappers
 
 import com.example.model.CompaniesTreasury
 import com.example.network.model.CompaniesTreasuryDto
-import com.example.network.model.mappers.coins.toDomain
 import com.example.network.model.mappers.toDomain
-import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth
 import org.junit.Test
-
 
 /**
  * CompaniesMapperTest
@@ -21,7 +18,8 @@ import org.junit.Test
  */
 class CompaniesMapperTest {
 
-    @Test fun `maps dto to domain with companies list`() {
+    @Test
+    fun `maps dto to domain with companies list`() {
         val dto = CompaniesTreasuryDto(
             totalHoldings = 10.5,
             totalValueUsd = 100_000_000.0,
@@ -40,10 +38,10 @@ class CompaniesMapperTest {
         )
 
         val domain: CompaniesTreasury = dto.toDomain()
-        assertThat(domain.totalHoldings).isWithin(0.0001).of(10.5)
-        assertThat(domain.totalValueUsd).isWithin(0.0001).of(100_000_000.0)
-        assertThat(domain.marketCapDominance).isWithin(0.0001).of(0.42)
-        assertThat(domain.companies?.first()?.name).isEqualTo("ACME Corp")
-        assertThat(domain.companies?.first()?.totalCurrentValueUsd).isWithin(0.0001).of(25_000_000.0)
+        Truth.assertThat(domain.totalHoldings).isWithin(0.0001).of(10.5)
+        Truth.assertThat(domain.totalValueUsd).isWithin(0.0001).of(100_000_000.0)
+        Truth.assertThat(domain.marketCapDominance).isWithin(0.0001).of(0.42)
+        Truth.assertThat(domain.companies?.first()?.name).isEqualTo("ACME Corp")
+        Truth.assertThat(domain.companies?.first()?.totalCurrentValueUsd).isWithin(0.0001).of(25_000_000.0)
     }
 }

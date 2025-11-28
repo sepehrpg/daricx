@@ -1,9 +1,8 @@
-package com.example.network.categories
-
+package com.example.network.categories.mapper
 
 import com.example.model.sort.CategoriesSort
 import com.example.network.options.toApiOrderParam
-import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -35,7 +34,8 @@ class CategoriesSortMappingTest(
         )
     }
 
-    @Test fun `maps enum to correct api string`() {
-        assertThat(input.toApiOrderParam()).isEqualTo(expected)
+    @Test
+    fun `maps enum to correct api string`() {
+        Truth.assertThat(input.toApiOrderParam()).isEqualTo(expected)
     }
 }

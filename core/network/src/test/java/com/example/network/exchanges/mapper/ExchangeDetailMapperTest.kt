@@ -79,7 +79,7 @@ class ExchangeDetailMapperTest {
         ),
         convertedVolume = ExchangeDetailDto.Ticker.ConvertedVolume(
             btc = 22428.0,
-            eth = 662301,
+            eth = 662301.0,
             usd = convUsd
         ),
         isAnomaly = false,
@@ -158,8 +158,7 @@ class ExchangeDetailMapperTest {
         Assert.assertEquals("binance", t.market?.identifier)
         Assert.assertEquals("green", t.trustScore)
 
-        // convertedVolume.usd must be rounded to Long (banker's rounding already applied by roundToLong)
-        Assert.assertEquals(2_353_896_772L, t.convertedVolume?.usd)
+        Assert.assertEquals(2_353_896_772.0, t.convertedVolume?.usd?:0.0, 0.0)
     }
 
     @Test
@@ -235,21 +234,19 @@ class ExchangeDetailMapperTest {
     }
 
     @Test
-    fun map_convertedVolumeUsd_rounding_bankersRule_ok() {
-        // 10.4 → 10
+    fun map_convertedVolumeUsd_values_ok() {
+
         val d1 = emptyDto().copy(tickers = listOf(ticker(convUsd = 10.4)))
         val u1 = d1.toDomain().tickers!!.first()!!.convertedVolume!!.usd
-        Assert.assertEquals(10L, u1)
+        Assert.assertEquals(10.4, u1!!, 0.0)
 
-        // 10.5 → 10 (ties-to-even)
         val d2 = emptyDto().copy(tickers = listOf(ticker(convUsd = 10.5)))
         val u2 = d2.toDomain().tickers!!.first()!!.convertedVolume!!.usd
-        Assert.assertEquals(11L, u2)
+        Assert.assertEquals(10.5, u2!!, 0.0)
 
-        // 11.5 → 12 (ties-to-even)
         val d3 = emptyDto().copy(tickers = listOf(ticker(convUsd = 11.5)))
         val u3 = d3.toDomain().tickers!!.first()!!.convertedVolume!!.usd
-        Assert.assertEquals(12L, u3)
+        Assert.assertEquals(11.5, u3!!, 0.0)
     }
 
     @Test

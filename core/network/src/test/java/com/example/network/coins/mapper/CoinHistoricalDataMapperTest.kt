@@ -18,8 +18,8 @@ class CoinHistoricalDataDtoMapperTest {
             communityData = CoinHistoricalDataDto.CommunityData(
                 facebookLikes = JsonPrimitive(1234),
                 redditAccountsActive48h = JsonPrimitive("56.5"),
-                redditAverageComments48h = 7,
-                redditAveragePosts48h = 2,
+                redditAverageComments48h = 7.0,
+                redditAveragePosts48h = 2.0,
                 redditSubscribers = JsonNull
             ),
             developerData = CoinHistoricalDataDto.DeveloperData(
@@ -63,8 +63,8 @@ class CoinHistoricalDataDtoMapperTest {
         // CommunityData
         assertEquals(1234L, domain.communityData?.facebookLikes)
         assertEquals(56.5, domain.communityData?.redditAccountsActive48h)
-        assertEquals(7, domain.communityData?.redditAverageComments48h)
-        assertEquals(2, domain.communityData?.redditAveragePosts48h)
+        assertEquals(7.0, domain.communityData?.redditAverageComments48h)
+        assertEquals(2.0, domain.communityData?.redditAveragePosts48h)
         assertNull(domain.communityData?.redditSubscribers)
 
         // DeveloperData

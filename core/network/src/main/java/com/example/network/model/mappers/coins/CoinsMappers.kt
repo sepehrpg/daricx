@@ -4,11 +4,6 @@ import com.example.model.coins.Coins
 import com.example.model.coins.FavoriteCoin
 import com.example.network.model.coins.CoinsDto
 
-
-
-
-
-
 /**
  * Maps the network DTO for ROI to the domain model for ROI.
  * It provides default values for any null fields from the API.
