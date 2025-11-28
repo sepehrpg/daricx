@@ -10,7 +10,6 @@ pluginManagement {
         }
         mavenCentral()
         gradlePluginPortal()
-        
     }
 }
 dependencyResolutionManagement {
@@ -18,6 +17,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
 }
 rootProject.name = "Daricx"

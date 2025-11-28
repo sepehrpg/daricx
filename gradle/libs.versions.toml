@@ -100,10 +100,14 @@ gson = "2.10.1"
 protobuf = "4.28.2"
 # Protobuf Gradle Plugin
 protobufPlugin = "0.9.4"
-# Retrofit Networking Library
+# Retrofit  Library
 retrofit = "2.11.0"
 # Retrofit Converter for KotlinX Serialization
 retrofitKotlinxSerializationJson = "1.0.0"
+# Ktor Library
+ktor = "3.3.3"
+ktorMonitorLogging = "1.7.5"
+ktorMonitorLoggingNoOp = "1.7.5"
 ## -----------------------------------------------------------------------------------------------
 
 ## Background Tasks & Architecture
@@ -269,6 +273,8 @@ kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", vers
 kotlinx-coroutines-guava = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-guava", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
+ktor-monitor-logging = { module = "ro.cosminmihu.ktor:ktor-monitor-logging", version.ref = "ktorMonitorLogging" }
+ktor-monitor-logging-no-op = { module = "ro.cosminmihu.ktor:ktor-monitor-logging-no-op", version.ref = "ktorMonitorLoggingNoOp" }
 lint-api = { group = "com.android.tools.lint", name = "lint-api", version.ref = "androidTools" }
 lint-checks = { group = "com.android.tools.lint", name = "lint-checks", version.ref = "androidTools" }
 lint-tests = { group = "com.android.tools.lint", name = "lint-tests", version.ref = "androidTools" }
@@ -326,6 +332,18 @@ vico-multiplatform-m2 = { group = "com.patrykandpatrick.vico", name = "multiplat
 vico-multiplatform-m3 = { group = "com.patrykandpatrick.vico", name = "multiplatform-m3", version.ref = "vico" }
 # For the Android view system.
 vico-views = { group = "com.patrykandpatrick.vico", name = "views", version.ref = "vico" }
+## -----------------------------------------------------------------------------------------------
+
+# Ktor
+## -----------------------------------------------------------------------------------------------
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-client-http-retry = { module = "io.ktor:ktor-client-http-retry", version.ref = "ktor" }
 ## -----------------------------------------------------------------------------------------------
 
 
