@@ -28,12 +28,6 @@ dependencies {
     implementation(libs.coil.kt.svg)
     implementation(libs.kotlinx.serialization.json)
 
-    // Retrofit
-    implementation(libs.retrofit.core)
-    implementation(libs.retrofit.kotlin.serialization)
-    implementation(libs.okhttp.logging)
-
-
 
     /** Unit Test */
     testImplementation(libs.junit)
@@ -50,10 +44,6 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-
-    // Chucker - only debug
-    debugImplementation("com.github.chuckerteam.chucker:library:4.0.0")
-    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")
 
 
     /** Ktor  */

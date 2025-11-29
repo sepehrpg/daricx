@@ -1,6 +1,6 @@
 package com.example.network.connections
 
-import com.example.network.interceptor.ktor.MetadataPlugin
+import com.example.network.interceptor.MetadataPlugin
 import io.ktor.http.contentType
 
 import com.google.common.truth.Truth.assertThat
@@ -12,7 +12,6 @@ import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.OutgoingContent

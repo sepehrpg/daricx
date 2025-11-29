@@ -1,6 +1,6 @@
 package com.example.network.connections
 
-import com.example.network.interceptor.ktor.configureDefaultRetries
+import com.example.network.interceptor.configureDefaultRetries
 import io.ktor.client.request.HttpResponseData
 import com.google.common.truth.Truth.assertThat
 import io.ktor.client.HttpClient

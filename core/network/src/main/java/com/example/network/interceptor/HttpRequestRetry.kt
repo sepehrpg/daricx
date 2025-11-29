@@ -1,4 +1,4 @@
-package com.example.network.interceptor.ktor
+package com.example.network.interceptor
 
 import io.ktor.client.plugins.HttpRequestRetryConfig
 

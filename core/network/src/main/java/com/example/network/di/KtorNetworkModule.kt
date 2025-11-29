@@ -3,9 +3,9 @@ package com.example.network.di
 import com.example.common.config.AppVersionName
 import com.example.network.BuildConfig
 import com.example.network.NetworkConfig
-import com.example.network.interceptor.ktor.configureDefaultRetries
+import com.example.network.interceptor.configureDefaultRetries
 import com.example.network.ktor.AuthPlugin
-import com.example.network.interceptor.ktor.MetadataPlugin
+import com.example.network.interceptor.MetadataPlugin
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

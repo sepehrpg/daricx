@@ -1,13 +1,11 @@
 // com/example/network/connections/KtorNetworkModuleTest.kt
 package com.example.network.connections
 
-import com.example.common.config.AppVersionName
 import com.example.network.di.KtorNetworkModule
-import com.example.network.interceptor.ktor.MetadataPlugin
+import com.example.network.interceptor.MetadataPlugin
 import com.example.network.ktor.AuthPlugin
 import com.google.common.truth.Truth.assertThat
 import io.ktor.client.HttpClient
-import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
