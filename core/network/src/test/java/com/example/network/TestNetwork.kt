@@ -39,4 +39,5 @@ internal object TestNetwork {
             .baseUrl(baseUrl)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
+
 }

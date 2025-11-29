@@ -1,17 +1,16 @@
 package com.example.network.api
 
-import com.example.network.model.CompaniesTreasuryDto
 import com.example.network.model.GlobalCryptoMarketDataDto
-import com.example.network.model.GlobalDeFiMarketDataDto
-import retrofit2.http.GET
-import retrofit2.http.Path
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+
+
 
 /**
+ * Ktor extension for:
  * GET /global
- * Returns aggregated global crypto market statistics.
  */
-interface Global {
-
-    @GET("global")
-    suspend fun getGlobal(): GlobalCryptoMarketDataDto
+suspend fun HttpClient.getGlobalKtor(): GlobalCryptoMarketDataDto {
+    return get("global").body()
 }

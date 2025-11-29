@@ -1,64 +1,88 @@
 package com.example.network.api
 
-import com.example.model.sort.DexPairFormat
-import com.example.model.sort.ExchangeTickersOrder
 import com.example.network.model.exchanges.ExchangeDetailDto
 import com.example.network.model.exchanges.ExchangeTickersDto
 import com.example.network.model.exchanges.ExchangeVolumeChartDto
 import com.example.network.model.exchanges.ExchangesListDto
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 
-interface Exchanges {
+/**
+ * Ktor extension for:
+ * GET /exchanges
+ */
+suspend fun HttpClient.getExchangesKtor(
+    perPage: Int = 100,
+    page: Int = 1,
+): ExchangesListDto {
+    return get("exchanges") {
+        parameter("per_page", perPage)
+        parameter("page", page)
+    }.body()
+}
 
-    //https://api.coingecko.com/api/v3/exchanges
-    @GET("exchanges")
-    suspend fun getExchanges(
-        @Query("per_page") perPage: Int = 100,
-        @Query("page") page: Int = 1,
-    ): ExchangesListDto
+/**
+ * Ktor extension for:
+ * GET /exchanges/{id}
+ */
+suspend fun HttpClient.getExchangeByIdKtor(
+    id: String,
+    dexPairFormat: String? = null,
+): ExchangeDetailDto {
+    return get("exchanges/$id") {
+        if (dexPairFormat != null) {
+            parameter("dex_pair_format", dexPairFormat)
+        }
+    }.body()
+}
 
+/**
+ * Ktor extension for:
+ * GET /exchanges/{id}/tickers
+ */
+suspend fun HttpClient.getExchangeTickersByIdKtor(
+    id: String,
+    coinIds: String? = null,
+    includeExchangeLogo: Boolean? = true,
+    depth: Boolean? = null,
+    dexPairFormat: String? = null,
+    page: Int? = null,
+    order: String? = null,
+): ExchangeTickersDto {
+    return get("exchanges/$id/tickers") {
+        if (coinIds != null) {
+            parameter("coin_ids", coinIds)
+        }
+        if (includeExchangeLogo != null) {
+            parameter("include_exchange_logo", includeExchangeLogo)
+        }
+        if (depth != null) {
+            parameter("depth", depth)
+        }
+        if (dexPairFormat != null) {
+            parameter("dex_pair_format", dexPairFormat)
+        }
+        if (page != null) {
+            parameter("page", page)
+        }
+        if (order != null) {
+            parameter("order", order)
+        }
+    }.body()
+}
 
-    //https://api.coingecko.com/api/v3/exchanges/{id}
-    @GET("exchanges/{id}")
-    suspend fun getExchangeById(
-        @Path("id") id: String,
-        @Query("dex_pair_format") dexPairFormat: String? = null,
-    ): ExchangeDetailDto
-
-
-    //https://api.coingecko.com/api/v3/exchanges/{id}/tickers
-    @GET("exchanges/{id}/tickers")
-    suspend fun getExchangeTickersById(
-        @Path("id") id: String ,
-        @Query("coin_ids") coinIds: String? = null,
-        @Query("include_exchange_logo") includeExchangeLogo: Boolean? = true,
-        @Query("depth") depth: Boolean? = null,
-        @Query("dex_pair_format") dexPairFormat: String? = null,
-        @Query("page") page: Int? = null,
-        @Query("order") order: String? = null,
-    ): ExchangeTickersDto
-
-
-
-    /**
-     * GET https://api.coingecko.com/api/v3/exchanges/{id}/volume_chart
-     *
-     * Returns exchange volume chart data as an array of 2-tuples:
-     *   [timestampMillis, volume]
-     * Docs: https://docs.coingecko.com/v3.0.1/reference/exchanges-id-volume-chart
-     *
-     * @param id    Exchange ID (e.g., "binance"). See /exchanges/list.
-     * @param days  One of: "1","7","14","30","90","180","365".
-     *
-     * @return List of points where each item is [timestampMillis, volume].
-     */
-    @GET("exchanges/{id}/volume_chart")
-    suspend fun exchangeVolumeChart(
-        @Path("id") id: String,
-        @Query("days") days: String
-    ): ExchangeVolumeChartDto
-
+/**
+ * Ktor extension for:
+ * GET /exchanges/{id}/volume_chart
+ */
+suspend fun HttpClient.getExchangeVolumeChartKtor(
+    id: String,
+    days: String,
+): ExchangeVolumeChartDto {
+    return get("exchanges/$id/volume_chart") {
+        parameter("days", days)
+    }.body()
 }
 

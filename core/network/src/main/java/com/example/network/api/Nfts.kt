@@ -3,31 +3,40 @@ package com.example.network.api
 
 import com.example.network.model.nfts.NftDetailsDto
 import com.example.network.model.nfts.NftsListDto
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 
 
-interface Nfts {
+/**
+ * Ktor extension for:
+ * GET /nfts/list
+ */
+suspend fun HttpClient.getNftsListKtor(
+    order: String? = null,
+    perPage: Int? = null,  // 1..250
+    page: Int? = null,
+): NftsListDto {
+    return get("nfts/list") {
+        if (order != null) {
+            parameter("order", order)
+        }
+        if (perPage != null) {
+            parameter("per_page", perPage)
+        }
+        if (page != null) {
+            parameter("page", page)
+        }
+    }.body()
+}
 
-
-    /**
-     * NFTs List (ID Map)
-     * https://api.coingecko.com/api/v3/nfts/list
-     */
-    @GET("nfts/list")
-    suspend fun getNftsList(
-        @Query("order") order: String? = null,
-        @Query("per_page") perPage: Int? = null, // 1..250
-        @Query("page") page: Int? = null
-    ): NftsListDto
-
-    //https://api.coingecko.com/api/v3/nfts/{id}
-    @GET("nfts/{id}")
-    suspend fun getNftById(
-        @Path("id") id: String,
-    ): NftDetailsDto
-
-
-
+/**
+ * Ktor extension for:
+ * GET /nfts/{id}
+ */
+suspend fun HttpClient.getNftByIdKtor(
+    id: String,
+): NftDetailsDto {
+    return get("nfts/$id").body()
 }

@@ -1,15 +1,14 @@
 package com.example.network.api
 
 import com.example.network.model.TrendingDto
-import retrofit2.http.GET
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
 
 /**
+ * Ktor extension for:
  * GET /search/trending
- * Returns trending categories, coins, and NFTs.
- * No query parameters are required by this endpoint.
  */
-interface Trending {
-
-    @GET("search/trending")
-    suspend fun getTrending(): TrendingDto
+suspend fun HttpClient.getTrendingKtor(): TrendingDto {
+    return get("search/trending").body()
 }
