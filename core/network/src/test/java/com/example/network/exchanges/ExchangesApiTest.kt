@@ -1,40 +1,35 @@
+// com/example/network/exchanges/ExchangesApiTest.kt
 package com.example.network.exchanges
 
 import com.example.network.TestNetwork
-import com.example.network.api.Exchanges
+import com.example.network.jsonOkResponse
+import com.example.network.api.getExchangeByIdKtor
+import com.example.network.api.getExchangeTickersByIdKtor
+import com.example.network.api.getExchangeVolumeChartKtor
+import com.example.network.api.getExchangesKtor
 import com.google.common.truth.Truth.assertThat
+import io.ktor.client.HttpClient
+import io.ktor.http.HttpMethod
 import kotlinx.coroutines.test.runTest
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
-import org.junit.Before
 import org.junit.Test
-import retrofit2.create
 
 /**
- * ExchangesApiTest
+ * Tests Exchange-related Ktor endpoints using MockEngine.
  *
- * Test Goal:
- * - Validate HTTP contract for Exchanges endpoints.
- * - Ensure default and optional query parameters are sent correctly.
- * - Verify basic deserialization for DTOs.
+ * Scenarios:
+ * - /exchanges: checks default paging query params and exchanges list parsing.
+ * - /exchanges/{id}: checks path and exchange detail deserialization.
+ * - /exchanges/{id}/tickers: checks default/optional query params and tickers list.
+ * - /exchanges/{id}/volume_chart: checks required `days` param and basic response handling.
  */
 class ExchangesApiTest {
 
-    private lateinit var server: MockWebServer
-    private lateinit var api: Exchanges
-
-    @Before
-    fun setUp() {
-        server = MockWebServer().apply { start() }
-        api = TestNetwork
-            .retrofit(server.url("/").toString())
-            .create()
-    }
+    private lateinit var client: HttpClient
 
     @After
     fun tearDown() {
-        server.shutdown()
+        if (::client.isInitialized) client.close()
     }
 
     // -------------------------------------------------------------------------
@@ -43,33 +38,39 @@ class ExchangesApiTest {
 
     @Test
     fun `getExchanges uses GET and sends default paging params`() = runTest {
-        // Arrange
-        server.enqueue(MockResponse().setBody(SampleJsonExchanges.exchangesResponse))
+        var capturedMethod: HttpMethod? = null
+        var capturedPath: String? = null
+        var perPage: String? = null
+        var page: String? = null
 
-        // Act
-        api.getExchanges() // using defaults: per_page=100, page=1
+        client = TestNetwork.ktorTestClient { request ->
+            capturedMethod = request.method
+            capturedPath = request.url.encodedPath
+            perPage = request.url.parameters["per_page"]
+            page = request.url.parameters["page"]
 
-        // Assert request
-        val req = server.takeRequest()
-        assertThat(req.method).isEqualTo("GET")
-        assertThat(req.requestUrl?.encodedPath).isEqualTo("/exchanges")
-        assertThat(req.requestUrl?.queryParameter("per_page")).isEqualTo("100")
-        assertThat(req.requestUrl?.queryParameter("page")).isEqualTo("1")
+            jsonOkResponse(SampleJsonExchanges.exchangesResponse)
+        }
+
+        client.getExchangesKtor() // defaults: per_page=100, page=1
+
+        assertThat(capturedMethod).isEqualTo(HttpMethod.Get)
+        assertThat(capturedPath).isEqualTo("/exchanges")
+        assertThat(perPage).isEqualTo("100")
+        assertThat(page).isEqualTo("1")
     }
 
     @Test
     fun `deserializes exchanges list json response`() = runTest {
-        // Arrange
-        server.enqueue(MockResponse().setBody(SampleJsonExchanges.exchangesResponse))
+        client = TestNetwork.ktorTestClient {
+            jsonOkResponse(SampleJsonExchanges.exchangesResponse)
+        }
 
-        // Act
-        val dto = api.getExchanges(perPage = 50, page = 2)
+        val dto = client.getExchangesKtor(perPage = 50, page = 2)
 
-        // Assert
         assertThat(dto).hasSize(1)
         val first = dto.first()
 
-        // NOTE: adjust field names to your ExchangesListDto item
         assertThat(first.id).isEqualTo("binance")
         assertThat(first.name).isEqualTo("Binance")
         assertThat(first.yearEstablished).isEqualTo(2017)
@@ -82,7 +83,7 @@ class ExchangesApiTest {
         assertThat(first.trustScoreRank).isEqualTo(1)
         assertThat(first.tradeVolume24hBtc)
             .isWithin(0.000001)
-            .of(123456.789)
+            .of(123_456.789)
     }
 
     // -------------------------------------------------------------------------
@@ -91,29 +92,33 @@ class ExchangesApiTest {
 
     @Test
     fun `getExchangeById uses GET and sends path and default query params`() = runTest {
-        // Arrange
-        server.enqueue(MockResponse().setBody(SampleJsonExchanges.exchangeDetailResponse))
+        var capturedMethod: HttpMethod? = null
+        var capturedPath: String? = null
+        var dexPairFormat: String? = null
 
-        // Act
-        api.getExchangeById(id = "binance")
+        client = TestNetwork.ktorTestClient { request ->
+            capturedMethod = request.method
+            capturedPath = request.url.encodedPath
+            dexPairFormat = request.url.parameters["dex_pair_format"]
 
-        // Assert request
-        val req = server.takeRequest()
-        assertThat(req.method).isEqualTo("GET")
-        assertThat(req.requestUrl?.encodedPath).isEqualTo("/exchanges/binance")
-        // dex_pair_format default is null → no query
-        assertThat(req.requestUrl?.queryParameter("dex_pair_format")).isNull()
+            jsonOkResponse(SampleJsonExchanges.exchangeDetailResponse)
+        }
+
+        client.getExchangeByIdKtor(id = "binance")
+
+        assertThat(capturedMethod).isEqualTo(HttpMethod.Get)
+        assertThat(capturedPath).isEqualTo("/exchanges/binance")
+        assertThat(dexPairFormat).isNull()
     }
 
     @Test
     fun `deserializes exchange detail json response`() = runTest {
-        // Arrange
-        server.enqueue(MockResponse().setBody(SampleJsonExchanges.exchangeDetailResponse))
+        client = TestNetwork.ktorTestClient {
+            jsonOkResponse(SampleJsonExchanges.exchangeDetailResponse)
+        }
 
-        // Act
-        val dto = api.getExchangeById(id = "binance")
+        val dto = client.getExchangeByIdKtor(id = "binance")
 
-        // Assert (adjust field names to your ExchangeDetailDto)
         assertThat(dto.name).isEqualTo("Binance")
         assertThat(dto.yearEstablished).isEqualTo(2017)
         assertThat(dto.country).isEqualTo("Cayman Islands")
@@ -124,7 +129,7 @@ class ExchangesApiTest {
         assertThat(dto.trustScoreRank).isEqualTo(1)
         assertThat(dto.tradeVolume24hBtc)
             .isWithin(0.000001)
-            .of(123456.789)
+            .of(123_456.789)
     }
 
     // -------------------------------------------------------------------------
@@ -133,37 +138,49 @@ class ExchangesApiTest {
 
     @Test
     fun `getExchangeTickersById uses GET and sends default query parameters`() = runTest {
-        // Arrange
-        server.enqueue(MockResponse().setBody(SampleJsonExchanges.exchangeTickersResponse))
+        var capturedMethod: HttpMethod? = null
+        var capturedPath: String? = null
+        var coinIds: String? = null
+        var includeExchangeLogo: String? = null
+        var depth: String? = null
+        var dexPairFormat: String? = null
+        var page: String? = null
+        var order: String? = null
 
-        // Act
-        api.getExchangeTickersById(id = "binance")
+        client = TestNetwork.ktorTestClient { request ->
+            capturedMethod = request.method
+            capturedPath = request.url.encodedPath
+            coinIds = request.url.parameters["coin_ids"]
+            includeExchangeLogo = request.url.parameters["include_exchange_logo"]
+            depth = request.url.parameters["depth"]
+            dexPairFormat = request.url.parameters["dex_pair_format"]
+            page = request.url.parameters["page"]
+            order = request.url.parameters["order"]
 
-        // Assert request
-        val req = server.takeRequest()
-        assertThat(req.method).isEqualTo("GET")
-        assertThat(req.requestUrl?.encodedPath)
-            .isEqualTo("/exchanges/binance/tickers")
+            jsonOkResponse(SampleJsonExchanges.exchangeTickersResponse)
+        }
 
-        // Default & optional query params
-        assertThat(req.requestUrl?.queryParameter("coin_ids")).isNull()
-        assertThat(req.requestUrl?.queryParameter("include_exchange_logo"))
-            .isEqualTo("true")
-        assertThat(req.requestUrl?.queryParameter("depth")).isNull()
-        assertThat(req.requestUrl?.queryParameter("dex_pair_format")).isNull()
-        assertThat(req.requestUrl?.queryParameter("page")).isNull()
-        assertThat(req.requestUrl?.queryParameter("order")).isNull()
+        client.getExchangeTickersByIdKtor(id = "binance")
+
+        assertThat(capturedMethod).isEqualTo(HttpMethod.Get)
+        assertThat(capturedPath).isEqualTo("/exchanges/binance/tickers")
+
+        assertThat(coinIds).isNull()
+        assertThat(includeExchangeLogo).isEqualTo("true")
+        assertThat(depth).isNull()
+        assertThat(dexPairFormat).isNull()
+        assertThat(page).isNull()
+        assertThat(order).isNull()
     }
 
     @Test
     fun `deserializes exchange tickers json response`() = runTest {
-        // Arrange
-        server.enqueue(MockResponse().setBody(SampleJsonExchanges.exchangeTickersResponse))
+        client = TestNetwork.ktorTestClient {
+            jsonOkResponse(SampleJsonExchanges.exchangeTickersResponse)
+        }
 
-        // Act
-        val dto = api.getExchangeTickersById(id = "binance")
+        val dto = client.getExchangeTickersByIdKtor(id = "binance")
 
-        // Assert (similar to CoinTickers)
         assertThat(dto.name).isEqualTo("Binance")
         assertThat(dto.tickers).isNotNull()
         assertThat(dto.tickers).isNotEmpty()
@@ -174,8 +191,8 @@ class ExchangesApiTest {
         assertThat(first?.market?.name).isEqualTo("Binance")
         assertThat(first?.market?.identifier).isEqualTo("binance")
         assertThat(first?.trustScore).isEqualTo("green")
-        assertThat(first?.last).isWithin(0.001).of(50000.0)
-        assertThat(first?.volume).isWithin(0.001).of(100000.0)
+        assertThat(first?.last).isWithin(0.001).of(50_000.0)
+        assertThat(first?.volume).isWithin(0.001).of(100_000.0)
     }
 
     // -------------------------------------------------------------------------
@@ -184,41 +201,44 @@ class ExchangesApiTest {
 
     @Test
     fun `exchangeVolumeChart uses GET and sends required days param`() = runTest {
-        // Arrange
-        server.enqueue(MockResponse().setBody(SampleJsonExchanges.exchangeVolumeChartResponse))
+        var capturedMethod: HttpMethod? = null
+        var capturedPath: String? = null
+        var days: String? = null
 
-        // Act
-        api.exchangeVolumeChart(
+        client = TestNetwork.ktorTestClient { request ->
+            capturedMethod = request.method
+            capturedPath = request.url.encodedPath
+            days = request.url.parameters["days"]
+
+            jsonOkResponse(SampleJsonExchanges.exchangeVolumeChartResponse)
+        }
+
+        client.getExchangeVolumeChartKtor(
             id = "binance",
             days = "7"
         )
 
-        // Assert request
-        val req = server.takeRequest()
-        assertThat(req.method).isEqualTo("GET")
-        assertThat(req.requestUrl?.encodedPath)
-            .isEqualTo("/exchanges/binance/volume_chart")
-        assertThat(req.requestUrl?.queryParameter("days")).isEqualTo("7")
+        assertThat(capturedMethod).isEqualTo(HttpMethod.Get)
+        assertThat(capturedPath).isEqualTo("/exchanges/binance/volume_chart")
+        assertThat(days).isEqualTo("7")
     }
 
     @Test
     fun `deserializes exchange volume chart json response`() = runTest {
-        // Arrange
-        server.enqueue(MockResponse().setBody(SampleJsonExchanges.exchangeVolumeChartResponse))
+        client = TestNetwork.ktorTestClient {
+            jsonOkResponse(SampleJsonExchanges.exchangeVolumeChartResponse)
+        }
 
-        // Act
-        val dto = api.exchangeVolumeChart(
+        val dto = client.getExchangeVolumeChartKtor(
             id = "binance",
             days = "7"
         )
 
-        // NOTE:
-        // This depends on how ExchangeVolumeChartDto is defined.
-        // Example (adjust to your model):
-        //
-        //   assertThat(dto.points).hasSize(2)
-        //   val first = dto.points.first()
-        //   assertThat(first.timestampMillis).isEqualTo(1711929600000L)
-        //   assertThat(first.volume).isWithin(0.000001).of(123456.789)
+        // TODO: assert on dto depending on your ExchangeVolumeChartDto structure
+        // e.g.:
+        // assertThat(dto.points).hasSize(2)
+        // val first = dto.points.first()
+        // assertThat(first.timestampMillis).isEqualTo(1711929600000L)
+        // assertThat(first.volume).isWithin(0.000001).of(123456.789)
     }
 }

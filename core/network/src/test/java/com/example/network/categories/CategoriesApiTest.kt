@@ -1,72 +1,67 @@
 package com.example.network.categories
-
 import com.example.network.TestNetwork
-import com.example.network.api.ApiService
+import com.example.network.api.getCoinCategoriesKtor
+import com.example.network.jsonOkResponse
 import com.google.common.truth.Truth.assertThat
+import io.ktor.client.HttpClient
+import io.ktor.http.HttpMethod
 import kotlinx.coroutines.test.runTest
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
-import org.junit.Before
 import org.junit.Test
-import retrofit2.create
+
 
 /**
- * CategoriesApiTest
+ * Tests the Coin Categories Ktor API using MockEngine.
  *
- * Test Goal:
- * - Validate HTTP contract for /coins/categories endpoint.
- * - Ensure required and optional query parameters are passed correctly.
- * - Verify basic deserialization for CategoriesListDto.
+ * Scenarios:
+ * - Request: verifies GET method, `/coins/categories` path, and default/optional query params.
+ * - Response: verifies JSON deserialization into a list of categories with basic fields.
  */
 class CategoriesApiTest {
 
-    private lateinit var server: MockWebServer
-    private lateinit var api: ApiService
-
-    @Before
-    fun setUp() {
-        server = MockWebServer().apply { start() }
-        api = TestNetwork.retrofit(server.url("/").toString()).create()
-    }
+    private lateinit var client: HttpClient
 
     @After
     fun tearDown() {
-        server.shutdown()
+        if (::client.isInitialized) {
+            client.close()
+        }
     }
-
-    // -------------------------------------------------------------------------
-    // /coins/categories
-    // -------------------------------------------------------------------------
 
     @Test
     fun `getCoinCategories uses GET and sends default query parameters`() = runTest {
-        server.enqueue(MockResponse().setBody(SampleJsonCategories.categoriesResponse))
+        lateinit var capturedMethod: HttpMethod
+        lateinit var capturedPath: String
+        var capturedOrder: String? = "non-null"
 
-        // order is null by default
-        api.getCoinCategories()
+        client = TestNetwork.ktorTestClient { request ->
+            capturedMethod = request.method
+            capturedPath = request.url.encodedPath
+            capturedOrder = request.url.parameters["order"]
 
-        val req = server.takeRequest()
-        assertThat(req.method).isEqualTo("GET")
-        assertThat(req.requestUrl?.encodedPath).isEqualTo("/coins/categories")
+            jsonOkResponse(SampleJsonCategories.categoriesResponse)
+        }
 
-        // order is optional, so it should not be present when not provided
-        assertThat(req.requestUrl?.queryParameter("order")).isNull()
+        client.getCoinCategoriesKtor()
+
+        assertThat(capturedMethod).isEqualTo(HttpMethod.Get)
+        assertThat(capturedPath).isEqualTo("/coins/categories")
+        assertThat(capturedOrder).isNull()
     }
 
     @Test
     fun `deserializes coin categories json response`() = runTest {
-        server.enqueue(MockResponse().setBody(SampleJsonCategories.categoriesResponse))
+        client = TestNetwork.ktorTestClient { _ ->
+            jsonOkResponse(SampleJsonCategories.categoriesResponse)
+        }
 
-        val dto = api.getCoinCategories(order = "market_cap_desc")
+        val dto = client.getCoinCategoriesKtor(order = "market_cap_desc")
 
-        // Basic list size check
         assertThat(dto).hasSize(2)
 
         val first = dto.first()
         assertThat(first.id).isEqualTo("layer-1")
         assertThat(first.name).isEqualTo("Layer 1 (L1)")
-        // Field names may need adjustment to match your CategoriesListDto
         assertThat(first.marketCap).isWithin(0.001).of(150_000_000_000.0)
         assertThat(first.volume24h).isWithin(0.001).of(5_000_000_000.0)
         assertThat(first.top3Coins).hasSize(3)

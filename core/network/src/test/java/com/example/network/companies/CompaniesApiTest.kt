@@ -1,40 +1,31 @@
+// com/example/network/companies/CompaniesApiTest.kt
 package com.example.network.companies
 
 import com.example.network.TestNetwork
-import com.example.network.api.Companies
+import com.example.network.jsonOkResponse
+import com.example.network.api.getCompaniesTreasuryKtor
 import com.google.common.truth.Truth.assertThat
+import io.ktor.client.HttpClient
+import io.ktor.http.HttpMethod
 import kotlinx.coroutines.test.runTest
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
-import org.junit.Before
 import org.junit.Test
-import retrofit2.create
 
 /**
- * CompaniesApiTest
+ * Tests the Companies Treasury Ktor endpoint using MockEngine.
  *
- * Test Goal:
- * - Validate HTTP contract for Companies endpoints.
- * - Ensure path parameter {coin_id} is bound correctly.
- * - Verify basic deserialization for CompaniesTreasuryDto.
+ * Scenarios:
+ * - Request: verifies GET method and `/companies/public_treasury/{coin_id}` path with no query params.
+ * - Response (BTC): checks aggregate treasury fields and first company entry.
+ * - Response (ETH): same checks for an Ethereum sample payload.
  */
 class CompaniesApiTest {
 
-    private lateinit var server: MockWebServer
-    private lateinit var api: Companies
-
-    @Before
-    fun setUp() {
-        server = MockWebServer().apply { start() }
-        api = TestNetwork
-            .retrofit(server.url("/").toString())
-            .create()
-    }
+    private lateinit var client: HttpClient
 
     @After
     fun tearDown() {
-        server.shutdown()
+        if (::client.isInitialized) client.close()
     }
 
     // -------------------------------------------------------------------------
@@ -43,40 +34,37 @@ class CompaniesApiTest {
 
     @Test
     fun `getCompaniesTreasury uses GET and builds correct path for bitcoin`() = runTest {
-        // Arrange
-        server.enqueue(
-            MockResponse().setBody(SampleJsonCompanies.btcTreasuryResponse)
-        )
+        var capturedMethod: HttpMethod? = null
+        var capturedPath: String? = null
+        var querySize: Int? = null
 
-        // Act
-        api.getCompaniesTreasury(coinId = "bitcoin")
+        client = TestNetwork.ktorTestClient { request ->
+            capturedMethod = request.method
+            capturedPath = request.url.encodedPath
+            querySize = request.url.parameters.names().size
 
-        // Assert request
-        val req = server.takeRequest()
-        assertThat(req.method).isEqualTo("GET")
-        assertThat(req.requestUrl?.encodedPath)
-            .isEqualTo("/companies/public_treasury/bitcoin")
+            jsonOkResponse(SampleJsonCompanies.btcTreasuryResponse)
+        }
 
-        // No query params expected
-        assertThat(req.requestUrl?.querySize).isEqualTo(0)
+        client.getCompaniesTreasuryKtor(coinId = "bitcoin")
+
+        assertThat(capturedMethod).isEqualTo(HttpMethod.Get)
+        assertThat(capturedPath).isEqualTo("/companies/public_treasury/bitcoin")
+        assertThat(querySize).isEqualTo(0)
     }
 
     @Test
     fun `deserializes companies treasury json response for bitcoin`() = runTest {
-        // Arrange
-        server.enqueue(
-            MockResponse().setBody(SampleJsonCompanies.btcTreasuryResponse)
-        )
+        client = TestNetwork.ktorTestClient {
+            jsonOkResponse(SampleJsonCompanies.btcTreasuryResponse)
+        }
 
-        // Act
-        val dto = api.getCompaniesTreasury(coinId = "bitcoin")
+        val dto = client.getCompaniesTreasuryKtor(coinId = "bitcoin")
 
-        // Assert top-level fields
         assertThat(dto.totalHoldings).isWithin(0.001).of(264_136.0)
         assertThat(dto.totalValueUsd).isWithin(0.001).of(18_403_306_939.1513)
         assertThat(dto.marketCapDominance).isWithin(0.001).of(1.34)
 
-        // Assert companies list
         assertThat(dto.companies).isNotNull()
         assertThat(dto.companies).isNotEmpty()
         assertThat(dto.companies).hasSize(1)
@@ -89,31 +77,25 @@ class CompaniesApiTest {
         assertThat(first?.totalEntryValueUsd).isWithin(0.001).of(8_238_000_000.0)
         assertThat(first?.totalCurrentValueUsd).isWithin(0.001).of(14_678_000_000.0)
         assertThat(first?.percentageOfTotalSupply).isWithin(0.00001).of(1.075)
-
     }
 
     @Test
     fun `deserializes companies treasury json response for ethereum`() = runTest {
-        // Arrange
-        server.enqueue(
-            MockResponse().setBody(SampleJsonCompanies.ethTreasuryResponse)
-        )
+        client = TestNetwork.ktorTestClient {
+            jsonOkResponse(SampleJsonCompanies.ethTreasuryResponse)
+        }
 
-        // Act
-        val dto = api.getCompaniesTreasury(coinId = "ethereum")
+        val dto = client.getCompaniesTreasuryKtor(coinId = "ethereum")
 
-        // Assert top-level fields
         assertThat(dto.totalHoldings).isWithin(0.001).of(915_000.5)
         assertThat(dto.totalValueUsd).isWithin(0.001).of(2_780_033_069.12)
         assertThat(dto.marketCapDominance).isWithin(0.001).of(0.48)
 
-        // Assert companies list
         assertThat(dto.companies).isNotNull()
         assertThat(dto.companies).isNotEmpty()
         assertThat(dto.companies).hasSize(1)
 
         val first = dto.companies?.first()
-        // Unknown fields ("unknown_field", "unknown_top") should be ignored
         assertThat(first?.name).isEqualTo("Some Corp")
         assertThat(first?.symbol).isEqualTo("NYSE:SOME")
         assertThat(first?.country).isEqualTo("US")

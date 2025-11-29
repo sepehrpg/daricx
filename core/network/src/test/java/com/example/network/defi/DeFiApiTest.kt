@@ -1,39 +1,32 @@
+// com/example/network/defi/DeFiApiTest.kt
 package com.example.network.defi
 
 import com.example.network.TestNetwork
-import com.example.network.api.DeFi
+import com.example.network.jsonOkResponse
+import com.example.network.api.getGlobalDeFiKtor
 import com.google.common.truth.Truth.assertThat
+import io.ktor.client.HttpClient
+import io.ktor.http.HttpMethod
 import kotlinx.coroutines.test.runTest
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
-import org.junit.Before
 import org.junit.Test
-import retrofit2.create
+
+
 
 /**
- * DeFiApiTest
+ * Tests the Global DeFi Ktor endpoint using MockEngine.
  *
- * Test Goal:
- * - Validate HTTP contract for DeFi endpoint.
- * - Verify basic deserialization for GlobalDeFiMarketDataDto.
+ * Scenarios:
+ * - Request: verifies GET method, `/global/decentralized_finance_defi` path, and no query params.
+ * - Response: verifies that `data` is present and key numeric/string fields are parsed correctly.
  */
 class DeFiApiTest {
 
-    private lateinit var server: MockWebServer
-    private lateinit var api: DeFi
-
-    @Before
-    fun setUp() {
-        server = MockWebServer().apply { start() }
-        api = TestNetwork
-            .retrofit(server.url("/").toString())
-            .create()
-    }
+    private lateinit var client: HttpClient
 
     @After
     fun tearDown() {
-        server.shutdown()
+        if (::client.isInitialized) client.close()
     }
 
     // -------------------------------------------------------------------------
@@ -42,38 +35,34 @@ class DeFiApiTest {
 
     @Test
     fun `getGlobalDeFi uses GET and correct path`() = runTest {
-        // Arrange
-        server.enqueue(
-            MockResponse().setBody(SampleJsonDeFi.defiResponse)
-        )
+        var capturedMethod: HttpMethod? = null
+        var capturedPath: String? = null
+        var querySize: Int? = null
 
-        // Act
-        api.getGlobalDeFi()
+        client = TestNetwork.ktorTestClient { request ->
+            capturedMethod = request.method
+            capturedPath = request.url.encodedPath
+            querySize = request.url.parameters.names().size
 
-        // Assert request
-        val req = server.takeRequest()
-        assertThat(req.method).isEqualTo("GET")
-        assertThat(req.requestUrl?.encodedPath)
-            .isEqualTo("/global/decentralized_finance_defi")
+            jsonOkResponse(SampleJsonDeFi.defiResponse)
+        }
 
-        // No query params expected
-        assertThat(req.requestUrl?.querySize).isEqualTo(0)
+        client.getGlobalDeFiKtor()
+
+        assertThat(capturedMethod).isEqualTo(HttpMethod.Get)
+        assertThat(capturedPath).isEqualTo("/global/decentralized_finance_defi")
+        assertThat(querySize).isEqualTo(0)
     }
 
     @Test
     fun `deserializes global defi json response`() = runTest {
-        // Arrange
-        server.enqueue(
-            MockResponse().setBody(SampleJsonDeFi.defiResponse)
-        )
+        client = TestNetwork.ktorTestClient {
+            jsonOkResponse(SampleJsonDeFi.defiResponse)
+        }
 
-        // Act
-        val dto = api.getGlobalDeFi()
-
-
+        val dto = client.getGlobalDeFiKtor()
         val data = requireNotNull(dto.data)
 
-        // String-based numeric fields
         assertThat(data.defiMarketCap)
             .isEqualTo("105273842288.229620442228701667")
         assertThat(data.ethMarketCap)
@@ -85,17 +74,9 @@ class DeFiApiTest {
         assertThat(data.defiDominance)
             .isEqualTo("3.86765030846147")
 
-        // Plain fields
-        assertThat(data.topCoinName)
-            .isEqualTo("Lido Staked Ether")
-
-        // top_coin_defi_dominance is numeric in JSON → likely Double
+        assertThat(data.topCoinName).isEqualTo("Lido Staked Ether")
         assertThat(data.topCoinDefiDominance)
             .isWithin(0.000001)
             .of(30.589442518868)
-
-        // Unknown fields ("unknown_field_child", "unknown_top") should be ignored
-        // If Json { ignoreUnknownKeys = true } is set in TestNetwork, reaching here
-        // without exception is enough to prove it works.
     }
 }

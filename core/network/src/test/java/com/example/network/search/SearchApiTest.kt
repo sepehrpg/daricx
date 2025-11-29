@@ -1,40 +1,30 @@
+// com/example/network/search/SearchApiTest.kt
 package com.example.network.search
 
 import com.example.network.TestNetwork
-import com.example.network.api.Search
+import com.example.network.jsonOkResponse
+import com.example.network.api.searchKtor
 import com.google.common.truth.Truth.assertThat
+import io.ktor.client.HttpClient
+import io.ktor.http.HttpMethod
 import kotlinx.coroutines.test.runTest
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
-import org.junit.Before
 import org.junit.Test
-import retrofit2.create
 
 /**
- * SearchApiTest
+ * Tests the Search Ktor endpoint using MockEngine.
  *
- * Test Goal:
- * - Validate HTTP contract for /search endpoint.
- * - Ensure "query" is passed correctly as query parameter.
- * - Verify basic deserialization into SearchDto.
+ * Scenarios:
+ * - Request: verifies GET method, `/search` path, and `query` parameter.
+ * - Response: checks deserialization of coins, exchanges, categories, NFTs, and ICOs lists.
  */
 class SearchApiTest {
 
-    private lateinit var server: MockWebServer
-    private lateinit var api: Search
-
-    @Before
-    fun setUp() {
-        server = MockWebServer().apply { start() }
-        api = TestNetwork
-            .retrofit(server.url("/").toString())
-            .create()
-    }
+    private lateinit var client: HttpClient
 
     @After
     fun tearDown() {
-        server.shutdown()
+        if (::client.isInitialized) client.close()
     }
 
     // -------------------------------------------------------------------------
@@ -43,38 +33,46 @@ class SearchApiTest {
 
     @Test
     fun `search uses GET and sends query parameter`() = runTest {
-        // Arrange
-        server.enqueue(MockResponse().setBody(SampleJsonSearch.response))
+        var capturedMethod: HttpMethod? = null
+        var capturedPath: String? = null
+        var query: String? = null
 
-        // Act
-        api.search(query = "bitcoin")
+        client = TestNetwork.ktorTestClient { request ->
+            capturedMethod = request.method
+            capturedPath = request.url.encodedPath
+            query = request.url.parameters["query"]
 
-        // Assert request
-        val req = server.takeRequest()
-        assertThat(req.method).isEqualTo("GET")
-        assertThat(req.requestUrl?.encodedPath).isEqualTo("/search")
-        assertThat(req.requestUrl?.queryParameter("query")).isEqualTo("bitcoin")
+            jsonOkResponse(SampleJsonSearch.response)
+        }
+
+        client.searchKtor(query = "bitcoin")
+
+        assertThat(capturedMethod).isEqualTo(HttpMethod.Get)
+        assertThat(capturedPath).isEqualTo("/search")
+        assertThat(query).isEqualTo("bitcoin")
     }
 
     @Test
     fun `deserializes search json response`() = runTest {
-        // Arrange
-        server.enqueue(MockResponse().setBody(SampleJsonSearch.response))
+        client = TestNetwork.ktorTestClient {
+            jsonOkResponse(SampleJsonSearch.response)
+        }
 
-        // Act
-        val dto = api.search(query = "btc")
+        val dto = client.searchKtor(query = "btc")
 
-        // Assert coins
+        // Coins
         assertThat(dto.coins).hasSize(1)
         val coin = dto.coins?.first()
         assertThat(coin?.id).isEqualTo("bitcoin")
         assertThat(coin?.name).isEqualTo("Bitcoin")
         assertThat(coin?.symbol).isEqualTo("btc")
         assertThat(coin?.marketCapRank).isEqualTo(1)
-        assertThat(coin?.thumb).isEqualTo("https://assets.coingecko.com/coins/images/1/thumb/bitcoin.png")
-        assertThat(coin?.large).isEqualTo("https://assets.coingecko.com/coins/images/1/large/bitcoin.png")
+        assertThat(coin?.thumb)
+            .isEqualTo("https://assets.coingecko.com/coins/images/1/thumb/bitcoin.png")
+        assertThat(coin?.large)
+            .isEqualTo("https://assets.coingecko.com/coins/images/1/large/bitcoin.png")
 
-        // Assert exchanges
+        // Exchanges
         assertThat(dto.exchanges).hasSize(1)
         val ex = dto.exchanges?.first()
         assertThat(ex?.id).isEqualTo("binance")
@@ -83,13 +81,13 @@ class SearchApiTest {
         assertThat(ex?.thumb).isEqualTo("t")
         assertThat(ex?.large).isEqualTo("l")
 
-        // Assert categories
+        // Categories
         assertThat(dto.categories).hasSize(1)
         val cat = dto.categories?.first()
         assertThat(cat?.id).isEqualTo("defi")
         assertThat(cat?.name).isEqualTo("DeFi")
 
-        // Assert nfts
+        // NFTs
         assertThat(dto.nfts).hasSize(1)
         val nft = dto.nfts?.first()
         assertThat(nft?.id).isEqualTo("bored-ape-yacht-club")

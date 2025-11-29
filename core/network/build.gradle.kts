@@ -67,10 +67,10 @@ dependencies {
     // Logging + Retry
     implementation(libs.ktor.client.logging)
     //implementation(libs.ktor.client.http.retry)
-
     // KtorMonitor (need minSdk>=26)
     //debugImplementation(libs.ktor.monitor.logging)
     //releaseImplementation(libs.ktor.monitor.logging.no.op)
+    testImplementation(libs.ktor.client.mock)
 
 
 }

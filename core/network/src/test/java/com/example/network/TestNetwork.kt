@@ -1,28 +1,24 @@
 package com.example.network
 
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlinx.serialization.ExperimentalSerializationApi
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.mock.MockEngine
+import io.ktor.client.engine.mock.MockEngineConfig
+import io.ktor.client.engine.mock.MockRequestHandleScope
+import io.ktor.client.engine.mock.respond
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.HttpRequestData
+import io.ktor.client.request.HttpResponseData
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.headersOf
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import retrofit2.Retrofit
 
-/**
- * Utility object for creating Retrofit instances in unit tests.
- *
- * This is deliberately minimal compared to the production [RetrofitModule]:
- * - No Hilt, no Android Context
- * - No OkHttp interceptors (Auth, Retry, Chucker, etc.)
- * - Only Json serialization and baseUrl from MockWebServer
- *
- * Usage:
- * ```
- * val retrofit = TestNetwork.retrofit(mockWebServer.url("/").toString())
- * val api = retrofit.create(ApiService::class.java)
- * ```
- */
+
+
 internal object TestNetwork {
 
-    /** Shared Json config used in tests */
     val json: Json = Json {
         ignoreUnknownKeys = true
         isLenient = true
@@ -30,14 +26,38 @@ internal object TestNetwork {
     }
 
     /**
-     * Builds a Retrofit instance pointing to [baseUrl].
-     * Typically [baseUrl] is provided by [okhttp3.mockwebserver.MockWebServer].
+     * Create a Ktor HttpClient backed by MockEngine.
+     *
+     * [handler] lets each test decide how to respond for a given request.
      */
-    @OptIn(ExperimentalSerializationApi::class)
-    fun retrofit(baseUrl: String): Retrofit =
-        Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-            .build()
+    fun ktorTestClient(
+        json: Json = this.json,
+        handler: suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData
+    ): HttpClient =
+        HttpClient(MockEngine) {
+            install(ContentNegotiation) {
+                json(json)
+            }
 
+            engine {
+                addHandler { request ->
+                    handler(request)
+                }
+            }
+        }
 }
+
+
+
+/**
+ * Convenience extension: return 200 OK JSON from MockEngine.
+ */
+internal fun MockRequestHandleScope.jsonOkResponse(body: String): HttpResponseData =
+    respond(
+        body,
+        HttpStatusCode.OK,
+        headersOf(
+            HttpHeaders.ContentType,
+            ContentType.Application.Json.toString()
+        )
+    )

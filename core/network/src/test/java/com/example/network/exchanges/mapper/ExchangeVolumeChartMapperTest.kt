@@ -33,7 +33,6 @@ class ExchangeVolumeChartMapperTest {
 
     @Test
     fun `decodes string-numeric volumes into DTO`() {
-        // الان کل پاسخ به شکل یک ExchangeVolumeChartDto دیکد می‌شود
         val dto: ExchangeVolumeChartDto = json.decodeFromString(sampleStringNumbers)
 
         assertEquals(3, dto.points.size)

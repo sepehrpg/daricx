@@ -1,40 +1,30 @@
+// com/example/network/trending/TrendingApiTest.kt
 package com.example.network.trending
 
 import com.example.network.TestNetwork
-import com.example.network.api.Trending
+import com.example.network.jsonOkResponse
+import com.example.network.api.getTrendingKtor
 import com.google.common.truth.Truth.assertThat
+import io.ktor.client.HttpClient
+import io.ktor.http.HttpMethod
 import kotlinx.coroutines.test.runTest
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
-import org.junit.Before
 import org.junit.Test
-import retrofit2.create
 
 /**
- * TrendingApiTest
+ * Tests the Trending Ktor endpoint using MockEngine.
  *
- * Test Goal:
- * - Validate HTTP contract for /search/trending endpoint.
- * - Ensure no query parameters are sent.
- * - Verify basic deserialization for TrendingDto.
+ * Scenarios:
+ * - Request: verifies GET method, `/search/trending` path, and absence of query params.
+ * - Response: checks deserialization of trending categories, coins (wrapper + item), and NFTs.
  */
 class TrendingApiTest {
 
-    private lateinit var server: MockWebServer
-    private lateinit var api: Trending
-
-    @Before
-    fun setUp() {
-        server = MockWebServer().apply { start() }
-        api = TestNetwork
-            .retrofit(server.url("/").toString())
-            .create()
-    }
+    private lateinit var client: HttpClient
 
     @After
     fun tearDown() {
-        server.shutdown()
+        if (::client.isInitialized) client.close()
     }
 
     // -------------------------------------------------------------------------
@@ -43,26 +33,34 @@ class TrendingApiTest {
 
     @Test
     fun `getTrending uses GET and sends no query parameters`() = runTest {
-        // Arrange
-        server.enqueue(MockResponse().setBody(SampleJsonTrending.response))
+        var capturedMethod: HttpMethod? = null
+        var capturedPath: String? = null
+        var query: String? = null
+        var queryNames: Set<String>? = null
 
-        // Act
-        api.getTrending()
+        client = TestNetwork.ktorTestClient { request ->
+            capturedMethod = request.method
+            capturedPath = request.url.encodedPath
+            query = request.url.encodedQuery
+            queryNames = request.url.parameters.names()
 
-        // Assert request
-        val req = server.takeRequest()
-        assertThat(req.method).isEqualTo("GET")
-        assertThat(req.requestUrl?.encodedPath).isEqualTo("/search/trending")
-        assertThat(req.requestUrl?.encodedQuery).isNull()
+            jsonOkResponse(SampleJsonTrending.response)
+        }
+
+        client.getTrendingKtor()
+
+        assertThat(capturedMethod).isEqualTo(HttpMethod.Get)
+        assertThat(capturedPath).isEqualTo("/search/trending")
+        assertThat(queryNames).isEmpty()
     }
 
     @Test
     fun `deserializes trending json response`() = runTest {
-        // Arrange
-        server.enqueue(MockResponse().setBody(SampleJsonTrending.response))
+        client = TestNetwork.ktorTestClient {
+            jsonOkResponse(SampleJsonTrending.response)
+        }
 
-        // Act
-        val dto = api.getTrending()
+        val dto = client.getTrendingKtor()
 
         // ----- Categories -----
         assertThat(dto.categories).isNotNull()
@@ -88,9 +86,9 @@ class TrendingApiTest {
         assertThat(coin?.thumb).isEqualTo("thumb.png")
         assertThat(coin?.small).isEqualTo("small.png")
         assertThat(coin?.large).isEqualTo("large.png")
-        // nested data
-        assertThat(coin?.data?.price).isWithin(0.001).of(65234.12)
-        assertThat(coin?.data?.priceChangePercentage24h?.get("usd")).isWithin(0.001).of(1.2)
+        assertThat(coin?.data?.price).isWithin(0.001).of(65_234.12)
+        assertThat(coin?.data?.priceChangePercentage24h?.get("usd"))
+            .isWithin(0.001).of(1.2)
 
         // ----- NFTs -----
         assertThat(dto.nfts).isNotNull()

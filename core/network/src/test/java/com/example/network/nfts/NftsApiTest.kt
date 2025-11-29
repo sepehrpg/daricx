@@ -1,40 +1,31 @@
+// com/example/network/nfts/NftsApiTest.kt
 package com.example.network.nfts
 
 import com.example.network.TestNetwork
-import com.example.network.api.Nfts
+import com.example.network.jsonOkResponse
+import com.example.network.api.getNftByIdKtor
+import com.example.network.api.getNftsListKtor
 import com.google.common.truth.Truth.assertThat
+import io.ktor.client.HttpClient
+import io.ktor.http.HttpMethod
 import kotlinx.coroutines.test.runTest
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
-import org.junit.Before
 import org.junit.Test
-import retrofit2.create
 
 /**
- * NftsApiTest
+ * Tests NFT-related Ktor endpoints using MockEngine.
  *
- * Test Goal:
- * - Validate HTTP contract for NFT endpoints.
- * - Ensure required & optional query parameters are passed correctly.
- * - Verify basic deserialization for NftsListDto & NftDetailsDto.
+ * Scenarios:
+ * - /nfts/list: checks method, path, default/explicit query params, and list deserialization.
+ * - /nfts/{id}: checks path, no query params, and NFT detail fields (pricing, supply, metadata).
  */
 class NftsApiTest {
 
-    private lateinit var server: MockWebServer
-    private lateinit var api: Nfts
-
-    @Before
-    fun setUp() {
-        server = MockWebServer().apply { start() }
-        api = TestNetwork
-            .retrofit(server.url("/").toString())
-            .create()
-    }
+    private lateinit var client: HttpClient
 
     @After
     fun tearDown() {
-        server.shutdown()
+        if (::client.isInitialized) client.close()
     }
 
     // -------------------------------------------------------------------------
@@ -43,36 +34,43 @@ class NftsApiTest {
 
     @Test
     fun `getNftsList uses GET and sends default query parameters`() = runTest {
-        // Arrange
-        server.enqueue(MockResponse().setBody(SampleJsonNfts.listResponse))
+        var capturedMethod: HttpMethod? = null
+        var capturedPath: String? = null
+        var order: String? = null
+        var perPage: String? = null
+        var page: String? = null
 
-        // Act
-        api.getNftsList()
+        client = TestNetwork.ktorTestClient { request ->
+            capturedMethod = request.method
+            capturedPath = request.url.encodedPath
+            order = request.url.parameters["order"]
+            perPage = request.url.parameters["per_page"]
+            page = request.url.parameters["page"]
 
-        // Assert request
-        val req = server.takeRequest()
-        assertThat(req.method).isEqualTo("GET")
-        assertThat(req.requestUrl?.encodedPath).isEqualTo("/nfts/list")
+            jsonOkResponse(SampleJsonNfts.listResponse)
+        }
 
-        // Default query params -> all null
-        assertThat(req.requestUrl?.queryParameter("order")).isNull()
-        assertThat(req.requestUrl?.queryParameter("per_page")).isNull()
-        assertThat(req.requestUrl?.queryParameter("page")).isNull()
+        client.getNftsListKtor()
+
+        assertThat(capturedMethod).isEqualTo(HttpMethod.Get)
+        assertThat(capturedPath).isEqualTo("/nfts/list")
+        assertThat(order).isNull()
+        assertThat(perPage).isNull()
+        assertThat(page).isNull()
     }
 
     @Test
     fun `deserializes nfts list json response`() = runTest {
-        // Arrange
-        server.enqueue(MockResponse().setBody(SampleJsonNfts.listResponse))
+        client = TestNetwork.ktorTestClient {
+            jsonOkResponse(SampleJsonNfts.listResponse)
+        }
 
-        // Act
-        val dto = api.getNftsList(
+        val dto = client.getNftsListKtor(
             order = "market_cap_desc",
             perPage = 1,
             page = 1
         )
 
-        // Assert
         assertThat(dto).hasSize(1)
 
         val first = dto.first()
@@ -90,28 +88,32 @@ class NftsApiTest {
 
     @Test
     fun `getNftById uses GET and correct path`() = runTest {
-        // Arrange
-        server.enqueue(MockResponse().setBody(SampleJsonNfts.nftDetailResponse))
+        var capturedMethod: HttpMethod? = null
+        var capturedPath: String? = null
+        var queryNames: Set<String>? = null
 
-        // Act
-        api.getNftById(id = "bored-ape-yacht-club")
+        client = TestNetwork.ktorTestClient { request ->
+            capturedMethod = request.method
+            capturedPath = request.url.encodedPath
+            queryNames = request.url.parameters.names()
 
-        // Assert
-        val req = server.takeRequest()
-        assertThat(req.method).isEqualTo("GET")
-        assertThat(req.requestUrl?.encodedPath)
-            .isEqualTo("/nfts/bored-ape-yacht-club")
+            jsonOkResponse(SampleJsonNfts.nftDetailResponse)
+        }
 
-        assertThat(req.requestUrl?.queryParameterNames).isEmpty()
+        client.getNftByIdKtor(id = "bored-ape-yacht-club")
+
+        assertThat(capturedMethod).isEqualTo(HttpMethod.Get)
+        assertThat(capturedPath).isEqualTo("/nfts/bored-ape-yacht-club")
+        assertThat(queryNames).isEmpty()
     }
 
     @Test
     fun `deserializes nft detail json response`() = runTest {
-        // Arrange
-        server.enqueue(MockResponse().setBody(SampleJsonNfts.nftDetailResponse))
+        client = TestNetwork.ktorTestClient {
+            jsonOkResponse(SampleJsonNfts.nftDetailResponse)
+        }
 
-        // Act
-        val dto = api.getNftById(id = "bored-ape-yacht-club")
+        val dto = client.getNftByIdKtor(id = "bored-ape-yacht-club")
 
         assertThat(dto.id).isEqualTo("bored-ape-yacht-club")
         assertThat(dto.name).isEqualTo("Bored Ape Yacht Club")

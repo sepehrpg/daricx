@@ -18,7 +18,7 @@ class AuthPluginConfig {
     var apiKeyHeaderName: String = "x-cg-demo-api-key"
 
     /** Function that returns the API key value. */
-    var apiKeyProvider: () -> String = { "" }
+    var apiKeyProvider: () -> String = { "CG-BRmwWG1EPbaHsW9UZbscBd7P" }
 
     /**
      * Optional provider for a bearer token.
