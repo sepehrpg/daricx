@@ -1,6 +1,7 @@
 plugins {
-    alias(libs.plugins.project.android.library) /** android library convention */
-    alias(libs.plugins.project.android.hilt) /** hilt  convention */
+    alias(libs.plugins.project.android.library)
+    alias(libs.plugins.project.android.hilt)
+    alias(libs.plugins.project.android.koin)
     //id("kotlinx-serialization")
     alias(libs.plugins.kotlin.serialization)
 }
