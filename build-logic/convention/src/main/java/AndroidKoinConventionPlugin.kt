@@ -1,25 +1,32 @@
 import com.example.convention.libs
+import com.google.devtools.ksp.gradle.KspExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 
 /**
- * Plugin to add Koin dependencies to Android modules.
+ * Plugin to add Koin + Koin Annotations + KSP config to Android modules.
  * Simply apply this plugin inside any module's build.gradle.kts.
  */
 class AndroidKoinConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
 
-            // Apply KSP if annotation processing is needed later
+            // 1) Apply KSP plugin so the "ksp" extension exists
             with(pluginManager) {
                 apply("com.google.devtools.ksp")
             }
 
+            // 2) Configure KSP extension for Koin config check
+            extensions.configure<KspExtension>("ksp") {
+                arg("KOIN_CONFIG_CHECK", "true")
+            }
+
+            // 3) Add Koin dependencies
             dependencies {
 
                 // --- Koin BOM ---
-                // This ensures all Koin artifacts use the same version
                 "implementation"(platform(libs.findLibrary("koin.bom").get()))
 
                 // --- Core / Android ---
@@ -29,15 +36,12 @@ class AndroidKoinConventionPlugin : Plugin<Project> {
                 // --- Jetpack Compose support ---
                 "implementation"(libs.findLibrary("koin.androidx.compose").get())
 
-                // Optional older compose artifacts (only if needed)
-                // "implementation"(libs.findLibrary("koin.compose").get())
-                // "implementation"(libs.findLibrary("koin.compose.viewmodel").get())
+                // --- Koin Annotations + KSP compiler ---
+                "implementation"(libs.findLibrary("koin.annotations").get())
+                "ksp"(libs.findLibrary("koin.ksp.compiler").get())
 
                 // --- Test dependencies ---
                 "testImplementation"(libs.findLibrary("koin.test").get())
-
-                // If you add JUnit4 integration later:
-                // "androidTestImplementation"(libs.findLibrary("koin.test.junit4").get())
             }
         }
     }

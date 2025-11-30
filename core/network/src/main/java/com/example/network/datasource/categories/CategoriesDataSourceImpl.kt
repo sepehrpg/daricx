@@ -10,8 +10,10 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import javax.inject.Inject
+import org.koin.core.annotation.Single
 
-class CategoriesDataSourceImpl @Inject constructor(
+@Single(binds = [CategoriesDataSource::class])
+class CategoriesDataSourceImpl (
     private val httpClient: HttpClient,
 ) : CategoriesDataSource {
 

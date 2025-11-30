@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.project.compose.component) // all jetpack compose component
     //alias(libs.plugins.project.android.lint) // lint
     alias(libs.plugins.project.android.hilt)
+    alias(libs.plugins.project.android.koin)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler) // hilt
 }

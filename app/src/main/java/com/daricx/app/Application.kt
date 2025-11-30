@@ -17,6 +17,7 @@ class Application() : Application(){
     override fun onCreate() {
         super.onCreate()
 
+
         //setStrictModePolicy()
 
         if (isDebuggable()) {
