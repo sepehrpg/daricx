@@ -1,15 +1,15 @@
 package com.example.network.datasource.trending
 
-import com.example.network.api.ApiService
 import com.example.network.api.getTrendingKtor
 import com.example.network.model.TrendingDto
 import io.ktor.client.HttpClient
-import javax.inject.Inject
+import org.koin.core.annotation.Single
 
 /**
  * Network-backed implementation of [TrendingDataSource] using Ktor.
  */
-class TrendingDataSourceImpl @Inject constructor(
+@Single(binds = [TrendingDataSource::class])
+class TrendingDataSourceImpl (
     private val httpClient: HttpClient,
 ) : TrendingDataSource {
 

@@ -1,18 +1,19 @@
 package com.example.network.datasource.search
 
 
-import com.example.network.api.ApiService
 import com.example.network.api.searchKtor
+import com.example.network.datasource.nfts.NftsDataSource
 import com.example.network.model.SearchDto
 import io.ktor.client.HttpClient
-import javax.inject.Inject
+import org.koin.core.annotation.Single
 
 
 
 /**
  * Network-backed implementation of [SearchDataSource] using Ktor.
  */
-class SearchDataSourceImpl @Inject constructor(
+@Single(binds = [SearchDataSource::class])
+class SearchDataSourceImpl (
     private val httpClient: HttpClient,
 ) : SearchDataSource {
 
