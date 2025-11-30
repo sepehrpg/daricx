@@ -6,17 +6,30 @@ import android.content.pm.ApplicationInfo
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy.Builder
 import android.util.Log
+import com.example.network.di.CompositionNetworkModule
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import timber.log.Timber.Forest.plant
 import java.util.concurrent.Executors
-
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.annotation.KoinApplication
+import org.koin.core.context.startKoin
+import org.koin.ksp.generated.*
 
 @HiltAndroidApp
 class Application() : Application(){
     override fun onCreate() {
         super.onCreate()
 
+        startKoin {
+            androidContext(this@Application)
+
+            modules(
+                //ConfigModule().module,
+                CompositionNetworkModule().module,
+                // later: DataKoinModule().module, feature modules, ...
+            )
+        }
 
         //setStrictModePolicy()
 
