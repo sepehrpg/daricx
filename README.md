@@ -154,7 +154,7 @@ This structure allows:
 
 **Dependency Injection**
 
-- ~~[Dagger Hilt](https://dagger.dev/hilt/)~~ (legacy DI kept where needed; will be deprecated)
+~~Dagger Hilt~~ (previous DI solution — being replaced by **Koin** during migration)
 - [Koin](https://insert-koin.io/) (new DI solution; migration from ~~Hilt~~ to **Koin** is in progress in `migration/hilt-to-koin` branch)
 
 **Local Storage**
