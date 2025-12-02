@@ -10,4 +10,4 @@ import org.koin.core.annotation.Module
         DaoModule::class,
     ]
 )
-class DatabaseCompositionModule
+class DatabaseModuleComposition
