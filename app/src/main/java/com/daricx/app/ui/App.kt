@@ -59,7 +59,7 @@ import com.daricx.settings.menu.DrawerMenuScreen
 import com.daricx.settings.menu.DrawerMenuSheet
 import com.daricx.settings.menu.MenuAction
 import com.daricx.settings.menu.MenuUiState
-import com.daricx.ui.snackbar.SnackbarController
+import com.daricx.ui.snackbar.source.SnackbarController
 import com.example.model.settings.AppSettings
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass

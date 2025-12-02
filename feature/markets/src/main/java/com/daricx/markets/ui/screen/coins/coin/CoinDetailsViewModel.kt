@@ -9,12 +9,9 @@ import com.example.common.result.AppResult
 import com.example.data.repository.coins.CoinsRepository
 import com.example.model.coins.CoinDetails
 import com.example.model.coins.CoinHistoricalChart
-import com.example.model.coins.CoinHistoricalData
 import com.example.model.coins.CoinOHLCChartCandle
-import com.example.model.coins.Coins
 import com.example.model.coins.mapper.toFavoriteCoin
 import com.example.model.option.CryptoTimeRange
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -22,8 +19,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.koin.android.annotation.KoinViewModel
 import timber.log.Timber
-import javax.inject.Inject
 
 data class CoinDetailsUiState(
     val coinDetails: CoinDetails? = null,
@@ -37,8 +34,8 @@ data class CoinDetailsUiState(
     val ohlcCandles: CoinOHLCChartCandle? = null,
 )
 
-@HiltViewModel
-class CoinDetailsViewModel @Inject constructor(
+@KoinViewModel
+class CoinDetailsViewModel (
     savedStateHandle: SavedStateHandle,
     private val repository: CoinsRepository
 ) : ViewModel() {

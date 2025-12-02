@@ -1,15 +1,16 @@
 package com.example.network.datasource.companies
 
 import com.example.model.option.TreasuryAsset
-import com.example.network.api.ApiService
 import com.example.network.api.getCompaniesTreasuryKtor
+import com.example.network.datasource.coins.CoinsDataSource
 import com.example.network.model.CompaniesTreasuryDto
 import com.example.network.options.toApiCoinId
 import io.ktor.client.HttpClient
-import javax.inject.Inject
+import org.koin.core.annotation.Single
 
 /** Network-backed implementation of [CompaniesTreasuryDataSource] using Ktor. */
-class CompaniesTreasuryDataSourceImpl @Inject constructor(
+@Single(binds = [CompaniesTreasuryDataSource::class])
+class CompaniesTreasuryDataSourceImpl (
     private val httpClient: HttpClient,
 ) : CompaniesTreasuryDataSource {
 

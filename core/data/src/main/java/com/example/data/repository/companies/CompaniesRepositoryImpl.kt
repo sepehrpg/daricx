@@ -2,6 +2,7 @@ package com.example.data.repository.companies
 
 import com.example.data.di.qualifier.AppDispatcher
 import com.example.data.di.qualifier.Dispatcher
+import com.example.data.repository.coins.CoinsRepository
 import com.example.model.CompaniesTreasury
 import com.example.model.option.TreasuryAsset
 import com.example.network.datasource.companies.CompaniesTreasuryDataSource
@@ -11,10 +12,11 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
+import org.koin.core.annotation.Single
 
 /** Network-backed implementation of [CompaniesRepository]. */
-class CompaniesRepositoryImpl @Inject constructor(
+@Single(binds = [CompaniesRepository::class])
+class CompaniesRepositoryImpl (
     private val remote: CompaniesTreasuryDataSource,
     @Dispatcher(AppDispatcher.IO) private val io: CoroutineDispatcher
 ) : CompaniesRepository {

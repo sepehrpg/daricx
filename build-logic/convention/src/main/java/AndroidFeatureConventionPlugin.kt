@@ -24,7 +24,8 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
 
 
                 apply("project.compose.component")
-                apply("project.android.hilt")
+                //apply("project.android.hilt")
+                apply("project.android.koin")
             }
 
             /*extensions.configure<LibraryExtension> {

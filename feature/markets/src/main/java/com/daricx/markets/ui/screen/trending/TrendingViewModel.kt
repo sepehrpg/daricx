@@ -6,13 +6,12 @@ import com.example.common.result.AppError
 import com.example.common.result.AppResult
 import com.example.data.repository.trending.TrendingRepository
 import com.example.model.Trending
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.koin.android.annotation.KoinViewModel
 import timber.log.Timber
 
 
@@ -23,8 +22,8 @@ data class TrendingUiState(
     val error: AppError? = null
 )
 
-@HiltViewModel
-class TrendingViewModel @Inject constructor(
+@KoinViewModel
+class TrendingViewModel (
     private val trendingRepository: TrendingRepository
 ) : ViewModel() {
 

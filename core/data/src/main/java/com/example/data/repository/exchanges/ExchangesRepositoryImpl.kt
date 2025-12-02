@@ -8,6 +8,7 @@ import com.example.data.di.qualifier.AppDispatcher
 import com.example.data.di.qualifier.Dispatcher
 import com.example.data.paging.ExchangeTickersPagingSource
 import com.example.data.paging.ExchangesPagingSource
+import com.example.data.repository.defi.DeFiRepository
 import com.example.model.exchanges.ExchangeDetail
 import com.example.model.exchanges.ExchangeTickers
 import com.example.model.exchanges.ExchangeVolumeChart
@@ -24,11 +25,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
+import org.koin.core.annotation.Single
 import kotlin.coroutines.cancellation.CancellationException
 
 
-class ExchangesRepositoryImpl @Inject constructor(
+@Single(binds = [ExchangesRepository::class])
+class ExchangesRepositoryImpl (
     private val remoteDataSource: ExchangesDataSource,
     @Dispatcher(AppDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : ExchangesRepository {

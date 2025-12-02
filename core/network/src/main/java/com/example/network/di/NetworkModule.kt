@@ -1,20 +1,18 @@
 package com.example.network.di
+import android.content.Context
 import com.example.network.utils.ConnectivityManagerNetworkMonitor
 import com.example.network.utils.NetworkMonitor
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import org.koin.core.annotation.ComponentScan
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Single
 
+
+
+
+/**
+ * Koin module for network utilities (e.g., NetworkMonitor).
+ */
 @Module
-@InstallIn(SingletonComponent::class)
-abstract class NetworkModule {
-
-    @Binds
-    internal abstract fun bindsNetworkMonitor(
-        networkMonitor: ConnectivityManagerNetworkMonitor,
-    ): NetworkMonitor
-
-}
-
+@ComponentScan("com.example.network.utils")
+class NetworkUtilsModule
 

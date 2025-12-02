@@ -2,16 +2,17 @@ package com.example.network.datasource.nfts
 
 
 import com.example.model.sort.NftsSort
-import com.example.network.api.ApiService
 import com.example.network.api.getNftByIdKtor
 import com.example.network.api.getNftsListKtor
+import com.example.network.datasource.global.GlobalDataSource
 import com.example.network.model.nfts.NftDetailsDto
 import com.example.network.model.nfts.NftsListDto
 import com.example.network.options.toApiOrderParam
 import io.ktor.client.HttpClient
-import javax.inject.Inject
+import org.koin.core.annotation.Single
 
-class NftsDataSourceImpl @Inject constructor(
+@Single(binds = [NftsDataSource::class])
+class NftsDataSourceImpl (
     private val httpClient: HttpClient,
 ) : NftsDataSource {
 

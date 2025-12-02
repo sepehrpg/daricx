@@ -9,6 +9,7 @@ import com.example.data.di.qualifier.AppDispatcher
 import com.example.data.di.qualifier.Dispatcher
 import com.example.data.paging.CoinTickersPagingSource
 import com.example.data.paging.CoinsPagingSource
+import com.example.data.repository.categories.CategoriesRepository
 import com.example.database.dao.FavoriteCoinDao
 import com.example.database.model.toFavoriteEntity
 import com.example.model.coins.CoinDetails
@@ -32,12 +33,12 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import org.koin.core.annotation.Single
 import timber.log.Timber
-import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
 
-
-class CoinsRepositoryImpl @Inject constructor(
+@Single(binds = [CoinsRepository::class])
+class CoinsRepositoryImpl (
     private val remoteDataSource: CoinsDataSource,
     private val favoriteCoinDao: FavoriteCoinDao,
     @Dispatcher(AppDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,

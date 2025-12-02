@@ -6,7 +6,8 @@ plugins {
     alias(libs.plugins.project.android.application.compose) //compose application
     alias(libs.plugins.project.compose.component) // all jetpack compose component
     //alias(libs.plugins.project.android.lint) // lint
-    alias(libs.plugins.project.android.hilt)
+    //alias(libs.plugins.project.android.hilt)
+    alias(libs.plugins.project.android.koin)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler) // hilt
 }
@@ -57,6 +58,12 @@ android {
 
 }
 
+ksp {
+    arg("KOIN_CONFIG_CHECK", "true")
+    arg("KOIN_DEFAULT_MODULE", "com.daricx.app.Application")
+}
+
+
 dependencies {
 
     /** Add Module */
@@ -88,4 +95,18 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.testManifest)*/
+}
+
+
+tasks.register("printProxyConfig") {
+    doLast {
+        println("=== Proxy config seen by Gradle JVM ===")
+        println("http.proxyHost      = " + System.getProperty("http.proxyHost"))
+        println("http.proxyPort      = " + System.getProperty("http.proxyPort"))
+        println("https.proxyHost     = " + System.getProperty("https.proxyHost"))
+        println("https.proxyPort     = " + System.getProperty("https.proxyPort"))
+        println("socksProxyHost      = " + System.getProperty("socksProxyHost"))
+        println("socksProxyPort      = " + System.getProperty("socksProxyPort"))
+        println("java.net.useSystemProxies = " + System.getProperty("java.net.useSystemProxies"))
+    }
 }

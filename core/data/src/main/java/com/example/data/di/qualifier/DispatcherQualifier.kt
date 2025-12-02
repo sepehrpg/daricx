@@ -1,10 +1,8 @@
 package com.example.data.di.qualifier
 
-import javax.inject.Qualifier
-import kotlin.annotation.AnnotationRetention.RUNTIME
+import org.koin.core.annotation.Qualifier
 
 @Qualifier
-@Retention(RUNTIME)
 annotation class Dispatcher(val appDispatcher: AppDispatcher)
 
 enum class AppDispatcher {

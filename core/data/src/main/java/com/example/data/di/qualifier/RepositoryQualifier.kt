@@ -1,12 +1,9 @@
 package com.example.data.di.qualifier
 
-import javax.inject.Qualifier
-
+import org.koin.core.annotation.Qualifier
 
 @Qualifier
-@Retention(AnnotationRetention.BINARY)
 annotation class OfflineRepository
 
 @Qualifier
-@Retention(AnnotationRetention.BINARY)
 annotation class OnlineRepository

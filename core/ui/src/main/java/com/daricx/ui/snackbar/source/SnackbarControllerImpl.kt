@@ -1,11 +1,9 @@
-package com.daricx.ui.snackbar
+package com.daricx.ui.snackbar.source
 
-
-import androidx.compose.material3.SnackbarDuration
-import com.example.designsystem.component.snackbar.AppSnackbarType
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import org.koin.core.annotation.Single
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -94,32 +92,8 @@ import javax.inject.Singleton
  *     }
  * }
  */
-
-data class SnackbarRequest(
-    val message: String,
-    val type: AppSnackbarType = AppSnackbarType.Default,
-    val actionLabel: String? = null,
-    val withDismissAction: Boolean = true,
-    val duration: SnackbarDuration = SnackbarDuration.Short
-)
-
-interface SnackbarController {
-    val requests: SharedFlow<SnackbarRequest>
-
-    fun show(request: SnackbarRequest)
-
-    fun showInfo(message: String, action: String? = null) =
-        show(SnackbarRequest(message, AppSnackbarType.Info, action))
-    fun showSuccess(message: String, action: String? = null) =
-        show(SnackbarRequest(message, AppSnackbarType.Success, action))
-    fun showWarning(message: String, action: String? = null) =
-        show(SnackbarRequest(message, AppSnackbarType.Warning, action))
-    fun showError(message: String, action: String? = null) =
-        show(SnackbarRequest(message, AppSnackbarType.Error, action))
-}
-
-@Singleton
-class SnackbarControllerImpl @Inject constructor() : SnackbarController {
+@Single(binds = [SnackbarController::class])
+class SnackbarControllerImpl  : SnackbarController {
     private val _requests = MutableSharedFlow<SnackbarRequest>(
         replay = 0,
         extraBufferCapacity = 64,

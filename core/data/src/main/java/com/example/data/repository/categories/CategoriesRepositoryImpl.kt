@@ -15,13 +15,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
+import org.koin.core.annotation.Single
 import kotlin.coroutines.cancellation.CancellationException
 
 /**
  * Network-backed implementation of [CategoriesRepository].
  */
-class CategoriesRepositoryImpl @Inject constructor(
+@Single(binds = [CategoriesRepository::class])
+class CategoriesRepositoryImpl (
     private val remote: CategoriesDataSource,
     @Dispatcher(AppDispatcher.IO) private val ioDispatcher: CoroutineDispatcher
 ) : CategoriesRepository {

@@ -8,15 +8,14 @@ import com.example.model.settings.AppCurrency
 import com.example.model.settings.AppLanguage
 import com.example.model.settings.AppSettings
 import com.example.model.settings.AppThemeOption
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.koin.android.annotation.KoinViewModel
 
-@HiltViewModel
-class SettingsViewModel @Inject constructor(
+@KoinViewModel
+class SettingsViewModel (
     private val repo: SettingsRepository
 ) : ViewModel() {
 

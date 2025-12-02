@@ -12,7 +12,7 @@ import com.example.model.settings.AppSettings
 import com.example.model.settings.AppThemeOption
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-
+import org.koin.core.annotation.Single
 
 
 internal object SettingsKeys {
@@ -24,6 +24,7 @@ internal object SettingsKeys {
 }
 
 
+@Single
 class SettingsDataSource(
     private val dataStore: DataStore<Preferences>
 ) {

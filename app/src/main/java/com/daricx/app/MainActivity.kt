@@ -12,14 +12,13 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.data.utils.NetworkMonitor
 import com.example.designsystem.theme.AppTheme
-import com.google.samples.apps.nowinandroid.core.data.util.TimeZoneMonitor
+import com.example.data.utils.TimeZoneMonitor
 import com.daricx.app.ui.App
 import com.daricx.app.ui.rememberAppState
 import com.daricx.settings.SettingsViewModel
@@ -28,24 +27,22 @@ import com.daricx.settings.menu.DrawerMenuSheet
 import com.daricx.settings.menu.MenuAction
 import com.daricx.settings.menu.MenuUiState
 import com.daricx.ui.snackbar.LocalSnackbarController
-import com.daricx.ui.snackbar.SnackbarController
+import com.daricx.ui.snackbar.source.SnackbarController
 import com.example.model.settings.AppSettings
 import com.example.model.settings.AppThemeOption
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.compose.koinViewModel
+import kotlin.getValue
 
 
-@AndroidEntryPoint
+
 class MainActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var networkMonitor: NetworkMonitor
+    private val snackbarController: SnackbarController by inject()
+    private val networkMonitor: NetworkMonitor by inject()
+    private val timeZoneMonitor: TimeZoneMonitor by inject()
 
-    @Inject
-    lateinit var timeZoneMonitor: TimeZoneMonitor
-
-    @Inject lateinit var snackbarController: SnackbarController
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +53,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val scope = rememberCoroutineScope()
             val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-            val settingsVm: SettingsViewModel = androidx.hilt.navigation.compose.hiltViewModel()
+            val settingsVm: SettingsViewModel = koinViewModel()
             val settings by settingsVm.settings.collectAsStateWithLifecycle()
             val appState = rememberAppState(
                 networkMonitor = networkMonitor,

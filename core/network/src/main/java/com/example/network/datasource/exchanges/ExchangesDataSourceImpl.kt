@@ -6,6 +6,7 @@ import com.example.network.api.getExchangeByIdKtor
 import com.example.network.api.getExchangeTickersByIdKtor
 import com.example.network.api.getExchangeVolumeChartKtor
 import com.example.network.api.getExchangesKtor
+import com.example.network.datasource.defi.GlobalDeFiDataSource
 import com.example.network.model.exchanges.ExchangeDetailDto
 import com.example.network.model.exchanges.ExchangeTickersDto
 import com.example.network.model.exchanges.ExchangeVolumeChartDto
@@ -13,9 +14,11 @@ import com.example.network.model.exchanges.ExchangesListDto
 import com.example.network.options.toApiOrderParam
 import com.example.network.options.toDomain
 import io.ktor.client.HttpClient
-import javax.inject.Inject
+import org.koin.core.annotation.Single
 
-class ExchangesDataSourceImpl @Inject constructor(
+
+@Single(binds = [ExchangesDataSource::class])
+class ExchangesDataSourceImpl (
     private val httpClient: HttpClient,
 ) : ExchangesDataSource {
 

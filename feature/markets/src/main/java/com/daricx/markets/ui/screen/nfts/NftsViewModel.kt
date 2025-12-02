@@ -5,18 +5,17 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.example.data.repository.nfts.NftsRepository
 import com.example.model.sort.NftsSort
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.koin.android.annotation.KoinViewModel
 import timber.log.Timber
 
 data class NftsUiState(
     val sort: NftsSort = NftsSort.H24VolumeUsdAsc
 )
 
-@HiltViewModel
-class NftsViewModel @Inject constructor(
+@KoinViewModel
+class NftsViewModel (
     private val repository: NftsRepository
 ) : ViewModel() {
 

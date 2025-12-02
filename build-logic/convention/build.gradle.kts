@@ -56,6 +56,11 @@ gradlePlugin {
     
     plugins {
 
+        register("androidKoin") {
+            id = "project.android.koin"
+            implementationClass = "AndroidKoinConventionPlugin"
+        }
+
         register("androidApplicationCompose") {
             id = "project.android.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"

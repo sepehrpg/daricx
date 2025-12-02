@@ -11,7 +11,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.data.utils.NetworkMonitor
-import com.google.samples.apps.nowinandroid.core.data.util.TimeZoneMonitor
+import com.example.data.utils.TimeZoneMonitor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map

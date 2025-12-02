@@ -2,17 +2,15 @@
 package com.example.database.di
 import com.example.database.RoomDb
 import com.example.database.dao.FavoriteCoinDao
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Single
 
 
 @Module
-@InstallIn(SingletonComponent::class)
-internal object DaoModule {
+class DaoModule {
 
-    @Provides
-    fun provideFavoriteCoinDao(db: RoomDb): FavoriteCoinDao = db.favoriteCoinDao()
-
+    @Single
+    fun provideFavoriteCoinDao(
+        db: RoomDb,
+    ): FavoriteCoinDao = db.favoriteCoinDao()
 }

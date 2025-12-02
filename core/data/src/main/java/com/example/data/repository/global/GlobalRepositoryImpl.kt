@@ -3,6 +3,7 @@ package com.example.data.repository.global
 
 import com.example.data.di.qualifier.AppDispatcher
 import com.example.data.di.qualifier.Dispatcher
+import com.example.data.repository.exchanges.ExchangesRepository
 import com.example.model.GlobalCryptoMarketData
 import com.example.network.datasource.global.GlobalDataSource
 import com.example.network.model.mappers.coins.toDomain
@@ -11,10 +12,11 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
+import org.koin.core.annotation.Single
 
 /** Network-backed implementation of [GlobalRepository]. */
-class GlobalRepositoryImpl @Inject constructor(
+@Single(binds = [GlobalRepository::class])
+class GlobalRepositoryImpl (
     private val remote: GlobalDataSource,
     @Dispatcher(AppDispatcher.IO) private val io: CoroutineDispatcher
 ) : GlobalRepository {

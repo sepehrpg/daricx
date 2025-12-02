@@ -13,19 +13,18 @@ import android.os.Build.VERSION_CODES
 import androidx.core.content.getSystemService
 import com.example.data.di.qualifier.AppDispatcher
 import com.example.data.di.qualifier.Dispatcher
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
+import org.koin.core.annotation.Single
 
 
-
-internal class ConnectivityManagerNetworkMonitor @Inject constructor(
-    @ApplicationContext private val context: Context,
+@Single(binds = [NetworkMonitor::class])
+internal class ConnectivityManagerNetworkMonitor (
+    private val context: Context,
     @Dispatcher(AppDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : NetworkMonitor {
 

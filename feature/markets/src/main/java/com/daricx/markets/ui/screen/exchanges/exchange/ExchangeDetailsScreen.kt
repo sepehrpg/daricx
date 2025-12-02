@@ -40,11 +40,12 @@ import com.example.designsystem.theme.AppThemedPreview
 import com.example.designsystem.theme.ThemePreviews
 import com.example.model.exchanges.ExchangeDetail
 import com.example.model.option.CryptoTimeRange
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
 fun ExchangeDetailsRoute(
-    viewModel: ExchangeDetailsViewModel = hiltViewModel(),
+    viewModel: ExchangeDetailsViewModel = koinViewModel(),
 ){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 

@@ -8,6 +8,7 @@ import com.example.common.result.AppResult
 import com.example.data.di.qualifier.AppDispatcher
 import com.example.data.di.qualifier.Dispatcher
 import com.example.data.paging.NftsPagingSource
+import com.example.data.repository.global.GlobalRepository
 import com.example.model.nfts.NftDetails
 import com.example.model.nfts.Nfts
 import com.example.model.sort.NftsSort
@@ -20,10 +21,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
+import org.koin.core.annotation.Single
 
 /** Network-backed implementation of [NftsRepository]. */
-class NftsRepositoryImpl @Inject constructor(
+@Single(binds = [NftsRepository::class])
+class NftsRepositoryImpl (
     private val remoteDataSource: NftsDataSource,
     @Dispatcher(AppDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : NftsRepository {

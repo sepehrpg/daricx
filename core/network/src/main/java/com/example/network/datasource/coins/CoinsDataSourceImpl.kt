@@ -10,6 +10,7 @@ import com.example.network.api.getCoinHistoricalDataByIdKtor
 import com.example.network.api.getCoinMarketsKtor
 import com.example.network.api.getCoinOHLCChartCandleKtor
 import com.example.network.api.getCoinTickersByIdKtor
+import com.example.network.datasource.categories.CategoriesDataSource
 import com.example.network.model.coins.CoinDetailsDto
 import com.example.network.model.coins.CoinHistoricalChartDto
 import com.example.network.model.coins.CoinHistoricalDataDto
@@ -20,7 +21,7 @@ import com.example.network.options.toApiOrderParam
 import com.example.network.options.toApiOrderParamOrNull
 import com.example.network.options.toDomain
 import io.ktor.client.HttpClient
-import javax.inject.Inject
+import org.koin.core.annotation.Single
 
 /**
  * Ktor-based implementation of [CoinsDataSource].
@@ -28,7 +29,8 @@ import javax.inject.Inject
  * This replaces Retrofit calls with HttpClient + Ktor extensions,
  * while keeping the same public API for the data layer.
  */
-class CoinsDataSourceImpl @Inject constructor(
+@Single(binds = [CoinsDataSource::class])
+class CoinsDataSourceImpl (
     private val httpClient: HttpClient,
 ) : CoinsDataSource {
 
