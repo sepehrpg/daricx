@@ -7,11 +7,11 @@ import com.example.model.settings.AppLanguage
 import com.example.model.settings.AppSettings
 import com.example.model.settings.AppThemeOption
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
-import javax.inject.Singleton
+import org.koin.core.annotation.Single
 
-@Singleton
-class SettingsRepositoryImpl @Inject constructor(
+
+@Single(binds = [SettingsRepository::class])
+class SettingsRepositoryImpl (
     private val ds: SettingsDataSource
 ) : SettingsRepository {
     override val settings: Flow<AppSettings> = ds.stream

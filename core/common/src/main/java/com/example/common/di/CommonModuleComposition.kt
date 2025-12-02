@@ -10,4 +10,4 @@ import org.koin.core.annotation.Module
     ]
 )
 @ComponentScan("com.example.common")
-class CommonCompositionModule
+class CommonModuleComposition

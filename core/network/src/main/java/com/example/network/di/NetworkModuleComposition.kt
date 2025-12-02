@@ -1,7 +1,6 @@
 package com.example.network.di
 
 import org.koin.core.annotation.Module
-import org.koin.core.annotation.ComponentScan
 
 @Module(
     includes = [
@@ -11,4 +10,4 @@ import org.koin.core.annotation.ComponentScan
         NetworkDataSourceModule::class,
     ]
 )
-class CompositionNetworkModule
+class NetworkModuleComposition

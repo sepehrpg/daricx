@@ -63,7 +63,9 @@ dependencies {
     /** Add Module */
     implementation(project(":core:ui"))
     implementation(project(":core:data"))
-    implementation(project(":core:network"))
+    implementation(project(":core:network")) // TODO: Remove it after combine koin module in data layer
+    implementation(project(":core:database")) // TODO: Remove it after combine koin module in data layer
+    implementation(project(":core:datastore")) // TODO: Remove it after combine koin module in data layer
     implementation(project(":core:model"))
     implementation(project(":core:common"))
     implementation(project(":feature:markets"))

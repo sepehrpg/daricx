@@ -6,13 +6,17 @@ import android.content.pm.ApplicationInfo
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy.Builder
 import android.util.Log
-import com.example.network.di.CompositionNetworkModule
+import com.daricx.ui.di.CompositionUiModule
+import com.example.common.di.CommonModuleComposition
+import com.example.data.di.DataModuleComposition
+import com.example.database.di.DatabaseModuleComposition
+import com.example.datastore.di.DatastoreModuleComposition
+import com.example.network.di.NetworkModuleComposition
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import timber.log.Timber.Forest.plant
 import java.util.concurrent.Executors
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.annotation.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.*
 
@@ -26,7 +30,9 @@ class Application() : Application(){
 
             modules(
                 //ConfigModule().module,
-                CompositionNetworkModule().module,
+                DataModuleComposition().module,
+                CommonModuleComposition().module,
+                CompositionUiModule().module,
                 // later: DataKoinModule().module, feature modules, ...
             )
         }

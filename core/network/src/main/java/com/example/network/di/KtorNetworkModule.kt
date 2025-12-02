@@ -23,6 +23,8 @@ import io.ktor.http.takeFrom
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.core.annotation.Module
+import org.koin.core.annotation.Named
+import org.koin.core.annotation.Provided
 import org.koin.core.annotation.Single
 
 
@@ -32,8 +34,7 @@ class KtorClientModule {
     @Single
     fun provideKtorHttpClient(
         json: Json,
-        //@Named("appVersionName") appVersionName: String,
-       appVersionName: String = "1.0.0",
+        @Provided @AppVersionName  appVersionName: String,
     ): HttpClient = HttpClient(OkHttp) {
 
         install(ContentNegotiation) {

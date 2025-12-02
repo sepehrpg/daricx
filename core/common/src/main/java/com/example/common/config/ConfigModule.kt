@@ -1,14 +1,10 @@
-package com.example.common.config // Or your desired package
+package com.example.common.config
 
 import android.content.Context
 import android.os.Build
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Qualifier
-import javax.inject.Singleton
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Qualifier
+import org.koin.core.annotation.Single
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
@@ -19,30 +15,29 @@ annotation class AppVersionName
 annotation class AppVersionCode
 
 @Module
-@InstallIn(SingletonComponent::class)
-object ConfigModule {
+class ConfigModule {
 
-    // This provider gets the app's version name safely from the application context.
-    @Provides
-    @Singleton
+    @Single
     @AppVersionName
-    fun provideAppVersionName(@ApplicationContext context: Context): String {
+    fun provideAppVersionName(context: Context): String {
         return try {
-            val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
-            // Using "N/A" or "0" is a matter of preference for the fallback value.
+            val pm = context.packageManager
+            val pkgName = context.packageName
+            val packageInfo = pm.getPackageInfo(pkgName, 0)
             packageInfo.versionName ?: "N/A"
         } catch (e: Exception) {
-            "N/A" // Fallback in case of an error
+            "N/A"
         }
     }
 
-    // This provider gets the app's version code safely.
-    @Provides
-    @Singleton
+    @Single
     @AppVersionCode
-    fun provideAppVersionCode(@ApplicationContext context: Context): String {
+    fun provideAppVersionCode(context: Context): String {
         return try {
-            val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+            val pm = context.packageManager
+            val pkgName = context.packageName
+            val packageInfo = pm.getPackageInfo(pkgName, 0)
+
             val versionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 packageInfo.longVersionCode
             } else {
@@ -51,7 +46,7 @@ object ConfigModule {
             }
             versionCode.toString()
         } catch (e: Exception) {
-            "0" // Fallback in case of an error
+            "0"
         }
     }
 }

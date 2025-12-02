@@ -2,21 +2,19 @@ package com.example.data.di
 
 import com.example.data.di.qualifier.AppDispatcher
 import com.example.data.di.qualifier.Dispatcher
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Single
 
 @Module
-@InstallIn(SingletonComponent::class)
-object DispatchersModule {
-    @Provides
-    @Dispatcher(AppDispatcher.IO)
-    fun providesIODispatcher(): CoroutineDispatcher = Dispatchers.IO
+class DispatchersModule {
 
-    @Provides
+    @Single
+    @Dispatcher(AppDispatcher.IO)
+    fun provideIODispatcher(): CoroutineDispatcher = Dispatchers.IO
+
+    @Single
     @Dispatcher(AppDispatcher.Default)
-    fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
+    fun provideDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 }
