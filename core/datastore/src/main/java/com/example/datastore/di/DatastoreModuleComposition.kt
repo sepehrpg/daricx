@@ -12,4 +12,4 @@ import org.koin.core.annotation.Module
     ]
 )
 @ComponentScan("com.example.datastore")
-class DatastoreCompositionModule
+class DatastoreModuleComposition
