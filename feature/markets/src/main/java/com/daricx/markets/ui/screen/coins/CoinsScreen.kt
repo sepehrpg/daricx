@@ -51,7 +51,7 @@ import com.example.model.coins.Coins
 import com.example.model.sort.SortKey
 import com.example.model.sort.SortOrder
 import com.example.model.sort.SortOption
-
+import org.koin.androidx.compose.koinViewModel
 
 
 // -------------------------------- Column Weights --------------------------------
@@ -64,7 +64,7 @@ private const val CL_4 = 3f
 
 @Composable
 fun CoinsRoute(
-    viewModel: CoinsViewModel = hiltViewModel(),
+    viewModel: CoinsViewModel = koinViewModel(),
     onNavigateToCoinDetailsScreen: (coinId: String) -> Unit,
 ) {
     val ui by viewModel.uiState.collectAsStateWithLifecycle()

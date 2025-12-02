@@ -12,11 +12,10 @@ import com.example.model.sort.SortOrder
 import com.example.model.sort.SortOption
 import com.example.model.sort.isServerSupported
 import com.example.model.sort.toCoinsSortOrNull
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.koin.android.annotation.KoinViewModel
 import timber.log.Timber
-import javax.inject.Inject
 
 
 
@@ -24,8 +23,8 @@ data class CoinsUiState(
     val sort: SortOption = SortOption(SortKey.MARKET_CAP, SortOrder.DESC)
 )
 
-@HiltViewModel
-class CoinsViewModel @Inject constructor(
+@KoinViewModel
+class CoinsViewModel (
     private val repository: CoinsRepository
 ) : ViewModel() {
 

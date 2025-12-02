@@ -34,12 +34,13 @@ import com.example.designsystem.extension.clickableWithNoRipple
 import com.example.designsystem.theme.AppThemedPreview
 import com.example.designsystem.theme.ThemePreviews
 import com.example.model.exchanges.Exchanges
+import org.koin.androidx.compose.koinViewModel
 
 // ----------------------------- Route -----------------------------
 
 @Composable
 fun ExchangesRoute(
-    viewModel: ExchangesViewModel = hiltViewModel(),
+    viewModel: ExchangesViewModel = koinViewModel(),
     onNavigateToExchangeDetailsScreen: (exchangeId: String) -> Unit,
 ) {
     val items = viewModel.pagedExchanges.collectAsLazyPagingItems()

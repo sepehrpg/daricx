@@ -43,12 +43,13 @@ import com.example.designsystem.theme.StarColor
 import com.example.designsystem.theme.ThemePreviews
 import com.example.model.coins.CoinDetails
 import com.example.model.option.CryptoTimeRange
+import org.koin.androidx.compose.koinViewModel
 import kotlin.collections.contains
 
 
 @Composable
 fun CoinDetailsRoute(
-    viewModel: CoinDetailsViewModel = hiltViewModel(),
+    viewModel: CoinDetailsViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val favoriteIds by viewModel.favoriteIds.collectAsStateWithLifecycle()

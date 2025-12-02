@@ -40,6 +40,7 @@ import com.example.designsystem.component.AppPullToRefresh
 import com.example.designsystem.component.text.AppText
 import com.example.designsystem.theme.AppThemedPreview
 import com.example.model.nfts.Nfts
+import org.koin.androidx.compose.koinViewModel
 
 
 // -------------------------------- Column Weights --------------------------------
@@ -52,7 +53,7 @@ private const val CL_3 = 1f
 
 @Composable
 fun NftsRoute(
-    viewModel: NftsViewModel = hiltViewModel()
+    viewModel: NftsViewModel = koinViewModel()
 ) {
     val nfts = viewModel.pagedNfts.collectAsLazyPagingItems()
     val ui by viewModel.uiState.collectAsStateWithLifecycle()

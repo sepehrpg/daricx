@@ -7,13 +7,12 @@ import com.example.common.result.AppError
 import com.example.common.result.AppResult
 import com.example.data.repository.categories.CategoriesRepository
 import com.example.model.Categories
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.koin.android.annotation.KoinViewModel
 import timber.log.Timber
 
 
@@ -24,8 +23,8 @@ data class CategoriesUiState(
     val error: AppError? = null
 )
 
-@HiltViewModel
-class CategoriesViewModel @Inject constructor(
+@KoinViewModel
+class CategoriesViewModel (
     private val trendingRepository: CategoriesRepository
 ) : ViewModel() {
 

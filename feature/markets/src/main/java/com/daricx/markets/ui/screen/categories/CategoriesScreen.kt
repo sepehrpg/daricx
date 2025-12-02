@@ -47,6 +47,7 @@ import com.example.model.Categories
 import com.example.model.sort.SortKey
 import com.example.model.sort.SortOption
 import com.example.model.sort.SortOrder
+import org.koin.androidx.compose.koinViewModel
 
 // -------------------------------- Column Weights --------------------------------
 // Keep header and row in sync:
@@ -57,7 +58,7 @@ private const val Cl_4 = 3f
 // -------------------------------- Column Weights --------------------------------
 
 @Composable
-fun CategoriesRoute(viewModel: CategoriesViewModel = hiltViewModel()){
+fun CategoriesRoute(viewModel: CategoriesViewModel = koinViewModel()){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     CategoriesScreen(

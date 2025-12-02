@@ -13,14 +13,13 @@ import com.example.model.coins.CoinDetails
 import com.example.model.exchanges.ExchangeDetail
 import com.example.model.exchanges.ExchangeVolumeChart
 import com.example.model.option.CryptoTimeRange
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.koin.android.annotation.KoinViewModel
 import timber.log.Timber
-import javax.inject.Inject
 
 
 data class ExchangeDetailsUiState(
@@ -34,8 +33,8 @@ data class ExchangeDetailsUiState(
     val days: String = "1",
 )
 
-@HiltViewModel
-class ExchangeDetailsViewModel @Inject constructor(
+@KoinViewModel
+class ExchangeDetailsViewModel (
     savedStateHandle: SavedStateHandle,
     private val repository: ExchangesRepository
 ) : ViewModel() {

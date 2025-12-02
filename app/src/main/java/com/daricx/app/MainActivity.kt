@@ -30,24 +30,18 @@ import com.daricx.ui.snackbar.LocalSnackbarController
 import com.daricx.ui.snackbar.source.SnackbarController
 import com.example.model.settings.AppSettings
 import com.example.model.settings.AppThemeOption
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import javax.inject.Inject
+import org.koin.androidx.compose.koinViewModel
 import kotlin.getValue
 
 
-@AndroidEntryPoint
+
 class MainActivity : ComponentActivity() {
 
-
     private val snackbarController: SnackbarController by inject()
-
-    @Inject
-    lateinit var networkMonitor: NetworkMonitor
-
-    @Inject
-    lateinit var timeZoneMonitor: TimeZoneMonitor
+    private val networkMonitor: NetworkMonitor by inject()
+    private val timeZoneMonitor: TimeZoneMonitor by inject()
 
 
     @RequiresApi(Build.VERSION_CODES.S)
@@ -59,7 +53,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val scope = rememberCoroutineScope()
             val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-            val settingsVm: SettingsViewModel = androidx.hilt.navigation.compose.hiltViewModel()
+            val settingsVm: SettingsViewModel = koinViewModel()
             val settings by settingsVm.settings.collectAsStateWithLifecycle()
             val appState = rememberAppState(
                 networkMonitor = networkMonitor,

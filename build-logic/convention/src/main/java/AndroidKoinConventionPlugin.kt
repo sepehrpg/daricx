@@ -20,7 +20,7 @@ class AndroidKoinConventionPlugin : Plugin<Project> {
 
             // 2) Configure KSP extension for Koin config check
             extensions.configure<KspExtension>("ksp") {
-                arg("KOIN_CONFIG_CHECK", "true")
+                arg("KOIN_CONFIG_CHECK", "false") // SET TRUE IT IN APP MODULE
             }
 
             // 3) Add Koin dependencies

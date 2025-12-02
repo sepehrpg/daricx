@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.daricx.markets.ui.screen.coins.CoinsUiState
 import com.example.data.repository.coins.CoinsRepository
 import com.example.model.coins.Coins
 import com.example.model.coins.mapper.toFavoriteCoin
@@ -14,7 +13,6 @@ import com.example.model.sort.SortOption
 import com.example.model.sort.SortOrder
 import com.example.model.sort.isServerSupported
 import com.example.model.sort.toCoinsSortOrNull
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -24,15 +22,15 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.koin.android.annotation.KoinViewModel
 import timber.log.Timber
-import javax.inject.Inject
 
 data class WatchlistUiState(
     val sort: SortOption = SortOption(SortKey.MARKET_CAP, SortOrder.DESC)
 )
 
-@HiltViewModel
-class WatchlistViewModel @Inject constructor(
+@KoinViewModel
+class WatchlistViewModel (
     private val repository: CoinsRepository
 ) : ViewModel() {
 

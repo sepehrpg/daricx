@@ -6,17 +6,16 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.data.repository.exchanges.ExchangesRepository
 import com.example.model.exchanges.Exchanges
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
+import org.koin.android.annotation.KoinViewModel
 import timber.log.Timber
-import javax.inject.Inject
 
 data class ExchangesUiState(
     val test:String = "Test"
 )
 
-@HiltViewModel
-class ExchangesViewModel @Inject constructor(
+@KoinViewModel
+class ExchangesViewModel (
     private val repository: ExchangesRepository
 ) : ViewModel() {
 

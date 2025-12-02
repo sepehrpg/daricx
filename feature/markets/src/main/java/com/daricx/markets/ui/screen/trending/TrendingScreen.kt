@@ -46,11 +46,12 @@ import com.example.designsystem.icon.AppIcons
 import com.example.designsystem.theme.AppThemedPreview
 import com.example.designsystem.theme.ThemePreviews
 import com.example.model.Trending
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
 fun TrendingRoute(
-    viewModel: TrendingViewModel = hiltViewModel(),
+    viewModel: TrendingViewModel = koinViewModel(),
     onNavigateToCoinDetailsScreen: (coinId: String) -> Unit,
 ){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
