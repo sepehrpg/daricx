@@ -1,11 +1,11 @@
 # Daricx
 
 Daricx is a multi-module Android app that explores the crypto market domain (coins, NFTs, categories, exchanges and watchlist) using a modern Android tech stack and clean, modular architecture.  
-It is designed both as a real-world crypto market app and as a playground for modern Android patterns (Jetpack Compose, Hilt, Coroutines/Flow, DataStore, Room, multi-module architecture).
+It is designed both as a real-world crypto market app and as a playground for modern Android patterns (Jetpack Compose, ~~Hilt~~ Koin, Coroutines/Flow, DataStore, Room, multi-module architecture).
 
 
 🚧 > **Status:** Work in progress
-- Migrating from Retrofit to **Ktor** and from Hilt to **Koin**, preparing the project for Kotlin Multiplatform (KMP).
+- Migrated from Retrofit to **Ktor** and from Hilt to **Koin**, preparing the project for Kotlin Multiplatform (KMP).
 - The legacy Retrofit + Hilt implementation is preserved on the `baseline/retrofit-hilt` branch.
 ---
 
@@ -154,8 +154,8 @@ This structure allows:
 
 **Dependency Injection**
 
-~~Dagger Hilt~~ (previous DI solution — being replaced by **Koin** during migration)
-- [Koin](https://insert-koin.io/) (new DI solution; migration from ~~Hilt~~ to **Koin** is in progress in `migration/hilt-to-koin` branch)
+- ~~Dagger Hilt~~ (legacy DI stack, preserved on `baseline/retrofit-hilt`)
+- **Koin** (current DI solution, used across active modules and the main app)
 
 **Local Storage**
 
